@@ -1,23 +1,26 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-
+import React, { useState, useEffect, Suspense } from "react";
 
 
 export default function HomePage({ navigation }) {
+    
+
 
 
     return (
-        <View style={styles.container}>
-                        
-            <TouchableOpacity style={styles.HomePageButtons}>
-                <Text style={styles.ButtonText} onPress={() => navigation.navigate('ScanPage')} >Scan Items</Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity style={styles.HomePageButtons}>
-                <Text style={styles.ButtonText}>View Items</Text>
-            </TouchableOpacity>
+            <View style={styles.container}>
+                            
+                <TouchableOpacity style={styles.HomePageButtons}>
+                    <Text style={styles.ButtonText} onPress={() => navigation.navigate('ScanPage')} >Scan Items</Text>
+                </TouchableOpacity>
 
-        </View>
+                <TouchableOpacity style={styles.HomePageButtons}>
+                    <Text style={styles.ButtonText}>View Items</Text>
+                </TouchableOpacity>
+
+            </View>
+
     );
 }
 
