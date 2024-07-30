@@ -1,43 +1,32 @@
 // boilerplate
-import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useEffect, useState } from "react";
-import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
 
-// firebase imports
-import db from '../firebaseConfig.js';
-import { collection, getDocs } from "firebase/firestore"; 
-
-
-export default function ManualPage() {
-
-    let table_head = ['Product Name', 'Date Scanned'];
-
-    const [table_data_state, setTableData] = useState([]);
-
-    const loadData = () => {
-        console.log("Loading data...");
-        let inventoryRef = collection(db, "inventory");
-        let inventorySnapshot = getDocs(inventoryRef);
-
-        inventorySnapshot.then((querySnapshot) => {
-            let table_data = [];
-            querySnapshot.forEach((doc) => {
-                table_data.push([doc.data().name, doc.data().date_scanned]);
-            });
-            setTableData(table_data);
-        });
-    }
-
-    useEffect(() => {
-        loadData();
-    }, []);
+export default function ManualPage({ navigation }) {
     
     return (
         <View style={styles.container}>
-            <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
-                <Row data={table_head} style={styles.head} textStyle={styles.text}/>
-                <Rows data={table_data_state} textStyle={styles.text}/>
-            </Table>
+
+            <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('VegetablePage')}>
+                <Text style={styles.VegText}>Vegetables</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.HomePageButtons}>
+                <Text style={styles.FruitText}>Fruit</Text>
+            </TouchableOpacity>
+             
+            <TouchableOpacity style={styles.HomePageButtons}>
+                <Text style={styles.DairyText}>Dairy</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.HomePageButtons}>
+                <Text style={styles.SaucesText}>Sauces</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.HomePageButtons}>
+                <Text style={styles.MiscText}>Misc</Text>
+            </TouchableOpacity>
+
         </View>
     );
 }
@@ -55,9 +44,81 @@ const styles = StyleSheet.create({
         backgroundColor: '#f1f8ff'
     },
 
+    row: {
+        backgroundColor: '#fcde8b'
+    },
+
     text: {
         margin: 5,
         fontSize: 20
-    }
+    },
+
+    HomePageButtons: {
+        backgroundColor: "#ffffff",
+        color: "#ffffff",
+        padding: 10,
+        margin: 10,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingHorizontal: 20,
+        marginVertical: 30,
+        alignSelf: "stretch",
+        borderStyle: "solid",
+        borderWidth: 3,
+        borderRadius: 20,
+    },
+
+    TimedButton: {
+        backgroundColor: "#ffffff",
+        color: "#ffffff",
+        padding: 10,
+        margin: 10,
+        justifyContent: "center",
+        paddingHorizontal: 20,
+        marginVertical: 30,
+        alignSelf: "stretch",
+        alignItems: "center",
+        borderStyle: "solid",
+        borderWidth: 3,
+        borderRadius: 20,
+    },
+
+    VegText: {
+        fontSize: 30,
+        color: "#45ba30",
+    },
+
+    FruitText: {
+        fontSize: 30,
+        color: "#f5810c",
+    },
+
+    DairyText: {
+        fontSize: 30,
+        color: "#1f80ff",
+    },
+
+    SaucesText: {
+        fontSize: 30,
+        color: "#fc1717",
+    },
+
+    MiscText: {
+        fontSize: 30,
+        color: "#000000",
+    },
+
+    ButtonContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    Title: {
+        fontSize: 50,
+        color: "#000000",
+        marginBottom: 80,
+        fontFamily: "Mulish-Regular",
+    },
 
 });

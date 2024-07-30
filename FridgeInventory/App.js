@@ -6,6 +6,7 @@ import ScanPage from './screens/ScanPage';
 import DeletePage from './screens/DeletePage';
 import ManualPage from './screens/ManualPage';
 import ViewPage from './screens/ViewPage';
+import VegetablePage from './screens/VegetablesPage';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -24,6 +25,7 @@ export default function Page() {
             <Stack.Screen name="DeletePage" component={DeletePage} />
             <Stack.Screen name="ManualPage" component={ManualPage} />
             <Stack.Screen name="ViewPage" component={ViewPage} />
+            <Stack.Screen name="VegetablePage" component={VegetablePage} />
           </Stack.Navigator>
       </NavigationContainer>
   )
