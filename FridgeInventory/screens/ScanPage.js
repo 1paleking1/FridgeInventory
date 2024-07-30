@@ -2,8 +2,9 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Camera, CameraView, useCameraPermissions } from 'expo-camera';
 import axios from 'axios';
-import db from "@react-native-firebase/database";
 
+import db from '../firebaseConfig.js';
+import { collection, addDoc } from "firebase/firestore"; 
 
 
 export default function HomePage({ navigation }) {
@@ -20,6 +21,20 @@ export default function HomePage({ navigation }) {
         return today;
     }
 
+    const addProducttoDB = async(product_id, product_name) => {
+
+        try {
+
+            const docRef = await addDoc(collection(db, "inventory"), {
+                name: product_name,
+                product_id: product_id,
+                date_scanned: getTodayDate(),
+            });
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
+
+    }
 
     const scanBarcode = (raw_data) => {
 
@@ -27,15 +42,12 @@ export default function HomePage({ navigation }) {
 
         axios.get(`https://world.openfoodfacts.net/api/v2/product/${product_id}?fields=product_name`)
 
-            .then((response) => {
-                console.log(response.data.product.product_name);
-                addProduct(product_id);
-                // createInventoryTable(db);
-                // createInventoryTable(db);
-                // getProductInventory(db);
-
+            .then((response) => {      
+                console.log(response.data.product.product_name);          
+                addProducttoDB(product_id, response.data.product.product_name);
             })
             .catch((error) => {
+                console.log("error in axios request")
                 console.log(error);
             });
         
@@ -46,10 +58,6 @@ export default function HomePage({ navigation }) {
         
 
         
-    }
-
-    const addProduct = (product_id) => {
-    
     }
 
 
