@@ -11,13 +11,22 @@ export default function HomePage({ navigation }) {
 
             <View style={styles.container}>
                             
-                <TouchableOpacity style={styles.HomePageButtons}>
-                    <Text style={styles.ButtonText} onPress={() => navigation.navigate('ScanPage')} >Scan Items</Text>
+                <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ScanPage')}>
+                    <Text style={styles.ButtonText}>Scan</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('DeletePage')}>
+                    <Text style={styles.ButtonText}>Delete</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ViewPage')}>
+                    <Text style={styles.ButtonText}>View</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.HomePageButtons}>
-                    <Text style={styles.ButtonText}>View Items</Text>
+                    <Text style={styles.ButtonText}>Manual Add</Text>
                 </TouchableOpacity>
+
 
             </View>
 

@@ -10,7 +10,7 @@ export default function HomePage({ navigation }) {
     return (
         <View style={styles.container}>
                         
-            <ScanningCamera backToHome={() => navigation.navigate("HomePage")} deleting={false} />
+            <ScanningCamera backToHome={() => navigation.navigate("HomePage")} deleting={true} />
 
         </View>
     );
