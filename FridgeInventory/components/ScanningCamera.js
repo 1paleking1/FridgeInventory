@@ -24,20 +24,19 @@ export default function ScanningCamera(props) {
 
         let food_group = "Misc";
 
-        if (keywords.includes("vegetable")) {
+        if (checkArrMemebers(keywords, ["vegetable", "pak"])) {
             food_group = "Vegetable";
-        } else if (keywords.includes("fruit")) {
+        } else if (checkArrMemebers(keywords, ["fruit"])) {
             food_group = "Fruit";
-        } else if (keywords.includes("dairy")) {
+        } else if (checkArrMemebers(keywords, ["dairy", "milk", "egg"])) {
             food_group = "Dairy";
-        } else if (keywords.includes("sauce")) {
+        } else if (checkArrMemebers(keywords, ["sauce"])) {
             food_group = "Sauce";
-        } else if (keywords.includes("bread")) {
+        } else if (checkArrMemebers(keywords, ["bread"])) {
             food_group = "Bread";
+        }
 
         return food_group;
-
-        }
     }
 
     const handleProduct = async(product_id, product_name, food_group) => {
@@ -50,11 +49,15 @@ export default function ScanningCamera(props) {
 
     }
 
+    checkArrMemebers = (arr1, arr2) => {
+        return arr1.some(item => arr2.includes(item));
+    }
+
     const addProducttoDB = async(product_id, product_name, food_group) => {
 
         try {
 
-            docRef = doc(db, "inventory", food_group, product_id);
+            docRef = doc(db, "inventory", food_group, "items", product_id);
 
             await setDoc(docRef, {
                 name: product_name,
@@ -69,7 +72,7 @@ export default function ScanningCamera(props) {
 
     const deleteProductfromDB = async(product_id, food_group) => {
     
-        await deleteDoc(doc(db, "inventory", food_group, product_id));
+        await deleteDoc(doc(db, "inventory", food_group, "items", product_id));
         console.log("Document successfully deleted!");
         
     }
@@ -81,7 +84,6 @@ export default function ScanningCamera(props) {
         axios.get(`https://world.openfoodfacts.net/api/v2/product/${product_id}`)
 
             .then((response) => {      
-                console.log(response.data.product.product_name);
 
                 let food_group = getFoodGroup(response.data.product._keywords);
 

@@ -7,23 +7,27 @@ export default function ManualPage({ navigation }) {
     return (
         <View style={styles.container}>
 
-            <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('VegetablePage')}>
+            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Vegetable"})}>
                 <Text style={styles.VegText}>Vegetables</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.HomePageButtons}>
+            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Fruit"})}>
                 <Text style={styles.FruitText}>Fruit</Text>
             </TouchableOpacity>
              
-            <TouchableOpacity style={styles.HomePageButtons}>
+            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Dairy"})}>
                 <Text style={styles.DairyText}>Dairy</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.HomePageButtons}>
+            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Bread"})}>
+                <Text style={styles.BreadText}>Bread</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Sauce"})}>
                 <Text style={styles.SaucesText}>Sauces</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.HomePageButtons}>
+            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Misc"})}>
                 <Text style={styles.MiscText}>Misc</Text>
             </TouchableOpacity>
 
@@ -36,7 +40,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#eda366",
-        padding: 16,
+        padding: 15,
+        justifyContent: "center",
+        
     },
 
     head: {
@@ -53,31 +59,14 @@ const styles = StyleSheet.create({
         fontSize: 20
     },
 
-    HomePageButtons: {
+    ViewPageButtons: {
         backgroundColor: "#ffffff",
         color: "#ffffff",
-        padding: 10,
         margin: 10,
         justifyContent: "center",
         alignItems: "center",
-        paddingHorizontal: 20,
-        marginVertical: 30,
+        marginVertical: 20,
         alignSelf: "stretch",
-        borderStyle: "solid",
-        borderWidth: 3,
-        borderRadius: 20,
-    },
-
-    TimedButton: {
-        backgroundColor: "#ffffff",
-        color: "#ffffff",
-        padding: 10,
-        margin: 10,
-        justifyContent: "center",
-        paddingHorizontal: 20,
-        marginVertical: 30,
-        alignSelf: "stretch",
-        alignItems: "center",
         borderStyle: "solid",
         borderWidth: 3,
         borderRadius: 20,
@@ -101,6 +90,11 @@ const styles = StyleSheet.create({
     SaucesText: {
         fontSize: 30,
         color: "#fc1717",
+    },
+
+    BreadText: {
+        fontSize: 30,
+        color: "#a85811",
     },
 
     MiscText: {

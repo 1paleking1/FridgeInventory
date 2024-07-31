@@ -23,7 +23,7 @@ export default function HomePage({ navigation }) {
                     <Text style={styles.ButtonText}>View</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.HomePageButtons}>
+                <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ManualPage')}>
                     <Text style={styles.ButtonText}>Manual Add</Text>
                 </TouchableOpacity>
 

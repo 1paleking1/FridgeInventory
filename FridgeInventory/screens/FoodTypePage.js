@@ -6,12 +6,12 @@ import FoodTable from '../components/FoodTable';
 
 
 
-export default function VegetablesPage({ navigation }) {
+export default function FoodTypePage({ route, navigation }) {
 
     return (
         <View style={styles.container}>
                         
-            <FoodTable food_group="Vegetable" />
+            <FoodTable food_group={route.params.food_type} />
 
         </View>
     );

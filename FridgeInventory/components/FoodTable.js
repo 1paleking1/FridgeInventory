@@ -13,8 +13,7 @@ export default function FoodTable(props) {
     const [table_data_state, setTableData] = useState([]);
     
     const loadData = (food_group) => {
-        console.log("Loading data...");
-        let inventoryRef = collection(db, "inventory", food_group);
+        let inventoryRef = collection(db, "inventory", food_group, "items");
         let inventorySnapshot = getDocs(inventoryRef);
 
         inventorySnapshot.then((querySnapshot) => {
