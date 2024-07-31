@@ -1,15 +1,20 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useState, useEffect, Suspense } from "react";
+import { usePushNotifications } from "../components/usePushNotifications";
 
 
 export default function HomePage({ navigation }) {
     
+    const { expoPushToken, notification } = usePushNotifications();
 
-
+    const data = JSON.stringify(notification, undefined, 2);
 
     return (
 
             <View style={styles.container}>
+
+                <Text>Token: {expoPushToken?.data ?? "No token"}</Text>
+                <Text>{data}</Text>
                             
                 <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ScanPage')}>
                     <Text style={styles.ButtonText}>Scan</Text>
