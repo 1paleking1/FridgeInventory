@@ -3,8 +3,31 @@ import { Text, View, StyleSheet, Button, TouchableOpacity, TextInput, Touchable 
 import React, { useEffect, useState } from "react";
 import { SelectList } from 'react-native-dropdown-select-list'
 
+import db from '../firebaseConfig.js';
+import { collection, setDoc, deleteDoc, doc } from "firebase/firestore"; 
 
-export default function ManualPage() {
+
+export default function ManualPage(props) {
+
+    const addToDatabase = () => {
+        
+        const docRef = doc(db, "reference", props.route.params.product_id);
+
+        setDoc(docRef, {
+            product_name: product_name,
+            food_group: selected_food_group,
+        });
+
+        alert("Product added to database!");
+    }
+
+    const handleSubmit = () => {
+
+        addToDatabase();
+        props.navigation.navigate("HomePage");
+    
+    }
+
 
     const food_groups = [
         { key: 'Fruits', value: 'Fruits' },
@@ -40,7 +63,7 @@ export default function ManualPage() {
                 
                 />
 
-                <TouchableOpacity style={styles.button} >
+                <TouchableOpacity style={styles.button} onPress={handleSubmit} >
                     <Text style={styles.buttonText} >Submit</Text>
                 </TouchableOpacity>
 

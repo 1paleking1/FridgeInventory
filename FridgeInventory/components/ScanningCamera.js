@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { CameraView } from 'expo-camera';
 import axios from 'axios';
 import db from '../firebaseConfig.js';
-import { collection, setDoc, deleteDoc, doc } from "firebase/firestore"; 
+import { collection, setDoc, deleteDoc, doc, getDoc } from "firebase/firestore"; 
 
 export default function ScanningCamera(props) {
 
@@ -42,9 +42,9 @@ export default function ScanningCamera(props) {
     const handleProduct = async(product_id, product_name, food_group) => {
     
         if (props.deleting) {
-            deleteProductfromDB(product_id, food_group);
+            await deleteProductfromDB(product_id, food_group);
         } else {
-            addProducttoDB(product_id, product_name, food_group);
+            await addProducttoDB(product_id, product_name, food_group);
         }
 
     }
@@ -77,22 +77,42 @@ export default function ScanningCamera(props) {
         
     }
 
-    const scanBarcode = (raw_data) => {
+    const getReferenceProduct = async(product_id) => {
+
+        let docRef = doc(db, "reference", product_id.toString());
+        let docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            return docSnap.data();
+          } else {
+            return null;
+          }
+    }
+
+    const scanBarcode = async(raw_data) => {
 
         let product_id = raw_data.data;
+        
+        let cached_reference = await getReferenceProduct(product_id);
 
-        axios.get(`https://world.openfoodfacts.net/api/v2/product/${product_id}`)
+        if (cached_reference != null) {
+            handleProduct(product_id, cached_reference.product_name, cached_reference.food_group);
+        } else{
 
-            .then((response) => {      
-
-                let food_group = getFoodGroup(response.data.product._keywords);
-
-                handleProduct(product_id, response.data.product.product_name, food_group);
-            })
-            .catch((error) => {
-                alert("Product not found");
-                console.log(error);
-            });
+            axios.get(`https://world.openfoodfacts.net/api/v2/product/${product_id}`)
+    
+                .then((response) => {
+    
+                    let food_group = getFoodGroup(response.data.product._keywords);
+    
+                    handleProduct(product_id, response.data.product.product_name, food_group);
+                })
+                .catch((error) => {
+                    alert("Product not found");
+                    props.toManualPage(product_id);
+                });
+    
+        }
 
         props.backToHome();
           
