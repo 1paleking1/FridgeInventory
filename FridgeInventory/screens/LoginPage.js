@@ -35,7 +35,7 @@ export default function ScanPage({ navigation }) {
                 // Signed in
                 const user = userCredential.user;
 
-                navigation.navigate("HomePage");
+                // navigation.navigate("HomePage");
 
             })
             .catch((error) => {

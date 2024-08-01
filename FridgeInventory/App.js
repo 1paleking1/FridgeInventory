@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 // screen imports
 import LoginPage from './screens/LoginPage';
@@ -12,26 +14,84 @@ import FoodTypePage from './screens/FoodTypePage';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+
+
+import { SideBarModal } from './components/SideBarModal';
+
+
+
+
+// firebase imports
+import { auth } from './firebaseConfig';
+import { onAuthStateChanged } from 'firebase/auth';
 
 
 const Stack = createNativeStackNavigator();
 
+const InsideStack = createNativeStackNavigator();
+
+
+const InsideLayout = () => {
+  return (
+    <InsideStack.Navigator> 
+      <Stack.Screen name="HomePage" component={HomePage} options={headerOptions} />
+      <Stack.Screen name="ScanPage" component={ScanPage} />
+      <Stack.Screen name="DeletePage" component={DeletePage} />
+      <Stack.Screen name="ManualPage" component={ManualPage} />
+      <Stack.Screen name="ViewPage" component={ViewPage} />
+      <Stack.Screen name="FoodTypePage" component={FoodTypePage} />
+    </InsideStack.Navigator>
+  );
+}
+
 
 export default function Page() {
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+  }
+  , []);
 
   return (
       <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="LoginPage" component={LoginPage} />
-            <Stack.Screen name="SignUpPage" component={SignUpPage} />
-            <Stack.Screen name="HomePage" component={HomePage} />
-            <Stack.Screen name="ScanPage" component={ScanPage} />
-            <Stack.Screen name="DeletePage" component={DeletePage} />
-            <Stack.Screen name="ManualPage" component={ManualPage} />
-            <Stack.Screen name="ViewPage" component={ViewPage} />
-            <Stack.Screen name="FoodTypePage" component={FoodTypePage} />
+            {user ? (
+              <Stack.Screen name="InsideLayout" component={InsideLayout} options={blankOptions} />
+            ) : (
+              <>
+                <Stack.Screen name="LoginPage" component={LoginPage} />
+                <Stack.Screen name="SignUpPage" component={SignUpPage} />
+              </>
+            )}            
           </Stack.Navigator>
       </NavigationContainer>
   )
 }
 
+
+blankOptions = {
+  headerShown: false
+};
+
+headerOptions = {
+
+  headerLeft: () => (
+    <TouchableOpacity>
+      <Ionicons name="menu" size={24} color="black" />
+    </TouchableOpacity>
+  ),
+
+  // center header Title
+  headerTitleAlign: 'center',
+
+}

@@ -3,7 +3,8 @@ import React, { useEffect, useState } from "react";
 
 // firebase imports
 import { db, auth } from "../firebaseConfig";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { sendEmailVerification, createUserWithEmailAndPassword } from "firebase/auth";
+import { setDoc, deleteDoc, doc, getDoc } from "firebase/database";
 
 
 
@@ -12,11 +13,46 @@ export default function ScanPage({ navigation }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+
+    const addUserToDatabase = async(uid, email) => {
+        
+        const userRef = doc(db, "users", uid);
+
+        const user = {
+            email: email,
+        };
+
+        await setDoc(userRef, user);
+
+        // create new fridge too
+        const fridgeRef = doc(db, "fridges", uid);
+        const fridge = {
+            items: [],
+        };
+
+        await setDoc(fridgeRef, fridge);
+
+    };
+
+
     const SignUp = () => {
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in
                 const user = userCredential.user;
+
+                sendEmailVerification(user)
+                    .then(() => {
+                        alert("Verification email sent to " + email);
+                        
+                    })
+                    .catch((error) => {
+                        // An error occurred
+                        // ...
+                    });
+
+                addUserToDatabase(user.uid, email);
+
                 navigation.navigate("LoginPage");
             })
             .catch((error) => {
