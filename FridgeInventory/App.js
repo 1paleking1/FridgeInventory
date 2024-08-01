@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 // screen imports
+import LoginPage from './screens/LoginPage';
+import SignUpPage from './screens/SignUpPage';
 import HomePage from './screens/HomeScreen';
 import ScanPage from './screens/ScanPage';
 import DeletePage from './screens/DeletePage';
@@ -20,6 +22,8 @@ export default function Page() {
   return (
       <NavigationContainer>
           <Stack.Navigator>
+            <Stack.Screen name="LoginPage" component={LoginPage} />
+            <Stack.Screen name="SignUpPage" component={SignUpPage} />
             <Stack.Screen name="HomePage" component={HomePage} />
             <Stack.Screen name="ScanPage" component={ScanPage} />
             <Stack.Screen name="DeletePage" component={DeletePage} />

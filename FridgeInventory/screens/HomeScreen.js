@@ -8,11 +8,11 @@ export default function HomePage({ navigation }) {
     const { expoPushToken, notification } = usePushNotifications();
 
     const data = JSON.stringify(notification, undefined, 2);
-
+    // ExponentPushToken[1HtfjOLJ5Sn0tD-w6SKX6d]
     return (
 
             <View style={styles.container}>
-
+                
                 <Text>Token: {expoPushToken?.data ?? "No token"}</Text>
                 <Text>{data}</Text>
                             
