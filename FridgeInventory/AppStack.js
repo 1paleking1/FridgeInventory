@@ -1,5 +1,3 @@
- 
-
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -13,8 +11,6 @@ import DeletePage from './screens/DeletePage';
 import ManualPage from './screens/ManualPage';
 import ViewPage from './screens/ViewPage';
 import FoodTypePage from './screens/FoodTypePage';
-
-import SideBarModal from './components/SideBarModal';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -46,25 +42,6 @@ const InsideLayout = () => {
 export default function Page() {
 
   const [user, setUser] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  blankOptions = {
-    headerShown: false
-  };
-  
-  headerOptions = {
-  
-    headerLeft: () => (
-      <TouchableOpacity onPress={() => setModalOpen(true)}>
-        <Ionicons name="menu" size={30} color="black" />  
-      </TouchableOpacity>
-    ),
-  
-    // center header Title
-    headerTitleAlign: 'center',
-  
-  }
-
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -88,14 +65,26 @@ export default function Page() {
                 <Stack.Screen name="LoginPage" component={LoginPage} />
                 <Stack.Screen name="SignUpPage" component={SignUpPage} />
               </>
-            )}
-
+            )}            
           </Stack.Navigator>
-
-          <SideBarModal modalOpen={modalOpen} setModalOpen={setModalOpen} user={user ? user.email : null} onClose={() => setModalOpen(false)} />
-
       </NavigationContainer>
   )
 }
 
 
+blankOptions = {
+  headerShown: false
+};
+
+headerOptions = {
+
+  headerLeft: () => (
+    <TouchableOpacity>
+      <Ionicons name="menu" size={24} color="black" />
+    </TouchableOpacity>
+  ),
+
+  // center header Title
+  headerTitleAlign: 'center',
+
+}
