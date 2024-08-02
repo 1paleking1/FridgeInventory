@@ -22,12 +22,11 @@ export default function ScheduleModal(props) {
 
                                 <Text style={styles.SignOutText}>Sign Out</Text>
 
-                                <Text>Logged in as:</Text>
-                                <Text>{props.user}</Text>
+                                <Text style={styles.UserInfoText}>Logged in as:</Text>
+                                <Text style={styles.UserInfoText}>{props.user}</Text>
 
-                                <Text>Fridge ID:</Text>
-                                <Text>{getFridgeId()}</Text>
-
+                                <Text style={styles.UserInfoText}>Fridge ID:</Text>
+                                <Text style={styles.UserInfoText}>{getFridgeId()}</Text>
 
                                 <Text style={styles.NewIDlabelText}>Join a Different Fridge: </Text>
 
@@ -111,9 +110,9 @@ const styles = StyleSheet.create({
     },
 
     UserInfoText: {
-        fontSize: 18,
+        fontSize: 11,
         textAlign: 'center',
-        marginBottom: 50,
+        // marginBottom: 50,
     },
 
     NewIDlabelText: {
