@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput, TouchableWithoutFeedback, Touchable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Make sure to install and import Ionicons
 
 export default function ScheduleModal(props) {
@@ -20,7 +20,9 @@ export default function ScheduleModal(props) {
                                     <Ionicons name="menu" size={30} color="black" style={styles.Icon} onPress={() => props.setModalOpen(false)} />
                                 </View>
 
-                                <Text style={styles.SignOutText}>Sign Out</Text>
+                                <TouchableOpacity style={styles.SignOutButton} onPress={() => props.signOut()}>
+                                    <Text style={styles.SignOutText}>Sign Out</Text>
+                                </TouchableOpacity>
 
                                 <Text style={styles.UserInfoText}>Logged in as:</Text>
                                 <Text style={styles.UserInfoText}>{props.user}</Text>

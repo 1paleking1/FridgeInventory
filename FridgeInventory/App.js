@@ -48,6 +48,15 @@ export default function Page() {
   const [user, setUser] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
+  const signUserOut = () => {
+    auth.signOut().then(() => {
+      setUser(null);
+    });
+
+    setModalOpen(false)
+
+  }
+
   blankOptions = {
     headerShown: false
   };
@@ -92,7 +101,7 @@ export default function Page() {
 
           </Stack.Navigator>
 
-          <SideBarModal modalOpen={modalOpen} setModalOpen={setModalOpen} user={user ? user.email : null} onClose={() => setModalOpen(false)} />
+          <SideBarModal modalOpen={modalOpen} setModalOpen={setModalOpen} user={user ? user.email : null} onClose={() => setModalOpen(false)} signOut={signUserOut} />
 
       </NavigationContainer>
   )
