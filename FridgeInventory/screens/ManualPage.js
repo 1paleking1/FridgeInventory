@@ -3,15 +3,19 @@ import { Text, View, StyleSheet, Button, TouchableOpacity, TextInput, Touchable 
 import React, { useEffect, useState } from "react";
 import { SelectList } from 'react-native-dropdown-select-list'
 
-import db from '../firebaseConfig.js';
+import { db } from '../firebaseConfig.js';
 import { collection, setDoc, deleteDoc, doc } from "firebase/firestore"; 
 
 
 export default function ManualPage(props) {
 
+    const [product_id, setProductID] = useState(props.route.params.product_id);
+
     const addToDatabase = () => {
+
+        console.log(product_id)
         
-        const docRef = doc(db, "reference", props.route.params.product_id);
+        const docRef = doc(db, "reference", product_id);
 
         setDoc(docRef, {
             product_name: product_name,

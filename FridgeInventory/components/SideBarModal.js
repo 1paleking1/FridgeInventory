@@ -4,11 +4,6 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install and impor
 
 export default function ScheduleModal(props) {
 
-    const getFridgeId = () => {
-        return "123456";
-    }
-
-
     return (
         <View>
             <Modal visible={props.modalOpen} transparent={true}>
@@ -25,10 +20,10 @@ export default function ScheduleModal(props) {
                                 </TouchableOpacity>
 
                                 <Text style={styles.UserInfoText}>Logged in as:</Text>
-                                <Text style={styles.UserInfoText}>{props.user}</Text>
+                                <Text style={styles.UserInfoText}>{props.user}{"\n"}</Text>
 
                                 <Text style={styles.UserInfoText}>Fridge ID:</Text>
-                                <Text style={styles.UserInfoText}>{getFridgeId()}</Text>
+                                <Text style={styles.UserInfoText}>{props.fridge_id}{"\n"}</Text>
 
                                 <Text style={styles.NewIDlabelText}>Join a Different Fridge: </Text>
 
@@ -52,9 +47,9 @@ const styles = StyleSheet.create({
         left: 0,
         top: 0,
         bottom: 0,
-        width: '60%',
+        width: '80%',
         backgroundColor: '#ffffff',
-        padding: 10,
+        paddingHorizontal: 2,
         justifyContent: 'flex-start',
         alignItems: 'center',
         borderTopRightRadius: 20,
@@ -70,7 +65,6 @@ const styles = StyleSheet.create({
 
     JoinButton: {
         backgroundColor: "#66b0ed",
-        // width: '60%',
         borderWidth: 2,
         borderRadius: 5,
         paddingVertical: 5,
@@ -98,12 +92,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
 
-
+    
     IconContainer: {
         width: '100%',
         alignItems: 'left',
-        paddingLeft: 5,
+        paddingLeft: 15,
         marginBottom: 30,
+        paddingTop: 20,
     },
 
     Icon: {
@@ -112,9 +107,8 @@ const styles = StyleSheet.create({
     },
 
     UserInfoText: {
-        fontSize: 11,
+        fontSize: 18,
         textAlign: 'center',
-        // marginBottom: 50,
     },
 
     NewIDlabelText: {

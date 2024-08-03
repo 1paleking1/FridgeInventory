@@ -4,33 +4,32 @@ import React, { useEffect, useState } from "react";
 // firebase imports
 import { db, auth } from "../firebaseConfig";
 import { sendEmailVerification, createUserWithEmailAndPassword } from "firebase/auth";
-import { setDoc, deleteDoc, doc, getDoc } from "firebase/database";
+import { collection, setDoc, deleteDoc, doc, getDoc } from "firebase/firestore"; 
 
 
 
-export default function ScanPage({ navigation }) {
+export default function SignUpPage({ navigation }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-
     const addUserToDatabase = async(uid, email) => {
-        
-        const userRef = doc(db, "users", uid);
 
-        const user = {
-            email: email,
-        };
 
-        await setDoc(userRef, user);
+        try {
 
-        // create new fridge too
-        const fridgeRef = doc(db, "fridges", uid);
-        const fridge = {
-            items: [],
-        };
+            docRef = doc(db, "users", uid.toString());
 
-        await setDoc(fridgeRef, fridge);
+            await setDoc(docRef, {
+                email: email,
+                fridge_id: uid.toString()
+            });
+
+            // docRef = doc(db, "fridges", uid.toString());
+
+        } catch (e) {
+            console.error("Error adding document: ", e);
+        }
 
     };
 
@@ -41,19 +40,17 @@ export default function ScanPage({ navigation }) {
                 // Signed in
                 const user = userCredential.user;
 
-                sendEmailVerification(user)
-                    .then(() => {
-                        alert("Verification email sent to " + email);
+                // sendEmailVerification(user)
+                //     .then(() => {
+                //         alert("Verification email sent to " + email);
                         
-                    })
-                    .catch((error) => {
-                        // An error occurred
-                        // ...
-                    });
+                //     })
+                //     .catch((error) => {
+                //         alert("Error sending verification email");
+                //     });
 
                 addUserToDatabase(user.uid, email);
 
-                navigation.navigate("LoginPage");
             })
             .catch((error) => {
                 const errorCode = error.code;

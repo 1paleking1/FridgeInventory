@@ -101,7 +101,14 @@ export default function Page() {
 
           </Stack.Navigator>
 
-          <SideBarModal modalOpen={modalOpen} setModalOpen={setModalOpen} user={user ? user.email : null} onClose={() => setModalOpen(false)} signOut={signUserOut} />
+          <SideBarModal
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          user={user ? user.email : null}
+          onClose={() => setModalOpen(false)}
+          signOut={signUserOut}
+          fridge_id={user ? user.uid : null}
+          />
 
       </NavigationContainer>
   )

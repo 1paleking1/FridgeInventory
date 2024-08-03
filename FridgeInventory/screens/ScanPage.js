@@ -7,12 +7,20 @@ import ScanningCamera from '../components/ScanningCamera.js';
 
 export default function ScanPage({ navigation }) {
 
+    const toManualPage = (product_id) => {
+
+        console.log("Product ID received: " + product_id);
+
+        navigation.navigate("ManualPage", {product_id: product_id});
+    }
+
     return (
         <View style={styles.container}>
             <ScanningCamera
             backToHome={() => navigation.navigate("HomePage")}
-            toManualPage={(product_id) => navigation.navigate("ManualPage", {product_id: product_id})}
-            deleting={FlatListComponent} />    
+            toManualPage={toManualPage}
+            deleting={false}
+            />    
         </View>
     );
 }
