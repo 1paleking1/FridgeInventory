@@ -7,22 +7,22 @@ import { db, auth } from '../firebaseConfig.js';
 import { collection, getDocs } from "firebase/firestore"; 
 
 // hooks
-import useFetchFridgeID from '../hooks/useFetchFridgeID';
+// import useFetchFridgeID from '../hooks/useFetchFridgeID';
 
 
 export default function FoodTable(props) {
 
     let table_head = ['Product Name', 'Date Scanned'];
     const [table_data_state, setTableData] = useState([]);
-    const fridge_id = useFetchFridgeID(auth.currentUser);
+    // const fridge_id = useFetchFridgeID(auth.currentUser);
     
     
     const loadData = (food_group) => {
 
-        console.log("Loading data for: " + fridge_id);
+        console.log("Loading data for: " + props.fridge_id);
 
         let table_data = [];
-        const querySnapshot = getDocs(collection(db, "fridges", fridge_id, "inventory", food_group, "items"));
+        const querySnapshot = getDocs(collection(db, "fridges", props.fridge_id, "inventory", food_group, "items"));
         querySnapshot.then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 console.log(doc.id, " => ", doc.data());
@@ -36,11 +36,11 @@ export default function FoodTable(props) {
 
     useEffect(() => {
         
-        if (fridge_id != null) {
+        if (props.fridge_id != null) {
             loadData(props.food_group);
         }
 
-    }, [fridge_id, props.food_group]);
+    }, [props.fridge_id, props.food_group]);
 
     return (
         <View style={styles.container}>

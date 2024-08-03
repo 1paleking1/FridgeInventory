@@ -5,29 +5,38 @@ import { doc, getDoc } from "firebase/firestore";
 
 const useFetchFridgeID = (user) => {
     
-    const [fridgeID, setFridgeID] = useState(null);
+        const [fridgeID, setFridgeID] = useState(null);
+    
+        useEffect(() => {
+    
+            const fetchFridgeID = async() => {
 
-    useEffect(() => {
+                console.log("Fetching Fridge ID in custom hook");
+    
+                if (user) {
+                    let docRef = doc(db, "users", user.uid.toString());
+                    let docSnap = await getDoc(docRef); 
 
-        const fetchFridgeID = async () => {
-
-            let docRef = doc(db, "users", user.uid);
-            let docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-                await setFridgeID(docSnap.data().fridge_id);
-            } else {
-                await setFridgeID(null);
+                    console.log("uid: " + user.uid.toString());
+    
+                    if (docSnap.exists()) {
+                        setFridgeID(docSnap.data().fridge_id);
+                    } else {
+                        console.log("setting fridgeID to null");
+                        setFridgeID(null);
+                    }
+                } else {
+                    console.log("no user")
+                }
+    
             }
-        }
-
-        fetchFridgeID();
-
-    }, [user]);
-
-
-    return fridgeID;
-
-}
+    
+            fetchFridgeID();
+    
+        }, [user]);
+    
+        return fridgeID;
+    
+    }
 
 export default useFetchFridgeID;

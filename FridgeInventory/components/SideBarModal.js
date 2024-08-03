@@ -1,8 +1,41 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput, TouchableWithoutFeedback, Touchable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Make sure to install and import Ionicons
+import { collection, setDoc, deleteDoc, doc, getDoc } from "firebase/firestore"; 
+import { db, auth } from '../firebaseConfig';
 
-export default function ScheduleModal(props) {
+// hooks
+import useFetchFridgeID from '../hooks/useFetchFridgeID';
+
+export default function SideBarModal(props) {
+
+    const fridgeID = useFetchFridgeID(auth.currentUser)
+    const [newFridgeID, setNewFridgeID] = useState("");
+
+    const handleJoin = async() => {
+
+        docRef = doc(db, "fridges", newFridgeID);
+        docSnap = await getDoc(docRef);
+
+        console.log(docSnap.data())
+
+        
+        if (docSnap.exists()) {
+
+            await console.log("Fridge ID exists");
+            // updating the user's fridge_id
+            // const userRef = doc("users", props.user);
+            // await setDoc(userRef, {fridge_id: newFridgeID}, {merge: true});
+            // props.setModalOpen(false);
+        } else {
+            console.log("Invalid Fridge ID");
+            alert("Invalid Fridge ID");
+        }
+        
+    }
+
+    const fridgeIDJSX = fridgeID ? <Text>{fridgeID}</Text> : <Text>Not in a Fridge</Text>;
 
     return (
         <View>
@@ -20,16 +53,20 @@ export default function ScheduleModal(props) {
                                 </TouchableOpacity>
 
                                 <Text style={styles.UserInfoText}>Logged in as:</Text>
-                                <Text style={styles.UserInfoText}>{props.user}{"\n"}</Text>
+                                <Text style={styles.UserInfoText}>{props.email}{"\n"}</Text>
 
                                 <Text style={styles.UserInfoText}>Fridge ID:</Text>
-                                <Text style={styles.UserInfoText}>{props.fridge_id}{"\n"}</Text>
+                                <Text style={styles.UserInfoText}>{fridgeIDJSX}{"\n"}</Text>
 
                                 <Text style={styles.NewIDlabelText}>Join a Different Fridge: </Text>
 
-                                <TextInput style={styles.IDInput} />
+                                <TextInput
+                                style={styles.IDInput}
+                                placeholder="Enter Fridge ID to Join"
+                                onChangeText={text => setNewFridgeID(text)}
+                                />
 
-                                <TouchableOpacity style={styles.JoinButton}>
+                                <TouchableOpacity style={styles.JoinButton} onPress={handleJoin} >
                                     <Text style={styles.JoinButtonText}>Join</Text>
                                 </TouchableOpacity>
 
@@ -90,6 +127,7 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 10,
+        padding: 10
     },
 
     

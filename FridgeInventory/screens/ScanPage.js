@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import ScanningCamera from '../components/ScanningCamera.js';
 
 
-export default function ScanPage({ navigation }) {
+export default function ScanPage({ navigation, route }) {
 
     const toManualPage = (product_id) => {
 
@@ -20,6 +20,7 @@ export default function ScanPage({ navigation }) {
             backToHome={() => navigation.navigate("HomePage")}
             toManualPage={toManualPage}
             deleting={false}
+            fridge_id={route.params.fridge_id}
             />    
         </View>
     );

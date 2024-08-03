@@ -3,10 +3,12 @@ import React, { useState, useEffect, Suspense } from "react";
 import { usePushNotifications } from "../components/usePushNotifications";
 import { auth } from "../firebaseConfig";
 
+import useFetchFridgeID from "../hooks/useFetchFridgeID";
 
 export default function HomePage({ navigation }) {
     
     const { expoPushToken, notification } = usePushNotifications();
+    const fridge_id = useFetchFridgeID(auth.currentUser);
 
     const data = JSON.stringify(notification, undefined, 2);
     // ExponentPushToken[1HtfjOLJ5Sn0tD-w6SKX6d]
@@ -18,15 +20,15 @@ export default function HomePage({ navigation }) {
                 <Text>{data}</Text>
                 <Text>signed in as {auth.currentUser.email}</Text>
                             
-                <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ScanPage')}>
+                <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ScanPage', {fridge_id: fridge_id})}>
                     <Text style={styles.ButtonText}>Scan</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('DeletePage')}>
+                <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('DeletePage', {fridge_id: fridge_id})}>
                     <Text style={styles.ButtonText}>Delete</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ViewPage')}>
+                <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ViewPage', {fridge_id: fridge_id})}>
                     <Text style={styles.ButtonText}>View</Text>
                 </TouchableOpacity>
 

@@ -2,32 +2,32 @@
 import { Text, View, StyleSheet, Button, TouchableOpacity, ScrollView } from 'react-native';
 import React, { useEffect, useState } from "react";
 
-export default function ManualPage({ navigation }) {
-    
+export default function ViewPage({ navigation, route }) {
+    // note that fridge id comes from props
     return (
         <View style={styles.container}>
-
-            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Vegetable"})}>
+            
+            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Vegetable", fridge_id: route.params.fridge_id})}>
                 <Text style={styles.VegText}>Vegetables</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Fruit"})}>
+            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Fruit", fridge_id: route.params.fridge_id})}>
                 <Text style={styles.FruitText}>Fruit</Text>
             </TouchableOpacity>
              
-            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Dairy"})}>
+            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Dairy", fridge_id: route.params.fridge_id})}>
                 <Text style={styles.DairyText}>Dairy</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Bread"})}>
+            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Bread", fridge_id: route.params.fridge_id})}>
                 <Text style={styles.BreadText}>Bread</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Sauce"})}>
+            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Sauce", fridge_id: route.params.fridge_id})}>
                 <Text style={styles.SaucesText}>Sauces</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Misc"})}>
+            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Misc", fridge_id: route.params.fridge_id})}>
                 <Text style={styles.MiscText}>Misc</Text>
             </TouchableOpacity>
 

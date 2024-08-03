@@ -6,14 +6,14 @@ import { db, auth } from '../firebaseConfig.js';
 import { collection, setDoc, deleteDoc, doc, getDoc } from "firebase/firestore"; 
 
 // hook imports
-import useFetchFridgeID from '../hooks/useFetchFridgeID';
+// import useFetchFridgeID from '../hooks/useFetchFridgeID';
 
 export default function ScanningCamera(props) {
 
     const [facing, setFacing] = useState("back");
     const [scanning, setScanning] = useState(true);
 
-    const fridge_id = useFetchFridgeID(auth.currentUser);
+    // const fridge_id = useFetchFridgeID(auth.currentUser);
 
     const getTodayDate = () => {
         let today = new Date();
@@ -81,7 +81,8 @@ export default function ScanningCamera(props) {
     const addProducttoDB = async(product_id, product_name, food_group) => {
 
         try {
-            docRef = doc(db, "fridges", fridge_id.toString(), "inventory", food_group, "items", product_id.toString());
+
+            docRef = doc(db, "fridges", props.fridge_id.toString(), "inventory", food_group, "items", product_id.toString());
 
             await setDoc(docRef, {
                 name: product_name,
@@ -96,7 +97,7 @@ export default function ScanningCamera(props) {
 
     const deleteProductfromDB = async(product_id, food_group) => {
     
-        await deleteDoc(doc(db, "fridges", "fridge_id", "inventory", food_group, "items", product_id.toString()));
+        await deleteDoc(doc(db, "fridges", props.fridge_id.toString(), "inventory", food_group, "items", product_id.toString()));
         console.log("Document successfully deleted!");
         
     }

@@ -11,7 +11,7 @@ export default function FoodTypePage({ route, navigation }) {
     return (
         <View style={styles.container}>
                         
-            <FoodTable food_group={route.params.food_type} />
+            <FoodTable food_group={route.params.food_type} fridge_id={route.params.fridge_id} />
 
         </View>
     );

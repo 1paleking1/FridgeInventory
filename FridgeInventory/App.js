@@ -104,10 +104,10 @@ export default function Page() {
           <SideBarModal
           modalOpen={modalOpen}
           setModalOpen={setModalOpen}
-          user={user ? user.email : null}
+          email={user ? user.email : null}
           onClose={() => setModalOpen(false)}
           signOut={signUserOut}
-          fridge_id={user ? user.uid : null}
+          // fridge_id={user ? user.uid : null}
           />
 
       </NavigationContainer>

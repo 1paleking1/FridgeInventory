@@ -5,12 +5,16 @@ import React, { useEffect, useState } from "react";
 import ScanningCamera from '../components/ScanningCamera.js';
 
 
-export default function HomePage({ navigation }) {
+export default function HomePage({ navigation, route }) {
 
     return (
         <View style={styles.container}>
                         
-            <ScanningCamera backToHome={() => navigation.navigate("HomePage")} deleting={true} />
+            <ScanningCamera
+            backToHome={() => navigation.navigate("HomePage")}
+            deleting={true}
+            fridge_id={route.params.fridge_id}
+            />
 
         </View>
     );
