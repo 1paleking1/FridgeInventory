@@ -1,42 +1,42 @@
-// boilereplate
 import { useState, useEffect } from 'react';
 import { db } from '../firebaseConfig.js';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 const useFetchFridgeID = (user) => {
-    
-        const [fridgeID, setFridgeID] = useState(null);
-    
-        useEffect(() => {
-    
-            const fetchFridgeID = async() => {
+    const [fridgeID, setFridgeID] = useState(null);
 
-                console.log("Fetching Fridge ID in custom hook");
-    
-                if (user) {
-                    let docRef = doc(db, "users", user.uid.toString());
-                    let docSnap = await getDoc(docRef); 
-
-                    console.log("uid: " + user.uid.toString());
-    
-                    if (docSnap.exists()) {
-                        setFridgeID(docSnap.data().fridge_id);
-                    } else {
-                        console.log("setting fridgeID to null");
-                        setFridgeID(null);
-                    }
+    useEffect(() => {
+        let unsubscribe;
+        
+        if (user) {
+            console.log("Setting up Firestore listener for user:", user.uid);
+            const docRef = doc(db, "users", user.uid.toString());
+            
+            unsubscribe = onSnapshot(docRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    setFridgeID(docSnap.data().fridge_id);
+                    console.log("Fridge ID updated:", docSnap.data().fridge_id);
                 } else {
-                    console.log("no user")
+                    setFridgeID(null);
+                    console.log("Document does not exist. Setting fridgeID to null.");
                 }
-    
+            }, (error) => {
+                console.error("Error fetching Fridge ID:", error);
+            });
+        } else {
+            console.log("No user");
+        }
+
+        // Cleanup subscription on unmount or user change
+        return () => {
+            if (unsubscribe) {
+                unsubscribe();
+                console.log("Unsubscribed from Firestore listener.");
             }
-    
-            fetchFridgeID();
-    
-        }, [user]);
-    
-        return fridgeID;
-    
-    }
+        };
+    }, [user]);
+
+    return fridgeID;
+}
 
 export default useFetchFridgeID;

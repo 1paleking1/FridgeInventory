@@ -2,8 +2,10 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput, TouchableWithoutFeedback, Touchable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Make sure to install and import Ionicons
-import { collection, setDoc, deleteDoc, doc, getDoc } from "firebase/firestore"; 
+import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore"; 
 import { db, auth } from '../firebaseConfig';
+import * as Clipboard from 'expo-clipboard';
+
 
 // hooks
 import useFetchFridgeID from '../hooks/useFetchFridgeID';
@@ -13,27 +15,53 @@ export default function SideBarModal(props) {
     const fridgeID = useFetchFridgeID(auth.currentUser)
     const [newFridgeID, setNewFridgeID] = useState("");
 
+
     const handleJoin = async() => {
 
-        docRef = doc(db, "fridges", newFridgeID);
+        docRef = doc(db, "fridges", newFridgeID.toString());
+
         docSnap = await getDoc(docRef);
-
-        console.log(docSnap.data())
-
         
         if (docSnap.exists()) {
 
-            await console.log("Fridge ID exists");
+            // make old fridge inactive
+
+            docRef = doc(db, "fridges", fridgeID.toString());
+            await updateDoc(docRef, {
+                active: false
+            }); 
+
             // updating the user's fridge_id
-            // const userRef = doc("users", props.user);
-            // await setDoc(userRef, {fridge_id: newFridgeID}, {merge: true});
-            // props.setModalOpen(false);
+            
+            docRef = doc(db, "users", auth.currentUser.uid.toString());
+            await updateDoc(docRef, {
+                fridge_id: newFridgeID.toString()
+            });
+
+
+             // updating the new fridge's user list
+            docRef = doc(db, "fridges", newFridgeID.toString());
+            updateDoc(docRef, {
+                users: [...docSnap.data().users, auth.currentUser.uid.toString()]
+            });
+            
+            alert("Successfully joined Fridge " + newFridgeID);
+
+
+
         } else {
             console.log("Invalid Fridge ID");
             alert("Invalid Fridge ID");
         }
         
     }
+
+
+    const copyToClipboard = () => {
+        Clipboard.setString(fridgeID);
+        alert("Fridge ID copied to clipboard");
+    }
+
 
     const fridgeIDJSX = fridgeID ? <Text>{fridgeID}</Text> : <Text>Not in a Fridge</Text>;
 
@@ -56,7 +84,7 @@ export default function SideBarModal(props) {
                                 <Text style={styles.UserInfoText}>{props.email}{"\n"}</Text>
 
                                 <Text style={styles.UserInfoText}>Fridge ID:</Text>
-                                <Text style={styles.UserInfoText}>{fridgeIDJSX}{"\n"}</Text>
+                                <Text style={styles.UserInfoText} onPress={copyToClipboard} >{fridgeIDJSX}{"\n"}</Text>
 
                                 <Text style={styles.NewIDlabelText}>Join a Different Fridge: </Text>
 

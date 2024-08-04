@@ -25,7 +25,14 @@ export default function SignUpPage({ navigation }) {
                 fridge_id: uid.toString()
             });
 
-            // docRef = doc(db, "fridges", uid.toString());
+            docRef = doc(db, "fridges", uid.toString());
+
+            
+            await setDoc(docRef, {
+                users: [uid.toString()],
+                admin: uid.toString(),
+                is_active: true,
+            });
 
         } catch (e) {
             console.error("Error adding document: ", e);
