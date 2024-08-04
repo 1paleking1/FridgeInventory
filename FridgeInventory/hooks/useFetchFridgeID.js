@@ -9,16 +9,16 @@ const useFetchFridgeID = (user) => {
         let unsubscribe;
         
         if (user) {
-            console.log("Setting up Firestore listener for user:", user.uid);
+            // console.log("Setting up Firestore listener for user:", user.uid);
             const docRef = doc(db, "users", user.uid.toString());
             
             unsubscribe = onSnapshot(docRef, (docSnap) => {
                 if (docSnap.exists()) {
                     setFridgeID(docSnap.data().fridge_id);
-                    console.log("Fridge ID updated:", docSnap.data().fridge_id);
+                    // console.log("Fridge ID updated:", docSnap.data().fridge_id);
                 } else {
                     setFridgeID(null);
-                    console.log("Document does not exist. Setting fridgeID to null.");
+                    // console.log("Document does not exist. Setting fridgeID to null.");
                 }
             }, (error) => {
                 console.error("Error fetching Fridge ID:", error);
@@ -31,7 +31,7 @@ const useFetchFridgeID = (user) => {
         return () => {
             if (unsubscribe) {
                 unsubscribe();
-                console.log("Unsubscribed from Firestore listener.");
+                // console.log("Unsubscribed from Firestore listener.");
             }
         };
     }, [user]);

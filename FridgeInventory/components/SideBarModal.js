@@ -45,7 +45,7 @@ export default function SideBarModal(props) {
              // updating the new fridge's user list
             docRef = doc(db, "fridges", newFridgeID.toString());
             updateDoc(docRef, {
-                users: [...docSnap.data().users, auth.currentUser.uid.toString()]
+                users: [...docSnap.data().users, auth.currentUser.email]
             });
             
             alert("Successfully joined Fridge " + newFridgeID);
@@ -109,7 +109,6 @@ export default function SideBarModal(props) {
                                 manageModalVisible={manageModalVisible}
                                 setManageModalVisible={setManageModalVisible}
                                 />
-
 
                         </View>
                     </View>
