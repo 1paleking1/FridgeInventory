@@ -14,6 +14,7 @@ import ManualPage from './screens/ManualPage';
 import ViewPage from './screens/ViewPage';
 import FoodTypePage from './screens/FoodTypePage';
 
+// modal imports
 import SideBarModal from './components/SideBarModal';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -38,6 +39,7 @@ const InsideLayout = () => {
       <Stack.Screen name="ManualPage" component={ManualPage} />
       <Stack.Screen name="ViewPage" component={ViewPage} />
       <Stack.Screen name="FoodTypePage" component={FoodTypePage} />
+      <Stack.Screen name="ManageFridgePage" component={FoodTypePage} />
     </InsideStack.Navigator>
   );
 }
@@ -107,7 +109,7 @@ export default function Page() {
           email={user ? user.email : null}
           onClose={() => setModalOpen(false)}
           signOut={signUserOut}
-          // fridge_id={user ? user.uid : null}
+          toManageFridgePage={() => console.log("Manage Fridge Page")}
           />
 
       </NavigationContainer>

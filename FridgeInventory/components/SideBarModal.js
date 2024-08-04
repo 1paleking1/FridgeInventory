@@ -6,14 +6,17 @@ import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc } from "firebase/
 import { db, auth } from '../firebaseConfig';
 import * as Clipboard from 'expo-clipboard';
 
-
 // hooks
 import useFetchFridgeID from '../hooks/useFetchFridgeID';
+
+// components
+import ManageFridgeModal from './ManageFridgeModal';  
 
 export default function SideBarModal(props) {
 
     const fridgeID = useFetchFridgeID(auth.currentUser)
     const [newFridgeID, setNewFridgeID] = useState("");
+    const [manageModalVisible, setManageModalVisible] = useState(false);
 
 
     const handleJoin = async() => {
@@ -86,6 +89,10 @@ export default function SideBarModal(props) {
                                 <Text style={styles.UserInfoText}>Fridge ID:</Text>
                                 <Text style={styles.UserInfoText} onPress={copyToClipboard} >{fridgeIDJSX}{"\n"}</Text>
 
+                                <TouchableOpacity style={styles.JoinButton} onPress={() => setManageModalVisible(true)}>
+                                    <Text style={styles.JoinButtonText}>Manage Fridge</Text>
+                                </TouchableOpacity>
+
                                 <Text style={styles.NewIDlabelText}>Join a Different Fridge: </Text>
 
                                 <TextInput
@@ -94,9 +101,15 @@ export default function SideBarModal(props) {
                                 onChangeText={text => setNewFridgeID(text)}
                                 />
 
-                                <TouchableOpacity style={styles.JoinButton} onPress={handleJoin} >
+                                <TouchableOpacity style={styles.JoinButton} onPress={handleJoin}>
                                     <Text style={styles.JoinButtonText}>Join</Text>
                                 </TouchableOpacity>
+
+                                <ManageFridgeModal
+                                manageModalVisible={manageModalVisible}
+                                setManageModalVisible={setManageModalVisible}
+                                />
+
 
                         </View>
                     </View>

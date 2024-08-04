@@ -2,8 +2,11 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useState, useEffect, Suspense } from "react";
 import { usePushNotifications } from "../components/usePushNotifications";
 import { auth } from "../firebaseConfig";
+import { Ionicons } from "@expo/vector-icons";
 
 import useFetchFridgeID from "../hooks/useFetchFridgeID";
+
+import SideBarModal from "../components/SideBarModal";
 
 export default function HomePage({ navigation }) {
     
@@ -31,7 +34,6 @@ export default function HomePage({ navigation }) {
                 <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ViewPage', {fridge_id: fridge_id})}>
                     <Text style={styles.ButtonText}>View</Text>
                 </TouchableOpacity>
-
 
             </View>
 
