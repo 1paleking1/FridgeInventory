@@ -9,7 +9,6 @@ const useFetchFridgeID = (user) => {
         let unsubscribe;
         
         if (user) {
-            // console.log("Setting up Firestore listener for user:", user.uid);
             const docRef = doc(db, "users", user.uid.toString());
             
             unsubscribe = onSnapshot(docRef, (docSnap) => {
@@ -36,6 +35,8 @@ const useFetchFridgeID = (user) => {
         };
     }, [user]);
 
+
+    console.log("fridge id is now finally set to: " + fridgeID);
     return fridgeID;
 }
 

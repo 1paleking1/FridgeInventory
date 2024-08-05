@@ -21,6 +21,12 @@ export default function SideBarModal(props) {
 
     const handleJoin = async() => {
 
+        // make sure it's not the same fridge
+        if (newFridgeID == fridgeID) {
+            alert("You are already in this fridge");
+            return;
+        }
+
         docRef = doc(db, "fridges", newFridgeID.toString());
 
         docSnap = await getDoc(docRef);
@@ -31,7 +37,7 @@ export default function SideBarModal(props) {
 
             docRef = doc(db, "fridges", fridgeID.toString());
             await updateDoc(docRef, {
-                active: false
+                is_active: false
             }); 
 
             // updating the user's fridge_id
@@ -108,6 +114,7 @@ export default function SideBarModal(props) {
                                 <ManageFridgeModal
                                 manageModalVisible={manageModalVisible}
                                 setManageModalVisible={setManageModalVisible}
+                                fridgeID={fridgeID}
                                 />
 
                         </View>

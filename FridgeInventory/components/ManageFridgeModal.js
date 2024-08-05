@@ -3,71 +3,123 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, Modal, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import { useState, useEffect } from 'react';
 import { db, auth } from '../firebaseConfig';
-import { collection, getDoc, doc } from 'firebase/firestore';
+import { collection, getDoc, doc, updateDoc, query, where, getDocs } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
-
-// hooks
-import useFetchFridgeID from '../hooks/useFetchFridgeID';
 
 export default function ManageFridgeModal(props) {
 
-    const fridgeID = useFetchFridgeID(auth.currentUser);
     const [fridgeUsers, setFridgeUsers] = useState([]);
-    const [isAdmin, setIsAdmin] = useState(false);
+
+
+    const [adminEmail, setAdminEmail] = useState("");
 
     const loadFridgeUsers = async () => {
 
-        await console.log("loading fridge users")
-
-        docRef = doc(db, "fridges", fridgeID);
+        docRef = doc(db, "fridges", props.fridgeID);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
             setFridgeUsers(docSnap.data().users);
         } else {
             console.log("No such document!");
-        }
 
+        }
     }
 
-    const currentUserIsAdmin = async () => {
-        docRef = doc(db, "fridges", fridgeID);
+    const currentUserIsAdmin = () => {
+        return adminEmail == auth.currentUser.email;
+    }
+
+    const loadAdmin = async () => {
+        docRef = doc(db, "fridges", props.fridgeID);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-            
-            if (docSnap.data().admin == auth.currentUser.uid) {
-                setIsAdmin(true);
-            }
-
+            setAdminEmail(docSnap.data().admin);
         } else {
             console.log("No such document!");
         }
     }
 
-    const getButtonJSX = () => {
-        if (isAdmin) {
-            return (
-                <TouchableOpacity>
-                    <Text>Leave Fridge</Text>
-                </TouchableOpacity>
-            );
-        }
+    const deleteMemberInDatabase = async (emailToDelete, uidToDelete) => {
+
+        console.log(uidToDelete);
+
+        // remove from fridge users array
+        docRef = doc(db, "fridges", props.fridgeID);
+        await updateDoc(docRef, {
+            users: fridgeUsers.filter(user => user != emailToDelete)
+        });
+
+        // revert fridge_id in user document to their uid ad reactive their fridge
+        docRef = doc(db, "users", uidToDelete);
+        await updateDoc(docRef, {
+            fridge_id: uidToDelete
+        });
+
+        // reactivate fridge
+        docRef = doc(db, "fridges", uidToDelete);
+        await updateDoc(docRef, {
+            is_active: true
+        });
+
     }
 
-    const handleMemberDelete = async () => {
+
+    const getUIDFromEmail = async (email) => {
+    
+        // email is a field in the user document
+
+        const colRef = collection(db, "users");
+
+        const q = query(colRef, where("email", "==", email));
+        const querySnapshot = await getDocs(q);
+        const doc = querySnapshot.docs[0];
+
+        return doc.id;
+
+
+    }
+
+    const handleMemberDelete = async (email) => {
         
-        if (isAdmin) {
-            console.log("Deleting member");
+        if (currentUserIsAdmin()) {
+
+            // can't delete yourself
+
+            if (auth.currentUser.email == email) {
+                alert("You can't delete yourself");
+                return;
+            }
+            
+            uid = getUIDFromEmail(email);
+
+            await console.log("check this:")
+            await console.log(uid);
+
+            deleteMemberInDatabase(email, uid);
+
+            // remove from local state
+            setFridgeUsers(fridgeUsers.filter(user => user != email));
+            
+        } else {
+            alert(`Only the admin (${adminEmail}) can delete members`);
         }
 
     }
 
     useEffect(() => {
         loadFridgeUsers();
-        currentUserIsAdmin();
+        loadAdmin();
+
+        console.log(fridgeUsers)
+
     }, [props.manageModalVisible]);
     
+
+    // useEffect(() => {
+    //     loadFridgeUsers();
+    // }, [fridgeUsersEmails]);
 
     return (
         <View>
@@ -90,7 +142,7 @@ export default function ManageFridgeModal(props) {
                             renderItem={({ item }) => (
                                 <View style={styles.TableRow}>
                                     <Text style={styles.text} >{item}</Text>
-                                    <Ionicons name="trash" size={24} color="black" onPress={handleMemberDelete} />
+                                    <Ionicons name="trash" size={24} color="black" onPress={() => handleMemberDelete(item)} />
                                 </View>
                             )}
                         />

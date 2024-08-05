@@ -30,7 +30,7 @@ export default function SignUpPage({ navigation }) {
             
             await setDoc(docRef, {
                 users: [email],
-                admin: uid.toString(),
+                admin: email,
                 is_active: true,
             });
 
