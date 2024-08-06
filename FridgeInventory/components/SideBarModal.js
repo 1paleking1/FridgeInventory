@@ -98,7 +98,10 @@ export default function SideBarModal(props) {
 
                                 <View style={styles.modalSection}>
                                     <Text style={styles.UserInfoText}>Fridge ID:</Text>
-                                    <Text style={styles.UserInfoText} onPress={copyToClipboard} >{fridgeIDJSX}{"\n"}</Text>
+                                    <View style={styles.row}>
+                                        <Text style={styles.UserInfoText}>{fridgeIDJSX}{"\n"}</Text>
+                                        <Ionicons name="copy-outline" size={24} color="black" onPress={copyToClipboard} />
+                                    </View>
                                 </View>
 
                                 <View style={styles.modalSection}>
@@ -212,6 +215,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
         marginBottom: 10,
+    },
+
+    row: {
+        flexDirection: 'row',
+        marginHorizontal: 50,
+        alignItems: 'center',
     },
 
 });
