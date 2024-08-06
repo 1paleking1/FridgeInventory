@@ -66,9 +66,9 @@ export default function SideBarModal(props) {
     }
 
 
-    const copyToClipboard = () => {
-        Clipboard.setString(fridgeID);
-        alert("Fridge ID copied to clipboard");
+    const copyToClipboard = async() => {
+        await Clipboard.setStringAsync(fridgeID);
+        await alert("Fridge ID Copied to Clipboard");
     }
 
 
@@ -85,31 +85,39 @@ export default function SideBarModal(props) {
                                     <Ionicons name="menu" size={30} color="black" style={styles.Icon} onPress={() => props.setModalOpen(false)} />
                                 </View>
 
-                                <TouchableOpacity style={styles.SignOutButton} onPress={() => props.signOut()}>
-                                    <Text style={styles.SignOutText}>Sign Out</Text>
-                                </TouchableOpacity>
+                                <View style={styles.modalSection}>
+                                    <TouchableOpacity style={styles.SignOutButton} onPress={() => props.signOut()}>
+                                        <Text style={styles.SignOutText}>Sign Out</Text>
+                                    </TouchableOpacity>
+                                </View>
 
-                                <Text style={styles.UserInfoText}>Logged in as:</Text>
-                                <Text style={styles.UserInfoText}>{props.email}{"\n"}</Text>
+                                <View style={styles.modalSection}>
+                                    <Text style={styles.UserInfoText}>Logged in as:</Text>
+                                    <Text style={styles.UserInfoText}>{props.email}{"\n"}</Text>
+                                </View>
 
-                                <Text style={styles.UserInfoText}>Fridge ID:</Text>
-                                <Text style={styles.UserInfoText} onPress={copyToClipboard} >{fridgeIDJSX}{"\n"}</Text>
+                                <View style={styles.modalSection}>
+                                    <Text style={styles.UserInfoText}>Fridge ID:</Text>
+                                    <Text style={styles.UserInfoText} onPress={copyToClipboard} >{fridgeIDJSX}{"\n"}</Text>
+                                </View>
 
-                                <TouchableOpacity style={styles.JoinButton} onPress={() => setManageModalVisible(true)}>
-                                    <Text style={styles.JoinButtonText}>Manage Fridge</Text>
-                                </TouchableOpacity>
+                                <View style={styles.modalSection}>
+                                    <Text style={styles.NewIDlabelText}>Join a Different Fridge: </Text>
+                                    <TextInput
+                                    style={styles.IDInput}
+                                    placeholder="Enter Fridge ID to Join"
+                                    onChangeText={text => setNewFridgeID(text)}
+                                    />
+                                    <TouchableOpacity style={styles.JoinButton} onPress={handleJoin}>
+                                        <Text style={styles.JoinButtonText}>Join</Text>
+                                    </TouchableOpacity>
+                                </View>
 
-                                <Text style={styles.NewIDlabelText}>Join a Different Fridge: </Text>
-
-                                <TextInput
-                                style={styles.IDInput}
-                                placeholder="Enter Fridge ID to Join"
-                                onChangeText={text => setNewFridgeID(text)}
-                                />
-
-                                <TouchableOpacity style={styles.JoinButton} onPress={handleJoin}>
-                                    <Text style={styles.JoinButtonText}>Join</Text>
-                                </TouchableOpacity>
+                                <View style={styles.modalSection}>
+                                    <TouchableOpacity style={styles.JoinButton} onPress={() => setManageModalVisible(true)}>
+                                        <Text style={styles.JoinButtonText}>Manage Fridge</Text>
+                                    </TouchableOpacity>
+                                </View>
 
                                 <ManageFridgeModal
                                 manageModalVisible={manageModalVisible}
@@ -165,18 +173,21 @@ const styles = StyleSheet.create({
     SignOutText: {
         fontSize: 24,
         color: "red",
-        marginBottom: 50,
     },
 
     IDInput: {
-        width: '80%',
         height: 40,
+        width: 250,
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 10,
         padding: 10
     },
 
+    modalSection: {
+        marginBottom: 30,
+        alignItems: 'center',
+    },
     
     IconContainer: {
         width: '100%',
@@ -194,6 +205,7 @@ const styles = StyleSheet.create({
     UserInfoText: {
         fontSize: 18,
         textAlign: 'center',
+        marginHorizontal: 10,
     },
 
     NewIDlabelText: {

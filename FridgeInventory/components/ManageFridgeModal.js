@@ -43,8 +43,6 @@ export default function ManageFridgeModal(props) {
 
     const deleteMemberInDatabase = async (emailToDelete, uidToDelete) => {
 
-        console.log(uidToDelete);
-
         // remove from fridge users array
         docRef = doc(db, "fridges", props.fridgeID);
         await updateDoc(docRef, {
@@ -65,7 +63,6 @@ export default function ManageFridgeModal(props) {
 
     }
 
-
     const getUIDFromEmail = async (email) => {
     
         // email is a field in the user document
@@ -82,15 +79,13 @@ export default function ManageFridgeModal(props) {
     }
 
     const handleMemberDelete = async (email) => {
-        
-        if (currentUserIsAdmin()) {
 
-            // can't delete yourself
+        if (currentUserIsAdmin() ^ email == auth.currentUser.email) {
 
-            if (auth.currentUser.email == email) {
-                alert("You can't delete yourself");
-                return;
-            }
+            // if (auth.currentUser.email == email) {
+            //     alert("You can't delete yourself");
+            //     return;
+            // }
             
             uid = await getUIDFromEmail(email);
 
@@ -102,17 +97,16 @@ export default function ManageFridgeModal(props) {
             // remove from local state
             setFridgeUsers(fridgeUsers.filter(user => user != email));
             
+        } else if (currentUserIsAdmin() && email == auth.currentUser.email) {
+            alert("You can't delete yourself as you are the admin");
         } else {
-            alert(`Only the admin (${adminEmail}) can delete members`);
+            alert(`Only the admin (${adminEmail}) can delete other users`);
         }
-
     }
 
     useEffect(() => {
         loadFridgeUsers();
         loadAdmin();
-
-        console.log(fridgeUsers)
 
     }, [props.manageModalVisible]);
     
@@ -122,26 +116,20 @@ export default function ManageFridgeModal(props) {
             <Modal visible={props.manageModalVisible} animationType="fade">
                 <View style={styles.container}>
 
-                    <View style={styles.row}>
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={styles.buttonText}>Leave Fridge</Text>
-                        </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={() => props.setManageModalVisible(false)}>
+                        <Text style={styles.buttonText}>Close</Text>
+                    </TouchableOpacity>
 
-                        <TouchableOpacity style={styles.button} onPress={() => props.setManageModalVisible(false)}>
-                            <Text style={styles.buttonText}>Close</Text>
-                        </TouchableOpacity>
-                    </View>
-
-                        <FlatList
-                            data={fridgeUsers}
-                            style={styles.UsersScroll}
-                            renderItem={({ item }) => (
-                                <View style={styles.TableRow}>
-                                    <Text style={styles.text} >{item}</Text>
-                                    <Ionicons name="trash" size={24} color="black" onPress={() => handleMemberDelete(item)} />
-                                </View>
-                            )}
-                        />
+                    <FlatList
+                        data={fridgeUsers}
+                        style={styles.UsersScroll}
+                        renderItem={({ item }) => (
+                            <View style={styles.TableRow}>
+                                <Text style={styles.text} >{item}</Text>
+                                <Ionicons name="trash" size={24} color="black" onPress={() => handleMemberDelete(item)} />
+                            </View>
+                        )}
+                    />
 
                 </View>
             </Modal>

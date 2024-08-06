@@ -21,8 +21,7 @@ export default function HomePage({ navigation }) {
                 
                 <Text>Token: {expoPushToken?.data ?? "No token"}</Text>
                 <Text>{data}</Text>
-                <Text>signed in as {auth.currentUser.email}</Text>
-                            
+                                            
                 <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ScanPage', {fridge_id: fridge_id})}>
                     <Text style={styles.ButtonText}>Scan</Text>
                 </TouchableOpacity>
