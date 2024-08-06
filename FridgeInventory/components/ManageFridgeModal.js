@@ -92,7 +92,7 @@ export default function ManageFridgeModal(props) {
                 return;
             }
             
-            uid = getUIDFromEmail(email);
+            uid = await getUIDFromEmail(email);
 
             await console.log("check this:")
             await console.log(uid);
@@ -116,10 +116,6 @@ export default function ManageFridgeModal(props) {
 
     }, [props.manageModalVisible]);
     
-
-    // useEffect(() => {
-    //     loadFridgeUsers();
-    // }, [fridgeUsersEmails]);
 
     return (
         <View>
