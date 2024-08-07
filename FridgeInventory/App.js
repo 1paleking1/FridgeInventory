@@ -23,10 +23,10 @@ import { NavigationContainer } from '@react-navigation/native';
 // firebase imports
 import { db, auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
-import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, FieldValue } from "firebase/firestore";
+import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, arrayRemove } from "firebase/firestore";
 
 // hooks
-// import { usePushNotifications } from './hooks/usePushNotifications';
+import { usePushNotifications } from './hooks/usePushNotifications';
 
 
 const Stack = createNativeStackNavigator();
@@ -53,15 +53,18 @@ export default function Page() {
 
   const [user, setUser] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const { expoPushToken, notification } = usePushNotifications();
 
   const signUserOut = () => {
     auth.signOut().then(() => {
       setUser(null);
+      setModalOpen(false)
+  
+      console.log("Removing token")
+  
+      removeToken(expoPushToken.data);
     });
 
-    setModalOpen(false)
-
-    removeToken(expoPushToken);
 
   }
 
@@ -69,8 +72,10 @@ export default function Page() {
   
     const docRef = doc(db, "users", user.uid.toString());
 
+    console.log("check this token: " + token)
+
     await updateDoc(docRef, {
-      devices: FieldValue.arrayRemove(token)
+      devices: arrayRemove(token)
     });
 
 

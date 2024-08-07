@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 // firebase imports
 import { db, auth } from "../firebaseConfig";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 
 // hooks
 import { usePushNotifications } from '../hooks/usePushNotifications';
@@ -26,15 +26,14 @@ export default function ScanPage({ navigation, route }) {
             const docSnap = await getDoc(docRef);
             const devices = docSnap.data().devices;
 
-            if (!devices.includes(push_token)) {
-                devices.push(push_token);
-            }
 
-            await updateDoc(docRef, {
-                devices: devices
-            });
-            
-        } catch {
+            if (!devices.includes(push_token)) {
+                await updateDoc(docRef, {
+                    devices: arrayUnion(push_token)
+                });
+            }
+           
+        } catch(e) {
 
             console.error("Error adding document: ", e);
 
@@ -42,32 +41,31 @@ export default function ScanPage({ navigation, route }) {
     
     }
 
-    const Login = () => {
-
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-
-                // add device to user's devices
-                addDeviceToUser(user.uid, route.params.push_token);
-
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-
-                console.log(errorCode)
-
-                if (errorCode === 'auth/invalid-credential') {
-                    alert('The email or password is incorrect.');
-                } else if (errorCode === 'auth/too-many-requests') {
-                    alert('Too many requests. Please try again later.');
-                }
-
-            });
+    const Login = async () => {
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
         
-    };
+            // Promise.all([
+            //     addDeviceToUser(user.uid, expoPushToken.data),
+            // ]);
+
+            await addDeviceToUser(user.uid, expoPushToken.data);
+
+
+        } catch (error) {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+    
+            console.log(errorCode);
+    
+            if (errorCode === 'auth/invalid-credential') {
+                alert('The email or password is incorrect.');
+            } else if (errorCode === 'auth/too-many-requests') {
+                alert('Too many requests. Please try again later.');
+            }
+        }
+    }
 
     return (
         <View style={styles.container}>
