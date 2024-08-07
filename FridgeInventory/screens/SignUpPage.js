@@ -7,14 +7,13 @@ import { sendEmailVerification, createUserWithEmailAndPassword } from "firebase/
 import { collection, setDoc, deleteDoc, doc, getDoc } from "firebase/firestore"; 
 
 
-
-export default function SignUpPage({ navigation }) {
+export default function SignUpPage({ navigation, route }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    
 
     const addUserToDatabase = async(uid, email) => {
-
 
         try {
 
@@ -22,7 +21,8 @@ export default function SignUpPage({ navigation }) {
 
             await setDoc(docRef, {
                 email: email,
-                fridge_id: uid.toString()
+                fridge_id: uid.toString(),
+                devices: [route.params.push_token], 
             });
 
             docRef = doc(db, "fridges", uid.toString());

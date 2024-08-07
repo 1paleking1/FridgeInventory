@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useState, useEffect, Suspense } from "react";
-import { usePushNotifications } from "../components/usePushNotifications";
+import { usePushNotifications } from "../hooks/usePushNotifications";
 import { auth } from "../firebaseConfig";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -10,17 +10,17 @@ import SideBarModal from "../components/SideBarModal";
 
 export default function HomePage({ navigation }) {
     
-    const { expoPushToken, notification } = usePushNotifications();
+    // const { expoPushToken, notification } = usePushNotifications();
     const fridge_id = useFetchFridgeID(auth.currentUser);
 
-    const data = JSON.stringify(notification, undefined, 2);
+    // const data = JSON.stringify(notification, undefined, 2);
     // ExponentPushToken[1HtfjOLJ5Sn0tD-w6SKX6d]
     return (
 
             <View style={styles.container}>
                 
-                <Text>Token: {expoPushToken?.data ?? "No token"}</Text>
-                <Text>{data}</Text>
+                {/* <Text>Token: {expoPushToken?.data ?? "No token"}</Text>
+                <Text>{data}</Text> */}
                                             
                 <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ScanPage', {fridge_id: fridge_id})}>
                     <Text style={styles.ButtonText}>Scan</Text>

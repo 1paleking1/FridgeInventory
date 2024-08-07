@@ -77,7 +77,6 @@ export default function SideBarModal(props) {
     return (
         <View>
             <Modal visible={props.modalOpen} transparent={true}>
-                <TouchableWithoutFeedback onPress={props.onClose}>
                     <View style={styles.ModalBackgroundOpacity}>
                         <View style={styles.ModalWindow}>
 
@@ -130,7 +129,6 @@ export default function SideBarModal(props) {
 
                         </View>
                     </View>
-                </TouchableWithoutFeedback>
             </Modal>
         </View>
     );
@@ -147,8 +145,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 2,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        borderTopRightRadius: 20,
-        borderBottomRightRadius: 20,
+        // borderTopRightRadius: 20,
+        // borderBottomRightRadius: 20,
     },
 
     ModalBackgroundOpacity: {
@@ -190,6 +188,7 @@ const styles = StyleSheet.create({
     modalSection: {
         marginBottom: 30,
         alignItems: 'center',
+        
     },
     
     IconContainer: {
@@ -208,7 +207,7 @@ const styles = StyleSheet.create({
     UserInfoText: {
         fontSize: 18,
         textAlign: 'center',
-        marginHorizontal: 10,
+        // marginHorizontal: 10,
     },
 
     NewIDlabelText: {

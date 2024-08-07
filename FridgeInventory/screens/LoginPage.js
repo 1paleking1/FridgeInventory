@@ -4,29 +4,43 @@ import React, { useEffect, useState } from "react";
 // firebase imports
 import { db, auth } from "../firebaseConfig";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+
+// hooks
+import { usePushNotifications } from '../hooks/usePushNotifications';
 
 
-
-export default function ScanPage({ navigation }) {
+export default function ScanPage({ navigation, route }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const { expoPushToken, notification } = usePushNotifications();
 
-    const SignUp = () => {
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-                console.log(user);
-                // ...
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                
-                // ..
+    const addDeviceToUser = async(uid, push_token) => {
+    
+        try {
+
+            const docRef = doc(db, "users", uid.toString());
+            
+            // add to list if it's not already in it
+            const docSnap = await getDoc(docRef);
+            const devices = docSnap.data().devices;
+
+            if (!devices.includes(push_token)) {
+                devices.push(push_token);
+            }
+
+            await updateDoc(docRef, {
+                devices: devices
             });
-    };
+            
+        } catch {
+
+            console.error("Error adding document: ", e);
+
+        }
+    
+    }
 
     const Login = () => {
 
@@ -35,7 +49,8 @@ export default function ScanPage({ navigation }) {
                 // Signed in
                 const user = userCredential.user;
 
-                // navigation.navigate("HomePage");
+                // add device to user's devices
+                addDeviceToUser(user.uid, route.params.push_token);
 
             })
             .catch((error) => {
@@ -80,7 +95,7 @@ export default function ScanPage({ navigation }) {
 
             </View>
 
-            <TouchableOpacity style={styles.signUpButton} onPress={() => navigation.navigate('SignUpPage')}>
+            <TouchableOpacity style={styles.signUpButton} onPress={() => navigation.navigate('SignUpPage', { push_token: expoPushToken.data })}>
                 <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
 

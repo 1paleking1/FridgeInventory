@@ -21,8 +21,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 
 // firebase imports
-import { auth } from './firebaseConfig';
+import { db, auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
+import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, FieldValue } from "firebase/firestore";
+
+// hooks
+// import { usePushNotifications } from './hooks/usePushNotifications';
 
 
 const Stack = createNativeStackNavigator();
@@ -57,7 +61,20 @@ export default function Page() {
 
     setModalOpen(false)
 
+    removeToken(expoPushToken);
+
   }
+
+  const removeToken = async (token) => {
+  
+    const docRef = doc(db, "users", user.uid.toString());
+
+    await updateDoc(docRef, {
+      devices: FieldValue.arrayRemove(token)
+    });
+
+
+}
 
   blankOptions = {
     headerShown: false
@@ -93,11 +110,11 @@ export default function Page() {
       <NavigationContainer>
           <Stack.Navigator>
             {user ? (
-              <Stack.Screen name="InsideLayout" component={InsideLayout} options={blankOptions} />
+              <Stack.Screen name="InsideLayout" component={InsideLayout} options={blankOptions}/>
             ) : (
               <>
-                <Stack.Screen name="LoginPage" component={LoginPage} />
-                <Stack.Screen name="SignUpPage" component={SignUpPage} />
+                <Stack.Screen name="LoginPage" component={LoginPage}/>
+                <Stack.Screen name="SignUpPage" component={SignUpPage}/>
               </>
             )}
 
