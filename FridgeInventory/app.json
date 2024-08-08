@@ -4,6 +4,10 @@
     "slug": "FridgeInventory",
     "version": "1.0.0",
     "orientation": "portrait",
+
+    "androidMode": "collapse",
+    "androidCollapsedTitle": "Old Fridge Items",
+
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {

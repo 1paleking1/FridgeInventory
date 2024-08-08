@@ -56,11 +56,14 @@ const getUsername = (email) => {
 
 const getNotificationDate = (days_to_wait) => {
 
-    return new Date(2024, 7, 8, 18, 14, 0);
-    
+    // temporary test code which sends notification after 10 seconds
     const date = new Date()
-    date.setDate(date.getDate() + days_to_wait)
+    date.setSeconds(date.getSeconds() + 10)
     return date
+    
+    // const date = new Date()
+    // date.setDate(date.getDate() + days_to_wait)
+    // return date
     
 }
 
@@ -78,15 +81,12 @@ const handleSendNotification = async (admin, fridge_id, product_name, product_ty
                 sound: 'default',
                 title: 'Fridge Inventory',
                 body: message,
+                priority: 'high',
             }])
         
         }
 
 }
-
-
-
-
 
 
 app.post('/sendNotification', async (req, res) => {
@@ -100,7 +100,7 @@ app.post('/sendNotification', async (req, res) => {
     
     })
     
-    res.send('Notification sent').status(200)
+    res.send('Notification scheduled').status(200)
 
 })
 
