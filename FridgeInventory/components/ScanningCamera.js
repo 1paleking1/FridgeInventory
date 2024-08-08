@@ -6,12 +6,13 @@ import { db, auth } from '../firebaseConfig.js';
 import { collection, setDoc, deleteDoc, doc, getDoc } from "firebase/firestore"; 
 
 // hook imports
-// import useFetchFridgeID from '../hooks/useFetchFridgeID';
+import useFetchAdmin from '../hooks/useFetchAdmin.js';
 
 export default function ScanningCamera(props) {
 
     const [facing, setFacing] = useState("back");
     const [scanning, setScanning] = useState(true);
+    const admin = useFetchAdmin(props.fridge_id);
 
     // const fridge_id = useFetchFridgeID(auth.currentUser);
 
@@ -92,6 +93,14 @@ export default function ScanningCamera(props) {
         } catch (e) {
             console.error("Error adding document: ", e);
         }
+
+        // call backend function to schedule notification
+        await axios.post("http://192.168.1.147:3000/scheduleNotification", {
+            fridge_id: props.fridge_id,
+            admin: admin,
+            product_name: product_name,
+            product_type: food_group
+        })
 
     }
 

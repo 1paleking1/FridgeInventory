@@ -1,6 +1,13 @@
 import express from 'express'
 import { Expo } from 'expo-server-sdk'
 import * as schedule from 'node-schedule';
+import cors from 'cors'
+
+// ! GENERAL TODO
+    // make it so when you add a product you can group it with other same products but e.g. different brands when naming instead of typing in the name
+    // make useFetchAdmin hook
+    // secure backend endpoints with JWT
+    // auto shopping list generation
 
 
 
@@ -18,6 +25,7 @@ const expo = new Expo()
 // const httpParser = BodyParser.urlencoded({ extended: false })
 
 app.use(express.json())
+app.use(cors())
 
 
 
@@ -76,25 +84,25 @@ const handleSendNotification = async (admin, fridge_id, product_name, product_ty
 
     for (let i = 0; i < push_tokens.length; i++) {
             
-            expo.sendPushNotificationsAsync([{
-                to: push_tokens[i],
-                sound: 'default',
-                title: 'Fridge Inventory',
-                body: message,
-                priority: 'high',
-            }])
+        expo.sendPushNotificationsAsync([{
+            to: push_tokens[i],
+            sound: 'default',
+            title: 'Fridge Inventory',
+            body: message,
+        }])
         
-        }
+    }
 
 }
 
 
-app.post('/sendNotification', async (req, res) => {
+app.post('/scheduleNotification', async (req, res) => {
 
     const { admin, fridge_id, product_name, product_type } = req.body
 
+    const job_name = `${fridge_id}_${product_name}`
 
-    const job = schedule.scheduleJob(getNotificationDate(7), async () => {
+    const job = schedule.scheduleJob(job_name, getNotificationDate(7), async () => {
     
         handleSendNotification(admin, fridge_id, product_name, product_type)
     
@@ -102,6 +110,14 @@ app.post('/sendNotification', async (req, res) => {
     
     res.send('Notification scheduled').status(200)
 
+})
+
+app.post('/cancelNotification', async (req, res) => {
+    
+    schedule.cancelJob(req.body.job_name)
+
+    res.send('Notification cancelled').status(200)
+    
 })
 
 app.listen(port, () => {

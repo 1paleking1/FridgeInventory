@@ -1,4 +1,3 @@
-// boilerplate
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, Modal, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import { useState, useEffect } from 'react';
@@ -6,12 +5,14 @@ import { db, auth } from '../firebaseConfig';
 import { collection, getDoc, doc, updateDoc, query, where, getDocs } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
 
+// hooks
+import useFetchAdmin from '../hooks/useFetchAdmin';
+
 export default function ManageFridgeModal(props) {
 
     const [fridgeUsers, setFridgeUsers] = useState([]);
-
-
-    const [adminEmail, setAdminEmail] = useState("");
+    // const [adminEmail, setAdminEmail] = useState("");
+    const adminEmail = useFetchAdmin(props.fridgeID);
 
     const loadFridgeUsers = async () => {
 
@@ -30,16 +31,16 @@ export default function ManageFridgeModal(props) {
         return adminEmail == auth.currentUser.email;
     }
 
-    const loadAdmin = async () => {
-        docRef = doc(db, "fridges", props.fridgeID);
-        const docSnap = await getDoc(docRef);
+    // const loadAdmin = async () => {
+    //     docRef = doc(db, "fridges", props.fridgeID);
+    //     const docSnap = await getDoc(docRef);
 
-        if (docSnap.exists()) {
-            setAdminEmail(docSnap.data().admin);
-        } else {
-            console.log("No such document!");
-        }
-    }
+    //     if (docSnap.exists()) {
+    //         setAdminEmail(docSnap.data().admin);
+    //     } else {
+    //         console.log("No such document!");
+    //     }
+    // }
 
     const deleteMemberInDatabase = async (emailToDelete, uidToDelete) => {
 
@@ -106,7 +107,7 @@ export default function ManageFridgeModal(props) {
 
     useEffect(() => {
         loadFridgeUsers();
-        loadAdmin();
+        // loadAdmin();
 
     }, [props.manageModalVisible]);
     
