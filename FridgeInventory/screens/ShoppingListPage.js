@@ -12,6 +12,7 @@ export default function ShoppingListPage({ navigation, route }) {
     // const data = ["Apples", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread"];
 
     const [data, setData] = useState(["Apples", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread"]);
+    const [deleteStack, setDeleteStack] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
 
 
@@ -19,6 +20,8 @@ export default function ShoppingListPage({ navigation, route }) {
     
         const newData = data.filter((data) => data !== item);
         setData(newData);
+
+        setDeleteStack([...deleteStack, item]);
 
     }
 
@@ -29,10 +32,20 @@ export default function ShoppingListPage({ navigation, route }) {
     
     }
 
+    const undoDelete = () => {
+    
+        if (deleteStack.length > 0) {
+            const item = deleteStack.pop();
+            const newData = [item, ...data];
+            setData(newData);
+        }
+
+    }
+
     return (
         <View style={styles.container}>
             <View style={styles.row}>
-                <Ionicons style={styles.icon} name="arrow-undo-circle-sharp" size={36} color="black" />
+                <Ionicons style={styles.icon} name="arrow-undo-circle-sharp" size={36} color="black" onPress={() => undoDelete()} />
                 <Ionicons style={styles.icon} name="add-circle-sharp" size={36} color="black" onPress={() => setModalVisible()} />
             </View>
 
