@@ -8,42 +8,14 @@ import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion } fro
 // hook imports
 import useFetchAdmin from '../hooks/useFetchAdmin.js';
 
+// utility functions
+import { getTodayDate } from '../functions/utility_functions.js';
+
 export default function ScanningCamera(props) {
 
     const [facing, setFacing] = useState("back");
     const [scanning, setScanning] = useState(true);
     const admin = useFetchAdmin(props.fridge_id);
-
-    // const fridge_id = useFetchFridgeID(auth.currentUser);
-
-    const getTodayDate = () => {
-        let today = new Date();
-        let dd = String(today.getDate()).padStart(2, '0');
-        let mm = String(today.getMonth() + 1).padStart(2, '0');
-        let yyyy = today.getFullYear();
-
-        today = mm + '/' + dd + '/' + yyyy;
-        return today;
-    } 
-
-    // getFridgeID = async() => {
-
-    //     let user = auth.currentUser;
-    //     let docRef = doc(db, "users", user.uid);
-    //     let docSnap = await getDoc(docRef);
-
-    //     if (docSnap.exists()) {
-    //         return docSnap.data().fridge_id;
-    //       } else {
-    //         return null;
-    //     }
-        
-    // }
-
-    // useEffect(() => {
-        
-
-    // }, [auth.currentUser]);
 
 
     const getFoodGroup = (keywords) => {

@@ -3,7 +3,7 @@ import { Expo } from 'expo-server-sdk'
 import * as schedule from 'node-schedule'
 import cors from 'cors'
 import db from './firebaseConfig.mjs'
-import { collection, getDocs, query, where } from "firebase/firestore"
+import { collection, getDocs, doc, query, where, setDoc, arrayUnion, arrayRemove } from "firebase/firestore"
 
 const app = express()
 const port = 3000
@@ -11,6 +11,16 @@ const expo = new Expo()
 
 app.use(express.json())
 app.use(cors())
+
+const getTodayDate = () => {
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
+    let yyyy = today.getFullYear();
+
+    today = mm + '/' + dd + '/' + yyyy;
+    return today;
+}
 
 const getPushTokens = async (fridge_id) => {
     const fridgeRef = collection(db, "users")
@@ -36,7 +46,20 @@ const getNotificationDate = (days_to_wait) => {
     return date
 }
 
-const handleSendNotification = async (admin, fridge_id, product_name, product_type) => {
+const handleSendNotification = async (admin, fridge_id, product_name, product_type, job_name) => {
+
+    // first add the notification to the fridge in the database
+
+    const fridgeRef = doc(db, "fridges", fridge_id, "notifications", job_name)
+    const notification = {
+        product_name: product_name,
+        date_added: getTodayDate(),
+    }
+
+    await setDoc(fridgeRef, notification)
+
+    // then send the notification to the user's devices
+
     const username = getUsername(admin)
     const message = `It's been a week since ${product_name} was added to ${username}'s fridge.`
     const push_tokens = await getPushTokens(fridge_id)
@@ -75,7 +98,7 @@ app.post('/scheduleNotification', async (req, res) => {
     const job_name = `${fridge_id}_${product_name}`
 
     schedule.scheduleJob(job_name, getNotificationDate(7), async () => {
-        handleSendNotification(admin, fridge_id, product_name, product_type)
+        handleSendNotification(admin, fridge_id, product_name, product_type, job_name)
     })
 
     res.status(200).send('Notification scheduled')

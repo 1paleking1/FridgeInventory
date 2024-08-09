@@ -26,7 +26,6 @@ export default function SignUpPage({ navigation, route }) {
             });
 
             docRef = doc(db, "fridges", uid.toString());
-
             
             await setDoc(docRef, {
                 users: [email],
