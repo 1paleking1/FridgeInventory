@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { CameraView } from 'expo-camera';
 import axios from 'axios';
 import { db, auth } from '../firebaseConfig.js';
-import { collection, setDoc, deleteDoc, doc, getDoc } from "firebase/firestore"; 
+import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
 
 // hook imports
 import useFetchAdmin from '../hooks/useFetchAdmin.js';
@@ -68,7 +68,7 @@ export default function ScanningCamera(props) {
     const handleProduct = async(product_id, product_name, food_group) => {
 
         if (props.deleting) {
-            await deleteProductfromDB(product_id, food_group);
+            await deleteProductfromDB(product_id, product_name, food_group);
         } else {
             await addProducttoDB(product_id, product_name, food_group);
         }
@@ -106,15 +106,23 @@ export default function ScanningCamera(props) {
 
     }
 
-    const deleteProductfromDB = async(product_id, food_group) => {
+    const deleteProductfromDB = async(product_id, product_name, food_group) => {
     
         await deleteDoc(doc(db, "fridges", props.fridge_id.toString(), "inventory", food_group, "items", product_id.toString()));
         console.log("Document successfully deleted!");
         
         // call backend function to cancel notification
-        await axios.post("http://192.168.1.147:3000/cancelNotification", {
-            job_name: `${props.fridge_id}_${product_id}`
-        })
+        // await axios.post("http://192.168.1.147:3000/cancelNotification", {
+        //     job_name: `${props.fridge_id}_${product_id}`
+        // })
+
+        // add item to shopping list array
+
+        const docRef = doc(db, "fridges", props.fridge_id.toString());
+        await updateDoc(docRef, {
+            shoppingList: arrayUnion(product_name)
+        });
+
 
     }
 
@@ -178,6 +186,7 @@ export default function ScanningCamera(props) {
             }
 
             handleProduct(product_id, cached_reference.product_name, cached_reference.food_group);
+
             props.backToHome();
 
         } else {

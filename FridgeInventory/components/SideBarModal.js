@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput, TouchableWithoutFeedback, Touchable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Make sure to install and import Ionicons
-import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore"; 
+import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from '../firebaseConfig';
 import * as Clipboard from 'expo-clipboard';
 

@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, Modal, TextInput, TouchableWithoutFeedback } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from '@expo/vector-icons';
+import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { db, auth } from '../firebaseConfig';
 
 // component imports
 import ShoppingAddModal from "../components/ShoppingAddModal";
@@ -11,7 +13,9 @@ export default function ShoppingListPage({ navigation, route }) {
 
     // const data = ["Apples", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread"];
 
-    const [data, setData] = useState(["Apples", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread"]);
+    // const [data, setData] = useState(["Apples", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread"]);
+
+    const [data, setData] = useState([]);
     const [deleteStack, setDeleteStack] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -23,12 +27,24 @@ export default function ShoppingListPage({ navigation, route }) {
 
         setDeleteStack([...deleteStack, item]);
 
+        const docRef = doc(db, "fridges", route.params.fridge_id);
+        updateDoc(docRef, {
+            shoppingList: arrayRemove(item)
+        });
+
+
     }
 
     const addItem = (item) => {
 
         const newData = [item, ...data];
         setData(newData);
+
+        // append to the database
+        const docRef = doc(db, "fridges", route.params.fridge_id);
+        updateDoc(docRef, {
+            shoppingList: arrayUnion(item)
+        });
     
     }
 
@@ -38,9 +54,36 @@ export default function ShoppingListPage({ navigation, route }) {
             const item = deleteStack.pop();
             const newData = [item, ...data];
             setData(newData);
+
+            const docRef = doc(db, "fridges", route.params.fridge_id);
+            updateDoc(docRef, {
+                shoppingList: arrayUnion(item)
+            });
         }
 
+   
+
     }
+
+    const loadShoppingList = async () => {
+        
+        const docRef = doc(db, "fridges", route.params.fridge_id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            const data = docSnap.data();
+            setData(data.shoppingList);
+        }
+    
+    }
+
+
+    useEffect(() => {
+    
+        loadShoppingList();
+
+    }, []);
+
 
     return (
         <View style={styles.container}>

@@ -32,6 +32,7 @@ export default function SignUpPage({ navigation, route }) {
                 users: [email],
                 admin: email,
                 is_active: true,
+                shoppingList: [],
             });
 
         } catch (e) {
