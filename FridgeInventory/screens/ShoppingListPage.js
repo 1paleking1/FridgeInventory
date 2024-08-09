@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Modal, TextInput, TouchableWithoutFeedback } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from '@expo/vector-icons';
 
@@ -11,6 +11,8 @@ export default function ShoppingListPage({ navigation, route }) {
     // const data = ["Apples", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread"];
 
     const [data, setData] = useState(["Apples", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread"]);
+    const [modalVisible, setModalVisible] = useState(false);
+
 
     const deleteItem = (item) => {
     
@@ -19,12 +21,19 @@ export default function ShoppingListPage({ navigation, route }) {
 
     }
 
+    const addItem = (item) => {
+    
+        const newData = [...data, item];
+        setData(newData);
+    
+    }
+
     return (
         <View style={styles.container}>
 
             <View style={styles.row}>
-                <Ionicons name="arrow-undo-circle-sharp" size={36} color="black" />
-                <Ionicons name="add-circle-sharp" size={36} color="black" />
+                <Ionicons style={styles.icon} name="arrow-undo-circle-sharp" size={36} color="black" />
+                <Ionicons style={styles.icon} name="add-circle-sharp" size={36} color="black" onPress={() => setModalVisible()} />
             </View>
 
 
@@ -38,6 +47,26 @@ export default function ShoppingListPage({ navigation, route }) {
                 </View>
             )}
             />
+
+            <Modal visible={modalVisible} transparent={true} animationType='slide'>
+                <View style={styles.ModalWindow}>
+
+                    <Text style={styles.title}>Add Item</Text>
+
+                    <TextInput
+                        style={{height: 40, width: 200, borderColor: 'gray', borderWidth: 1}}
+                        onChangeText={text => addItem(text)}
+                        placeholder="Enter Item"
+                    />
+
+                    <TouchableOpacity style={styles.button} onPress={() => addItem("New Item")}>
+                        <Text style={styles.buttonText}>Add Item</Text>
+                    </TouchableOpacity>
+
+                </View>
+
+            </Modal>
+
 
         </View>
     );
@@ -92,7 +121,57 @@ const styles = StyleSheet.create({
     buttonText: {
         color: "#ffffff",
         fontSize: 20,
+    },
 
+    icon: {
+        marginHorizontal: 30,
+        marginVertical: 20,
+    },
+    ModalWindow: {
+        justifyContent: "top",
+        borderWidth: 3,
+        backgroundColor: "#ffffff",
+        padding: 10,
+        // top left and top right radius is 15
+        borderTopLeftRadius: 15,
+        borderTopRightRadius: 15,
+        
+
+
+        height: '50%',
+        marginTop: 'auto',
+        width: '100%',
+        alignItems: "center",
+
+    },
+
+    ModalBackgroundOpacity: {
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    Title: {
+        fontSize: 25,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    CloseButton: {
+        fontSize: 20,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingRight: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 0,
+        paddingBottom: 10,
+        paddingTop: 10,
+        // position: "relative",
+        // left:2,
+        // top: 10,
+        
     },
 
 });
