@@ -17,6 +17,7 @@ import ShoppingListPage from './screens/ShoppingListPage';
 
 // modal imports
 import SideBarModal from './components/SideBarModal';
+import NotificationsModal from './components/NotificationsModal';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -55,13 +56,15 @@ const InsideLayout = () => {
 export default function Page() {
 
   const [user, setUser] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [MenuModalOpen, setMenuModalOpen] = useState(false);
+  const [NotificationsModalOpen, setNotificationsModalOpen] = useState(false);
+
   const { expoPushToken, notification } = usePushNotifications();
 
   const signUserOut = () => {
     auth.signOut().then(() => {
       setUser(null);
-      setModalOpen(false)
+      setMenuModalOpen(false)
   
       console.log("Removing token")
   
@@ -82,17 +85,23 @@ export default function Page() {
     });
 
 
-}
+  }
 
   blankOptions = {
     headerShown: false
-  };
+  }
   
   headerOptions = {
   
     headerLeft: () => (
-      <TouchableOpacity onPress={() => setModalOpen(true)}>
+      <TouchableOpacity onPress={() => setMenuModalOpen(true)}>
         <Ionicons name="menu" size={30} color="black" />  
+      </TouchableOpacity>
+    ),
+
+    headerRight: () => (
+      <TouchableOpacity onPress={() => setNotificationsModalOpen(true)}>
+        <Ionicons name="notifications" size={30} color="black" />
       </TouchableOpacity>
     ),
   
@@ -129,12 +138,17 @@ export default function Page() {
           </Stack.Navigator>
 
           <SideBarModal
-          modalOpen={modalOpen}
-          setModalOpen={setModalOpen}
+          modalOpen={MenuModalOpen}
+          setModalOpen={setMenuModalOpen}
           email={user ? user.email : null}
-          onClose={() => setModalOpen(false)}
+          onClose={() => setMenuModalOpen(false)}
           signOut={signUserOut}
           toManageFridgePage={() => console.log("Manage Fridge Page")}
+          />
+
+          <NotificationsModal
+          modalOpen={NotificationsModalOpen}
+          setModalOpen={setNotificationsModalOpen}
           />
 
       </NavigationContainer>
