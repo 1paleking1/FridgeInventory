@@ -95,6 +95,19 @@ export default function ScanningCamera(props) {
             shoppingList: arrayUnion(product_name)
         });
 
+        // delete notification from database
+
+        const notification_id = `${props.fridge_id}_${product_id}`;
+        const notificationRef = doc(db, "fridges", props.fridge_id.toString(), "notifications", notification_id);
+
+        console.log("check notification id: ", notification_id);
+        console.log("check fridge id: : ", props.fridge_id);
+
+        const docSnap = await getDoc(notificationRef);
+
+        if (docSnap.exists()) {
+            console.log(docSnap.data());
+        }
 
     }
 
@@ -130,16 +143,6 @@ export default function ScanningCamera(props) {
         setScanning(false);
         
         let product_id = await raw_data.data;
-
-        // exists = productInDatabase(product_id)
-
-        // if (exists && !props.deleting) {
-        //     alert("Product already exists in the fridge");
-        //     props.backToHome();
-        // } else if (!exists && props.deleting) {
-        //     alert("Product does not exist in the fridge");
-        //     props.backToHome();
-        // }
 
         let cached_reference = await getReferenceProduct(product_id);
 

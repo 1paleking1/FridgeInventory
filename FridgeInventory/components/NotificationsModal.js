@@ -48,7 +48,16 @@ export default function NotificationsModal(props) {
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
         // return "You added " + notification_array[0] + " " + diffDays + " days ago";
-        return `${notification_array[0]} added ${diffDays} days ago`;
+        const text1 = `${notification_array[0]}`
+        const text2 = `${diffDays} days ago`;
+        
+        return (
+            <View>
+                <Text style={styles.text}>{text1}</Text>
+                <Text style={styles.textHighlighted}>{text2}</Text>
+            </View>
+        )
+    
     };
     
     useEffect(() => {
@@ -65,7 +74,7 @@ export default function NotificationsModal(props) {
                         style={styles.UsersScroll}
                         renderItem={({ item }) => (
                             <View style={styles.TableRow}>
-                                <Text style={styles.text}>{getNotificationText(item)}</Text>
+                                {getNotificationText(item)}
                             </View>
                         )}
                     />
@@ -103,6 +112,11 @@ const styles = StyleSheet.create({
 
     text: {
         fontSize: 20,
+    },
+
+    textHighlighted: {
+        fontSize: 20,
+        fontWeight: 'bold',
     },
 
 });
