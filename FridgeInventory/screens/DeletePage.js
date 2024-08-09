@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import ScanningCamera from '../components/ScanningCamera.js';
 
 
-export default function HomePage({ navigation, route }) {
+export default function DeletePage({ navigation, route }) {
 
     return (
         <View style={styles.container}>

@@ -19,8 +19,7 @@ export default function HomePage({ navigation }) {
 
             <View style={styles.container}>
                 
-                {/* <Text>Token: {expoPushToken?.data ?? "No token"}</Text>
-                <Text>{data}</Text> */}
+                {/* <Text>Token: {expoPushToken?.data ?? "No token"}</Text> */}
                                             
                 <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ScanPage', {fridge_id: fridge_id})}>
                     <Text style={styles.ButtonText}>Scan</Text>
@@ -34,6 +33,9 @@ export default function HomePage({ navigation }) {
                     <Text style={styles.ButtonText}>View</Text>
                 </TouchableOpacity>
 
+                <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ShoppingListPage', {fridge_id: fridge_id})}>
+                    <Text style={styles.ButtonText}>Shopping List</Text>
+                </TouchableOpacity>
             </View>
 
     );

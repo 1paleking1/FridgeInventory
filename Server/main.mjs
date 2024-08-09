@@ -1,48 +1,19 @@
 import express from 'express'
 import { Expo } from 'expo-server-sdk'
-import * as schedule from 'node-schedule';
+import * as schedule from 'node-schedule'
 import cors from 'cors'
-
-// ! GENERAL TODO
-    // make it so when you add a product you can group it with other same products but e.g. different brands when naming instead of typing in the name
-    // make useFetchAdmin hook
-    // secure backend endpoints with JWT
-    // auto shopping list generation
-
-
-
-// firestore import
 import db from './firebaseConfig.mjs'
-import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, getDocs, where, query } from "firebase/firestore";
-    
+import { collection, getDocs, query, where } from "firebase/firestore"
 
 const app = express()
 const port = 3000
-
 const expo = new Expo()
-
-// const jsonParser = BodyParser.json()
-// const httpParser = BodyParser.urlencoded({ extended: false })
 
 app.use(express.json())
 app.use(cors())
 
-
-
-// initial test Notification
-
-// expo.sendPushNotificationsAsync([{
-//     to: 'ExponentPushToken[1HtfjOLJ5Sn0tD-w6SKX6d]',
-//     sound: 'default',
-//     title: 'Fridge Inventory',
-//     body: "It's been a week since you added milk to your fridge.",
-// }])
-
-
-const getPushTokens = async(fridge_id) => { 
-
+const getPushTokens = async (fridge_id) => {
     const fridgeRef = collection(db, "users")
-
     const q = query(fridgeRef, where("fridge_id", "==", fridge_id))
     const querySnapshot = await getDocs(q)
     const docs = querySnapshot.docs
@@ -53,103 +24,75 @@ const getPushTokens = async(fridge_id) => {
     }
 
     return push_tokens
-    
 }
 
 const getUsername = (email) => {
-
     return email.split('@')[0]
-
 }
 
 const getNotificationDate = (days_to_wait) => {
-
-    // temporary test code which sends notification after 10 seconds
     const date = new Date()
-    date.setSeconds(date.getSeconds() + 10)
+    date.setSeconds(date.getSeconds() + 10) // temporary test code
     return date
-    
-    // const date = new Date()
-    // date.setDate(date.getDate() + days_to_wait)
-    // return date
-    
 }
 
 const handleSendNotification = async (admin, fridge_id, product_name, product_type) => {
-
     const username = getUsername(admin)
     const message = `It's been a week since ${product_name} was added to ${username}'s fridge.`
-
     const push_tokens = await getPushTokens(fridge_id)
 
-    for (let i = 0; i < push_tokens.length; i++) {
-            
-        expo.sendPushNotificationsAsync([{
-            to: push_tokens[i],
-            sound: 'default',
-            title: 'Fridge Inventory',
-            body: message,
-        }])
-        
-    }
+    const messages = push_tokens.map(token => ({
+        to: token,
+        sound: 'default',
+        title: 'Fridge Inventory',
+        body: message,
+    }))
 
+    try {
+        const ticketChunk = await expo.sendPushNotificationsAsync(messages)
+        console.log('Tickets:', ticketChunk)
+
+        const receiptIds = ticketChunk
+            .filter(ticket => ticket.id)
+            .map(ticket => ticket.id)
+        
+        const receiptIdChunks = expo.chunkPushNotificationReceiptIds(receiptIds)
+        for (const chunk of receiptIdChunks) {
+            try {
+                const receipts = await expo.getPushNotificationReceiptsAsync(chunk)
+                console.log('Receipts:', receipts)
+            } catch (error) {
+                console.error('Error fetching receipts:', error)
+            }
+        }
+    } catch (error) {
+        console.error('Error sending notifications:', error)
+    }
 }
 
-
 app.post('/scheduleNotification', async (req, res) => {
-
     const { admin, fridge_id, product_name, product_type } = req.body
-
     const job_name = `${fridge_id}_${product_name}`
 
-    const job = schedule.scheduleJob(job_name, getNotificationDate(7), async () => {
-    
+    schedule.scheduleJob(job_name, getNotificationDate(7), async () => {
         handleSendNotification(admin, fridge_id, product_name, product_type)
-    
     })
-    
-    res.send('Notification scheduled').status(200)
 
+    res.status(200).send('Notification scheduled')
 })
 
 app.post('/cancelNotification', async (req, res) => {
-    
-    schedule.cancelJob(req.body.job_name)
+    const { job_name } = req.body
+    const job_to_cancel = schedule.scheduledJobs[job_name]
 
-    res.send('Notification cancelled').status(200)
-    
+    if (job_to_cancel) {
+        job_to_cancel.cancel()
+        res.status(200).send('Notification cancelled')
+    } else {
+        res.status(404).send('Job not found')
+    }
 })
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
 })
-
-
-
-
-// app.post('/sendNotification', async (req, res) => {
-
-//     const { admin, fridge_id, product_name, product_type } = req.body
-
-//     const username = getUsername(admin)
-
-//     const message = `It's been a week since ${product_name} was added to ${username}'s fridge.`
-
-//     const push_tokens = await getPushTokens(fridge_id)
-
-//     await console.log("push tokens obtained: ", push_tokens)
-
-//     for (let i = 0; i < push_tokens.length; i++) {
-
-//         await expo.sendPushNotificationsAsync([{
-//             to: push_tokens[i],
-//             sound: 'default',
-//             title: 'Fridge Inventory',
-//             body: message,
-//         }])
-    
-//     }
-
-//     res.send('Notification sent').status(200)
-
-// })

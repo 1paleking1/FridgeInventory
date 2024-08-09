@@ -94,6 +94,8 @@ export default function ScanningCamera(props) {
             console.error("Error adding document: ", e);
         }
 
+
+        console.log("making axios call")
         // call backend function to schedule notification
         await axios.post("http://192.168.1.147:3000/scheduleNotification", {
             fridge_id: props.fridge_id,
@@ -109,6 +111,11 @@ export default function ScanningCamera(props) {
         await deleteDoc(doc(db, "fridges", props.fridge_id.toString(), "inventory", food_group, "items", product_id.toString()));
         console.log("Document successfully deleted!");
         
+        // call backend function to cancel notification
+        await axios.post("http://192.168.1.147:3000/cancelNotification", {
+            job_name: `${props.fridge_id}_${product_id}`
+        })
+
     }
 
     const getReferenceProduct = async(product_id) => {
@@ -123,6 +130,17 @@ export default function ScanningCamera(props) {
           }
     }
 
+
+    const productInDatabase = async(product_id ,food_group) => {
+
+        const docRef = doc(db, "fridges", props.fridge_id.toString(), "inventory", food_group, "items", product_id.toString());
+        const docSnap = await getDoc(docRef);
+
+        return docSnap.exists();
+
+    }
+
+
     const scanBarcode = async(raw_data) => {
 
         if (!scanning) {
@@ -130,14 +148,38 @@ export default function ScanningCamera(props) {
         }
 
         setScanning(false);
-
+        
         let product_id = await raw_data.data;
+
+        // exists = productInDatabase(product_id)
+
+        // if (exists && !props.deleting) {
+        //     alert("Product already exists in the fridge");
+        //     props.backToHome();
+        // } else if (!exists && props.deleting) {
+        //     alert("Product does not exist in the fridge");
+        //     props.backToHome();
+        // }
 
         let cached_reference = await getReferenceProduct(product_id);
 
         if (cached_reference) {
+            
+            exists = await productInDatabase(product_id, cached_reference.food_group);
+
+            console.log("exists set to ", exists);
+
+            if (exists && !props.deleting) {
+                alert("Product already exists in the fridge");
+                props.backToHome();
+            } else if (!exists && props.deleting) {
+                alert("Product does not exist in the fridge");
+                props.backToHome();
+            }
+
             handleProduct(product_id, cached_reference.product_name, cached_reference.food_group);
             props.backToHome();
+
         } else {
             
             alert("Product not found");

@@ -13,6 +13,7 @@ import DeletePage from './screens/DeletePage';
 import ManualPage from './screens/ManualPage';
 import ViewPage from './screens/ViewPage';
 import FoodTypePage from './screens/FoodTypePage';
+import ShoppingListPage from './screens/ShoppingListPage';
 
 // modal imports
 import SideBarModal from './components/SideBarModal';
@@ -43,6 +44,8 @@ const InsideLayout = () => {
       <Stack.Screen name="ManualPage" component={ManualPage} />
       <Stack.Screen name="ViewPage" component={ViewPage} />
       <Stack.Screen name="FoodTypePage" component={FoodTypePage} />
+      <Stack.Screen name="ShoppingListPage" component={ShoppingListPage} />
+
       <Stack.Screen name="ManageFridgePage" component={FoodTypePage} />
     </InsideStack.Navigator>
   );
