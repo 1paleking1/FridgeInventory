@@ -1,5 +1,7 @@
 import { getFirestore } from 'firebase-admin/firestore';
 import { initializeApp, cert } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
+
 import fs from 'fs';
 
 // Read and parse the JSON file
@@ -10,5 +12,6 @@ initializeApp({
 });
 
 const db = getFirestore();
+const auth = getAuth();
 
-export default db;
+export { db, auth };

@@ -3,14 +3,18 @@ import { Expo } from 'expo-server-sdk'
 import * as schedule from 'node-schedule'
 import cors from 'cors'
 
-import db from './firebaseConfig.mjs'
+import { db } from './firebaseConfig.mjs'
+import { decodeToken } from './middleware/index.mjs'
 
 const app = express()
 const port = 3000
 const expo = new Expo()
 
+// Middleware
 app.use(express.json())
 app.use(cors())
+app.use(decodeToken)
+
 
 const getTodayDate = () => {
     let today = new Date();
