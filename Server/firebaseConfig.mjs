@@ -1,24 +1,14 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore  } from "firebase/firestore"
+import { getFirestore } from 'firebase-admin/firestore';
+import { initializeApp, cert } from 'firebase-admin/app';
+import fs from 'fs';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCLUY3q8kBlpwkiZQ9gxW9Bz_JEjHOgVs4",
-  authDomain: "fridgeinventory-7d647.firebaseapp.com",
-  databaseURL: "https://fridgeinventory-7d647-default-rtdb.firebaseio.com",
-  projectId: "fridgeinventory-7d647",
-  storageBucket: "fridgeinventory-7d647.appspot.com",
-  messagingSenderId: "496022441380",
-  appId: "1:496022441380:web:e93d8cf18fedf1363e0531",
-  measurementId: "G-56M1ZRMDEL"
-};
+// Read and parse the JSON file
+const serviceAccount = JSON.parse(fs.readFileSync('./serviceAccount.json', 'utf8'));
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+initializeApp({
+  credential: cert(serviceAccount),
+});
 
-export const saveToken = async (userId, token) => {
-
-}
+const db = getFirestore();
 
 export default db;
-

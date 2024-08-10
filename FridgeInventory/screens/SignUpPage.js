@@ -11,7 +11,7 @@ export default function SignUpPage({ navigation, route }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    
+    const [jwt, setJwt] = useState(null);
 
     const addUserToDatabase = async(uid, email) => {
 
@@ -47,16 +47,9 @@ export default function SignUpPage({ navigation, route }) {
                 // Signed in
                 const user = userCredential.user;
 
-                // sendEmailVerification(user)
-                //     .then(() => {
-                //         alert("Verification email sent to " + email);
-                        
-                //     })
-                //     .catch((error) => {
-                //         alert("Error sending verification email");
-                //     });
-
                 addUserToDatabase(user.uid, email);
+
+                setJwt(user.getIdToken());
 
             })
             .catch((error) => {

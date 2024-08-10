@@ -15,6 +15,7 @@ export default function ScanPage({ navigation, route }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { expoPushToken, notification } = usePushNotifications();
+    const [jwt, setJwt] = useState(null);
 
     const addDeviceToUser = async(uid, push_token) => {
     
@@ -51,6 +52,8 @@ export default function ScanPage({ navigation, route }) {
             // ]);
 
             await addDeviceToUser(user.uid, expoPushToken.data);
+
+            setJwt(user.getIdToken());
 
 
         } catch (error) {

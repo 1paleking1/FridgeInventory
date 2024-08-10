@@ -65,9 +65,7 @@ export default function Page() {
     auth.signOut().then(() => {
       setUser(null);
       setMenuModalOpen(false)
-  
-      console.log("Removing token")
-  
+    
       removeToken(expoPushToken.data);
     });
 

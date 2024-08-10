@@ -15,7 +15,9 @@ export default function ScanningCamera(props) {
 
     const [facing, setFacing] = useState("back");
     const [scanning, setScanning] = useState(true);
+    
     const admin = useFetchAdmin(props.fridge_id);
+    const jwt = auth.currentUser.getIdToken();
 
 
     const getFoodGroup = (keywords) => {
@@ -74,8 +76,13 @@ export default function ScanningCamera(props) {
             admin: admin,
             product_name: product_name,
             product_type: food_group,
-            product_id: product_id
+            product_id: product_id,
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            }
         })
+
+
 
     }
 

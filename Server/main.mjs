@@ -2,8 +2,8 @@ import express from 'express'
 import { Expo } from 'expo-server-sdk'
 import * as schedule from 'node-schedule'
 import cors from 'cors'
+
 import db from './firebaseConfig.mjs'
-import { collection, getDocs, doc, query, where, setDoc, arrayUnion, arrayRemove } from "firebase/firestore"
 
 const app = express()
 const port = 3000
@@ -23,9 +23,9 @@ const getTodayDate = () => {
 }
 
 const getPushTokens = async (fridge_id) => {
-    const fridgeRef = collection(db, "users")
-    const q = query(fridgeRef, where("fridge_id", "==", fridge_id))
-    const querySnapshot = await getDocs(q)
+
+    const fridgeRef = db.collection("users")
+    const querySnapshot = await fridgeRef.where("fridge_id", "==", fridge_id).get()
     const docs = querySnapshot.docs
 
     let push_tokens = []
@@ -48,15 +48,16 @@ const getNotificationDate = (days_to_wait) => {
 
 const handleSendNotification = async (admin, fridge_id, product_name, product_type, job_name) => {
 
-    // first add the notification to the fridge in the database
+    // first save the notification to the database
 
-    const fridgeRef = doc(db, "fridges", fridge_id, "notifications", job_name)
+    const fridgeRef = db.collection("fridges").doc(fridge_id).collection("notifications").doc(job_name)
+    
     const notification = {
         product_name: product_name,
         date_added: getTodayDate(),
     }
 
-    await setDoc(fridgeRef, notification)
+    await fridgeRef.set(notification)
 
     // then send the notification to the user's devices
 
@@ -94,6 +95,7 @@ const handleSendNotification = async (admin, fridge_id, product_name, product_ty
 }
 
 app.post('/scheduleNotification', async (req, res) => {
+
     const { admin, fridge_id, product_name, product_type, product_id } = req.body
     const job_name = `${fridge_id}_${product_id}`
 
