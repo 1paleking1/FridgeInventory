@@ -94,8 +94,8 @@ const handleSendNotification = async (admin, fridge_id, product_name, product_ty
 }
 
 app.post('/scheduleNotification', async (req, res) => {
-    const { admin, fridge_id, product_name, product_type } = req.body
-    const job_name = `${fridge_id}_${product_name}`
+    const { admin, fridge_id, product_name, product_type, product_id } = req.body
+    const job_name = `${fridge_id}_${product_id}`
 
     schedule.scheduleJob(job_name, getNotificationDate(7), async () => {
         handleSendNotification(admin, fridge_id, product_name, product_type, job_name)

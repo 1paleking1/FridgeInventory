@@ -73,13 +73,16 @@ export default function ScanningCamera(props) {
             fridge_id: props.fridge_id,
             admin: admin,
             product_name: product_name,
-            product_type: food_group
+            product_type: food_group,
+            product_id: product_id
         })
 
     }
 
     const deleteProductfromDB = async(product_id, product_name, food_group) => {
     
+        console.log("deleting product from database");
+
         await deleteDoc(doc(db, "fridges", props.fridge_id.toString(), "inventory", food_group, "items", product_id.toString()));
         console.log("Document successfully deleted!");
         
@@ -100,14 +103,7 @@ export default function ScanningCamera(props) {
         const notification_id = `${props.fridge_id}_${product_id}`;
         const notificationRef = doc(db, "fridges", props.fridge_id.toString(), "notifications", notification_id);
 
-        console.log("check notification id: ", notification_id);
-        console.log("check fridge id: : ", props.fridge_id);
-
-        const docSnap = await getDoc(notificationRef);
-
-        if (docSnap.exists()) {
-            console.log(docSnap.data());
-        }
+        await deleteDoc(notificationRef);
 
     }
 
