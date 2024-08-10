@@ -46,6 +46,16 @@ export default function ScanPage({ navigation, route }) {
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
+
+            // check if user is verified
+            if (!user.emailVerified) {
+                alert("Please verify your email before logging in");
+                return;
+            } else {
+                console.log("User is verified");
+
+                
+            }
         
             // Promise.all([
             //     addDeviceToUser(user.uid, expoPushToken.data),
@@ -53,7 +63,6 @@ export default function ScanPage({ navigation, route }) {
 
             await addDeviceToUser(user.uid, expoPushToken.data);
 
-            setJwt(user.getIdToken());
 
 
         } catch (error) {

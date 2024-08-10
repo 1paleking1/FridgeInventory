@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, aleer } from "react-native";
 import React, { useEffect, useState } from "react";
 
 // firebase imports
@@ -11,7 +11,6 @@ export default function SignUpPage({ navigation, route }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [jwt, setJwt] = useState(null);
 
     const addUserToDatabase = async(uid, email) => {
 
@@ -49,7 +48,13 @@ export default function SignUpPage({ navigation, route }) {
 
                 addUserToDatabase(user.uid, email);
 
-                setJwt(user.getIdToken());
+                sendEmailVerification(user)
+
+                alert("Please verify your email before logging in");
+
+                navigation.navigate("LoginPage");
+
+
 
             })
             .catch((error) => {

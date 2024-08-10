@@ -58,6 +58,7 @@ export default function Page() {
   const [user, setUser] = useState(null);
   const [MenuModalOpen, setMenuModalOpen] = useState(false);
   const [NotificationsModalOpen, setNotificationsModalOpen] = useState(false);
+  const [forceRender, setForceRender] = useState(false);
 
   const { expoPushToken, notification } = usePushNotifications();
 
@@ -112,6 +113,10 @@ export default function Page() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log("THE AUTH STATE JUST CHANGE BRUH")
+        // force component re render with state change
+        setForceRender(!forceRender);
+
         setUser(user);
       } else {
         setUser(null);
@@ -119,12 +124,14 @@ export default function Page() {
     });
   }
   , []);
+  
+
 
   return (
     
       <NavigationContainer>
           <Stack.Navigator>
-            {user ? (
+            {(user && user.emailVerified) ? (
               <Stack.Screen name="InsideLayout" component={InsideLayout} options={blankOptions}/>
             ) : (
               <>
