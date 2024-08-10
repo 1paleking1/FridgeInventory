@@ -17,7 +17,19 @@ export default function ScanningCamera(props) {
     const [scanning, setScanning] = useState(true);
     
     const admin = useFetchAdmin(props.fridge_id);
-    const jwt = auth.currentUser.getIdToken();
+    const [jwt, setJwt] = useState(null);
+
+    useEffect(() => {
+    
+        const getJwt = async() => {
+            const jwt = await auth.currentUser.getIdToken();
+            setJwt(jwt);
+        }
+
+        getJwt();
+
+    }, []);
+
 
 
     const getFoodGroup = (keywords) => {
@@ -70,17 +82,22 @@ export default function ScanningCamera(props) {
 
 
         console.log("making axios call")
+        console.log("jwt is ", jwt)
         // call backend function to schedule notification
-        await axios.post("http://192.168.1.147:3000/scheduleNotification", {
-            fridge_id: props.fridge_id,
-            admin: admin,
-            product_name: product_name,
-            product_type: food_group,
-            product_id: product_id,
-            headers: {
-                Authorization: `Bearer ${jwt}`
+        await axios.post("http://192.168.1.147:3000/scheduleNotification", 
+            {
+                fridge_id: props.fridge_id,
+                admin: admin,
+                product_name: product_name,
+                product_type: food_group,
+                product_id: product_id
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${jwt}`
+                }
             }
-        })
+        );
 
 
 
