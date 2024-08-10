@@ -81,29 +81,36 @@ export default function ScanningCamera(props) {
 
     const deleteProductfromDB = async(product_id, product_name, food_group) => {
     
-        console.log("deleting product from database");
-
         await deleteDoc(doc(db, "fridges", props.fridge_id.toString(), "inventory", food_group, "items", product_id.toString()));
-        console.log("Document successfully deleted!");
         
-        // call backend function to cancel notification
-        // await axios.post("http://192.168.1.147:3000/cancelNotification", {
-        //     job_name: `${props.fridge_id}_${product_id}`
-        // })
+        // only make cancel api call fi there's no notification in the database
+
+        const notification_id = `${props.fridge_id}_${product_id}`;
+        const notificationRef = doc(db, "fridges", props.fridge_id.toString(), "notifications", notification_id);
+
+        const docSnap = await getDoc(notificationRef);
+
+        if (!docSnap.exists()) {
+            console.log("cancelling notification")
+            // call backend function to cancel notification
+            await axios.post("http://192.168.1.147:3000/cancelNotification", {
+                job_name: `${props.fridge_id}_${product_id}`
+            }) 
+
+        } else {
+            await deleteDoc(notificationRef);
+        }
+
 
         // add item to shopping list array
-
         const docRef = doc(db, "fridges", props.fridge_id.toString());
         await updateDoc(docRef, {
             shoppingList: arrayUnion(product_name)
         });
 
         // delete notification from database
+        // const notificationRef = doc(db, "fridges", props.fridge_id.toString(), "notifications", notification_id);
 
-        const notification_id = `${props.fridge_id}_${product_id}`;
-        const notificationRef = doc(db, "fridges", props.fridge_id.toString(), "notifications", notification_id);
-
-        await deleteDoc(notificationRef);
 
     }
 
