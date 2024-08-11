@@ -79,7 +79,7 @@ export default function NotificationsModal(props) {
                         )}
                     />
                     <TouchableOpacity onPress={() => props.setModalOpen(false)}>
-                        <Ionicons name="close" size={24} color="black" />
+                        <Ionicons name="close" size={40} color="black" />
                     </TouchableOpacity>
                 </View>
             </View>
