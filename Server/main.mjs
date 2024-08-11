@@ -100,26 +100,52 @@ const handleSendNotification = async (admin, fridge_id, product_name, product_ty
 
 app.post('/scheduleNotification', async (req, res) => {
 
+    
     const { admin, fridge_id, product_name, product_type, product_id } = req.body
+
+    if (!admin || !fridge_id || !product_name || !product_type || !product_id) {
+        return res.status(400).send('Invalid request parameters');
+    }
+    
     const job_name = `${fridge_id}_${product_id}`
 
-    schedule.scheduleJob(job_name, getNotificationDate(7), async () => {
-        handleSendNotification(admin, fridge_id, product_name, product_type, job_name)
-    })
+    try {
 
-    res.status(200).send('Notification scheduled')
+        schedule.scheduleJob(job_name, getNotificationDate(7), async () => {
+            handleSendNotification(admin, fridge_id, product_name, product_type, job_name)
+        })
+    
+        res.status(200).send('Notification scheduled successfully')
+
+    } catch (e) {
+        console.error(e)
+        res.status(500).send('Internal server error scheduling notification')
+    }
+
 })
 
 app.post('/cancelNotification', async (req, res) => {
+
+    if (!job_name) {
+        return res.status(400).send('Invalid request parameters');
+    }
+
     const { job_name } = req.body
     const job_to_cancel = schedule.scheduledJobs[job_name]
 
-    if (job_to_cancel) {
-        job_to_cancel.cancel()
-        res.status(200).send('Notification cancelled')
-    } else {
-        res.status(404).send('Job not found')
+    try {
+
+        if (job_to_cancel) {
+            job_to_cancel.cancel()
+            res.status(200).send('Notification cancelled')
+        } else {
+            res.status(404).send('Job (notification) attempted to be cancelled was not found')
+        }
+    } catch (e) {
+        console.error(e)
+        res.status(500).send('Internal server error cancelling notification')
     }
+
 })
 
 app.listen(port, () => {
