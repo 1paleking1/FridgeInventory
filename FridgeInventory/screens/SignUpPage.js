@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 20,
         borderWidth: 2,
+        width: "80%",
     },
 
     pickerInput: {
@@ -129,9 +130,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         marginBottom: 20,
-        width: 250,
+        width: "100%",
         padding: 10,
-        fontFamily: "Nunito Regular"
     },
 
     loginButton: {
@@ -151,7 +151,6 @@ const styles = StyleSheet.create({
         color: "#ffffff",
         justifyContent: "center",
         alignItems: "center",
-        paddingHorizontal: 56,
         borderStyle: "solid",
         borderWidth: 3,
         borderRadius: 20,

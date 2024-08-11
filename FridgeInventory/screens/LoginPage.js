@@ -142,6 +142,7 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 20,
         borderWidth: 2,
+        width: "80%",
     },
 
     pickerInput: {
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         marginBottom: 20,
-        width: 250,
+        width: "100%",
         padding: 10,
     },
 
