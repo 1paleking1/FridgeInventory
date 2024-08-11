@@ -1,8 +1,7 @@
- 
-
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useFonts } from 'expo-font';
 
 // screen imports
 import LoginPage from './screens/LoginPage';
@@ -59,6 +58,14 @@ export default function Page() {
   const [MenuModalOpen, setMenuModalOpen] = useState(false);
   const [NotificationsModalOpen, setNotificationsModalOpen] = useState(false);
   const [forceRender, setForceRender] = useState(false);
+  
+  const [fontsLoaded] = useFonts({
+    "Nunito Regular": require('./assets/fonts/Nunito Regular.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return undefined;
+  }
 
   const { expoPushToken, notification } = usePushNotifications();
 
@@ -113,10 +120,6 @@ export default function Page() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("THE AUTH STATE JUST CHANGE BRUH")
-        // force component re render with state change
-        setForceRender(!forceRender);
-
         setUser(user);
       } else {
         setUser(null);
@@ -124,14 +127,13 @@ export default function Page() {
     });
   }
   , []);
-  
 
 
   return (
     
       <NavigationContainer>
           <Stack.Navigator>
-            {(user && user.emailVerified) ? (
+            {(user) ? (
               <Stack.Screen name="InsideLayout" component={InsideLayout} options={blankOptions}/>
             ) : (
               <>

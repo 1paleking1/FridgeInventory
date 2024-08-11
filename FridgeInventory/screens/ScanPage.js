@@ -16,6 +16,8 @@ export default function ScanPage({ navigation, route }) {
 
     return (
         <View style={styles.container}>
+
+
             <ScanningCamera
             backToHome={() => navigation.navigate("HomePage")}
             toManualPage={toManualPage}

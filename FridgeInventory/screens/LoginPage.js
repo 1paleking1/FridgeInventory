@@ -43,19 +43,27 @@ export default function ScanPage({ navigation, route }) {
     }
 
     const Login = async () => {
+
+        // show flash message
+
+        // showMessage({
+        //     message: "This is a flash message",
+        //     type: "success",
+        //     icon: "auto",
+        //     duration: 3000
+        // });
+
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
             // check if user is verified
-            if (!user.emailVerified) {
-                alert("Please verify your email before logging in");
-                return;
-            } else {
-                console.log("User is verified");
-
-                
-            }
+            // if (!user.emailVerified) {
+            //     alert("Please verify your email before logging in");
+            //     return;
+            // } else {
+            //     console.log("User is verified");                
+            // }
         
             // Promise.all([
             //     addDeviceToUser(user.uid, expoPushToken.data),
@@ -79,10 +87,16 @@ export default function ScanPage({ navigation, route }) {
         }
     }
 
+    const showToast = () => {
+        console.log("showing toast")
+        Toast.success('Promised is resolved')
+    }
+
     return (
         <View style={styles.container}>
 
-
+            {/* <FlashMessage position="top" /> */}
+            
             <View style={styles.formBox}>
             
                 <Text style={styles.labelText}>Email</Text>
@@ -104,10 +118,11 @@ export default function ScanPage({ navigation, route }) {
                 </TouchableOpacity>
 
             </View>
-
+        
             <TouchableOpacity style={styles.signUpButton} onPress={() => navigation.navigate('SignUpPage', { push_token: expoPushToken.data })}>
                 <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
+
 
         </View>
     );
@@ -173,12 +188,14 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: "#000000",
         marginBottom: 10,
+        fontFamily: "Nunito Regular"
     },
 
     buttonText: {
         fontSize: 25,
         color: "#ffffff",
         marginVertical: 5,
+        fontFamily: "Nunito Regular"
     },
 
 });

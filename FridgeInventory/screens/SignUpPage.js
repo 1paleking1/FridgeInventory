@@ -117,6 +117,7 @@ const styles = StyleSheet.create({
 
     pickerInput: {
         fontSize: 20,
+        
     },
 
     pickerOptions: {
@@ -130,6 +131,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         width: 250,
         padding: 10,
+        fontFamily: "Nunito Regular"
     },
 
     loginButton: {
@@ -141,6 +143,7 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderRadius: 20,
         marginTop: 40,
+        fontFamily: "Nunito Regular"
     },
 
     signUpButton: {
@@ -153,18 +156,21 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderRadius: 20,
         marginTop: 60,
+        fontFamily: "Nunito Regular"
     },
 
     labelText: {
         fontSize: 25,
         color: "#000000",
         marginBottom: 10,
+        fontFamily: "Nunito Regular"
     },
 
     buttonText: {
         fontSize: 25,
         color: "#ffffff",
         marginVertical: 5,
+        fontFamily: "Nunito Regular"
     },
 
 });

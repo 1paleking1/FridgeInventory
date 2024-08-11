@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons'; // Make sure to install and impor
 import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from '../firebaseConfig';
 import * as Clipboard from 'expo-clipboard';
+import FlashMessage, { showMessage } from "react-native-flash-message";
 
 // hooks
 import useFetchFridgeID from '../hooks/useFetchFridgeID';
@@ -23,7 +24,15 @@ export default function SideBarModal(props) {
 
         // make sure it's not the same fridge
         if (newFridgeID == fridgeID) {
-            alert("You are already in this fridge");
+            // alert("You are already in this fridge");
+
+            showMessage({
+                message: "You are already in this fridge",
+                type: "danger",
+                icon: "auto",
+                duration: 2000
+            });
+
             return;
         }
 
@@ -54,7 +63,14 @@ export default function SideBarModal(props) {
                 users: [...docSnap.data().users, auth.currentUser.email]
             });
             
-            alert("Successfully joined Fridge " + newFridgeID);
+            // alert("Successfully joined Fridge " + newFridgeID);
+
+            showMessage({
+                message: "Successfully joined Fridge " + newFridgeID,
+                type: "success",
+                icon: "auto",
+                duration: 2000
+            });
 
 
 
@@ -68,7 +84,13 @@ export default function SideBarModal(props) {
 
     const copyToClipboard = async() => {
         await Clipboard.setStringAsync(fridgeID);
-        await alert("Fridge ID Copied to Clipboard");
+        // await alert("Fridge ID Copied to Clipboard");
+        showMessage({
+            message: "Fridge ID Copied to Clipboard",
+            type: "success",
+            icon: "auto",
+            duration: 1000
+        });
     }
 
 
@@ -76,59 +98,64 @@ export default function SideBarModal(props) {
 
     return (
         <View>
+
+
             <Modal visible={props.modalOpen} transparent={true}>
-                    <View style={styles.ModalBackgroundOpacity}>
-                        <View style={styles.ModalWindow}>
 
-                                <View style={styles.IconContainer}>
-                                    <Ionicons name="menu" size={30} color="black" style={styles.Icon} onPress={() => props.setModalOpen(false)} />
+                <FlashMessage position="top" />
+
+                <View style={styles.ModalBackgroundOpacity}>
+                    <View style={styles.ModalWindow}>
+
+                            <View style={styles.IconContainer}>
+                                <Ionicons name="menu" size={30} color="black" style={styles.Icon} onPress={() => props.setModalOpen(false)} />
+                            </View>
+
+                            <View style={styles.modalSection}>
+                                <TouchableOpacity style={styles.SignOutButton} onPress={() => props.signOut()}>
+                                    <Text style={styles.SignOutText}>Sign Out</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            <View style={styles.modalSection}>
+                                <Text style={styles.UserInfoText}>Logged in as:</Text>
+                                <Text style={styles.UserInfoText}>{props.email}{"\n"}</Text>
+                            </View>
+
+                            <View style={styles.modalSection}>
+                                <Text style={styles.UserInfoText}>Fridge ID:</Text>
+                                <View style={styles.row}>
+                                    <Text style={styles.UserInfoText}>{fridgeIDJSX}{"\n"}</Text>
+                                    <Ionicons name="copy-outline" size={24} color="black" onPress={copyToClipboard} />
                                 </View>
+                            </View>
 
-                                <View style={styles.modalSection}>
-                                    <TouchableOpacity style={styles.SignOutButton} onPress={() => props.signOut()}>
-                                        <Text style={styles.SignOutText}>Sign Out</Text>
-                                    </TouchableOpacity>
-                                </View>
-
-                                <View style={styles.modalSection}>
-                                    <Text style={styles.UserInfoText}>Logged in as:</Text>
-                                    <Text style={styles.UserInfoText}>{props.email}{"\n"}</Text>
-                                </View>
-
-                                <View style={styles.modalSection}>
-                                    <Text style={styles.UserInfoText}>Fridge ID:</Text>
-                                    <View style={styles.row}>
-                                        <Text style={styles.UserInfoText}>{fridgeIDJSX}{"\n"}</Text>
-                                        <Ionicons name="copy-outline" size={24} color="black" onPress={copyToClipboard} />
-                                    </View>
-                                </View>
-
-                                <View style={styles.modalSection}>
-                                    <Text style={styles.NewIDlabelText}>Join a Different Fridge: </Text>
-                                    <TextInput
-                                    style={styles.IDInput}
-                                    placeholder="Enter Fridge ID to Join"
-                                    onChangeText={text => setNewFridgeID(text)}
-                                    />
-                                    <TouchableOpacity style={styles.JoinButton} onPress={handleJoin}>
-                                        <Text style={styles.JoinButtonText}>Join</Text>
-                                    </TouchableOpacity>
-                                </View>
-
-                                <View style={styles.modalSection}>
-                                    <TouchableOpacity style={styles.JoinButton} onPress={() => setManageModalVisible(true)}>
-                                        <Text style={styles.JoinButtonText}>Manage Fridge</Text>
-                                    </TouchableOpacity>
-                                </View>
-
-                                <ManageFridgeModal
-                                manageModalVisible={manageModalVisible}
-                                setManageModalVisible={setManageModalVisible}
-                                fridgeID={fridgeID}
+                            <View style={styles.modalSection}>
+                                <Text style={styles.NewIDlabelText}>Join a Different Fridge: </Text>
+                                <TextInput
+                                style={styles.IDInput}
+                                placeholder="Enter Fridge ID to Join"
+                                onChangeText={text => setNewFridgeID(text)}
                                 />
+                                <TouchableOpacity style={styles.JoinButton} onPress={handleJoin}>
+                                    <Text style={styles.JoinButtonText}>Join</Text>
+                                </TouchableOpacity>
+                            </View>
 
-                        </View>
+                            <View style={styles.modalSection}>
+                                <TouchableOpacity style={styles.JoinButton} onPress={() => setManageModalVisible(true)}>
+                                    <Text style={styles.JoinButtonText}>Manage Fridge</Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            <ManageFridgeModal
+                            manageModalVisible={manageModalVisible}
+                            setManageModalVisible={setManageModalVisible}
+                            fridgeID={fridgeID}
+                            />
+
                     </View>
+                </View>
             </Modal>
         </View>
     );
