@@ -95,7 +95,6 @@ const styles = StyleSheet.create({
         fontSize: 50,
         color: "#000000",
         marginBottom: 80,
-        fontFamily: "Mulish-Regular",
     },
 
 });

@@ -52,7 +52,7 @@ export default function SignUpPage({ navigation, route }) {
 
                 alert("Please verify your email before logging in");
 
-                navigation.navigate("LoginPage");
+                // navigation.navigate("LoginPage");
 
 
 
@@ -143,7 +143,6 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderRadius: 20,
         marginTop: 40,
-        fontFamily: "Nunito Regular"
     },
 
     signUpButton: {
@@ -155,21 +154,18 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderRadius: 20,
         marginTop: 60,
-        fontFamily: "Nunito Regular"
     },
 
     labelText: {
         fontSize: 25,
         color: "#000000",
         marginBottom: 10,
-        fontFamily: "Nunito Regular"
     },
 
     buttonText: {
         fontSize: 25,
         color: "#ffffff",
         marginVertical: 5,
-        fontFamily: "Nunito Regular"
     },
 
 });

@@ -133,7 +133,7 @@ export default function Page() {
     
       <NavigationContainer>
           <Stack.Navigator>
-            {(user) ? (
+            {(user && user.emailVerified) ? (
               <Stack.Screen name="InsideLayout" component={InsideLayout} options={blankOptions}/>
             ) : (
               <>

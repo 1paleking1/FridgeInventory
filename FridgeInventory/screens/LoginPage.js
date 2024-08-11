@@ -44,26 +44,15 @@ export default function ScanPage({ navigation, route }) {
 
     const Login = async () => {
 
-        // show flash message
-
-        // showMessage({
-        //     message: "This is a flash message",
-        //     type: "success",
-        //     icon: "auto",
-        //     duration: 3000
-        // });
-
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // check if user is verified
-            // if (!user.emailVerified) {
-            //     alert("Please verify your email before logging in");
-            //     return;
-            // } else {
-            //     console.log("User is verified");                
-            // }
+            if (!user.emailVerified) {
+                alert("Please verify your email before logging in");
+                auth.signOut();
+                return;
+            }
         
             // Promise.all([
             //     addDeviceToUser(user.uid, expoPushToken.data),
@@ -189,14 +178,12 @@ const styles = StyleSheet.create({
         fontSize: 25,
         color: "#000000",
         marginBottom: 10,
-        fontFamily: "Nunito Regular"
     },
 
     buttonText: {
         fontSize: 25,
         color: "#ffffff",
         marginVertical: 5,
-        fontFamily: "Nunito Regular"
     },
 
 });
