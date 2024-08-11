@@ -117,9 +117,19 @@ export default function ScanningCamera(props) {
         if (!docSnap.exists()) {
             console.log("cancelling notification")
             // call backend function to cancel notification
-            await axios.post("http://192.168.1.147:3000/cancelNotification", {
-                job_name: `${props.fridge_id}_${product_id}`
-            }) 
+
+
+            await axios.post("http://192.168.1.147:3000/cancelNotification", 
+                {
+                    job_name: `${props.fridge_id}_${product_id}`
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${jwt}`
+                    }
+                }
+            );
+
 
         } else {
             await deleteDoc(notificationRef);
