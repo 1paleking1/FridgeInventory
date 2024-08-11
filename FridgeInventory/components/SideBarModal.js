@@ -19,20 +19,40 @@ export default function SideBarModal(props) {
     const [newFridgeID, setNewFridgeID] = useState("");
     const [manageModalVisible, setManageModalVisible] = useState(false);
 
+    const dangerMessage = (message) => {
+
+        showMessage({
+            message: message,
+            type: "danger",
+            icon: "auto",
+            duration: 2000
+        });
+    }
+
+    const successMessage = (message) => {
+
+        showMessage({
+            message: message,
+            type: "success",
+            icon: "auto",
+            duration: 2000
+        });
+    }
 
     const handleJoin = async() => {
+
+        if (newFridgeID == "") {
+            // alert("Please enter a Fridge ID");
+            dangerMessage("Please enter a Fridge ID");
+
+            return;
+        }
 
         // make sure it's not the same fridge
         if (newFridgeID == fridgeID) {
             // alert("You are already in this fridge");
 
-            showMessage({
-                message: "You are already in this fridge",
-                type: "danger",
-                icon: "auto",
-                duration: 2000
-            });
-
+            dangerMessage("You are already in this fridge");
             return;
         }
 
@@ -65,18 +85,14 @@ export default function SideBarModal(props) {
             
             // alert("Successfully joined Fridge " + newFridgeID);
 
-            showMessage({
-                message: "Successfully joined Fridge " + newFridgeID,
-                type: "success",
-                icon: "auto",
-                duration: 2000
-            });
+            successMessage("Successfully joined Fridge " + newFridgeID);
 
 
 
         } else {
             console.log("Invalid Fridge ID");
-            alert("Invalid Fridge ID");
+            
+            dangerMessage("Invalid Fridge ID");
         }
         
     }
@@ -108,7 +124,7 @@ export default function SideBarModal(props) {
                     <View style={styles.ModalWindow}>
 
                             <View style={styles.IconContainer}>
-                                <Ionicons name="menu" size={30} color="black" style={styles.Icon} onPress={() => props.setModalOpen(false)} />
+                                <Ionicons name="menu" size={40} color="black" style={styles.Icon} onPress={() => props.setModalOpen(false)} />
                             </View>
 
                             <View style={styles.modalSection}>
@@ -159,7 +175,9 @@ export default function SideBarModal(props) {
             </Modal>
         </View>
     );
-}
+    }
+
+
 
 const styles = StyleSheet.create({
     ModalWindow: {
@@ -223,7 +241,7 @@ const styles = StyleSheet.create({
         alignItems: 'left',
         paddingLeft: 15,
         marginBottom: 30,
-        paddingTop: 20,
+        paddingTop: 10,
     },
 
     Icon: {

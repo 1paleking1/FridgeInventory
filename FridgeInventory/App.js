@@ -59,13 +59,13 @@ export default function Page() {
   const [NotificationsModalOpen, setNotificationsModalOpen] = useState(false);
   const [forceRender, setForceRender] = useState(false);
   
-  const [fontsLoaded] = useFonts({
-    "Nunito Regular": require('./assets/fonts/Nunito Regular.ttf'),
-  });
+  // const [fontsLoaded] = useFonts({
+  //   "Nunito Regular": require('./assets/fonts/Nunito Regular.ttf'),
+  // });
 
-  if (!fontsLoaded) {
-    return undefined;
-  }
+  // if (!fontsLoaded) {
+  //   return undefined;
+  // }
 
   const { expoPushToken, notification } = usePushNotifications();
 
@@ -101,13 +101,13 @@ export default function Page() {
   
     headerLeft: () => (
       <TouchableOpacity onPress={() => setMenuModalOpen(true)}>
-        <Ionicons name="menu" size={30} color="black" />  
+        <Ionicons name="menu" size={40} color="black" />  
       </TouchableOpacity>
     ),
 
     headerRight: () => (
       <TouchableOpacity onPress={() => setNotificationsModalOpen(true)}>
-        <Ionicons name="notifications" size={30} color="black" />
+        <Ionicons name="notifications" size={40} color="black" />
       </TouchableOpacity>
     ),
   

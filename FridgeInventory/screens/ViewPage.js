@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#eda366",
         padding: 15,
-        justifyContent: "center",
+        justifyContent: "space-evenly"
         
     },
 
@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
         margin: 10,
         justifyContent: "center",
         alignItems: "center",
-        marginVertical: 20,
+        // spacing between buttons based on the screen size
+        // marginVertical: "10%",
         alignSelf: "stretch",
         borderStyle: "solid",
         borderWidth: 3,

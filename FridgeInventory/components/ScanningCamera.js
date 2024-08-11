@@ -84,7 +84,7 @@ export default function ScanningCamera(props) {
         console.log("making axios call")
         console.log("jwt is ", jwt)
         // call backend function to schedule notification
-        await axios.post("http://192.168.1.147:3000/scheduleNotification", 
+        await axios.post("https://fridgeinventoryapi.onrender.com/scheduleNotification", 
             {
                 fridge_id: props.fridge_id,
                 admin: admin,
@@ -119,7 +119,7 @@ export default function ScanningCamera(props) {
             // call backend function to cancel notification
 
 
-            await axios.post("http://192.168.1.147:3000/cancelNotification", 
+            await axios.post("https://fridgeinventoryapi.onrender.com/cancelNotification", 
                 {
                     job_name: `${props.fridge_id}_${product_id}`
                 },

@@ -100,6 +100,7 @@ export default function ManageFridgeModal(props) {
             
         } else if (currentUserIsAdmin() && email == auth.currentUser.email) {
             alert("You can't delete yourself as you are the admin");
+
         } else {
             alert(`Only the admin (${adminEmail}) can delete other users`);
         }
@@ -168,7 +169,7 @@ const styles = StyleSheet.create({
     },
 
     UsersScroll: {
-        width: 300,
+        width: "80%",
     },
 
     button: {

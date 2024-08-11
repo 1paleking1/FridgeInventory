@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     },
 
     UsersScroll: {
-        width: 300,
+        width: "80%",
     },
 
     button: {
