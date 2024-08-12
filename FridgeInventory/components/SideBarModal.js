@@ -11,7 +11,8 @@ import FlashMessage, { showMessage } from "react-native-flash-message";
 import useFetchFridgeID from '../hooks/useFetchFridgeID';
 
 // components
-import ManageFridgeModal from './ManageFridgeModal';  
+import ManageFridgeModal from './ManageFridgeModal';
+import ManageReferencesModal from './ManageReferencesModal';
 
 // utility functions
 import { dangerMessage, successMessage } from '../functions/utility_functions';
@@ -20,7 +21,10 @@ export default function SideBarModal(props) {
 
     const fridgeID = useFetchFridgeID(auth.currentUser)
     const [newFridgeID, setNewFridgeID] = useState("");
-    const [manageModalVisible, setManageModalVisible] = useState(false);
+
+    const [manageFridgeModalVisible, setManageFridgeModalVisible] = useState(false);
+    const [ManageReferencesModalVisible, setManageReferencesModalVisible] = useState(false);
+
     const flashRef = useRef();
 
     const handleJoin = async() => {
@@ -143,7 +147,7 @@ export default function SideBarModal(props) {
                             </View>
 
                             <View style={styles.modalSection}>
-                                <TouchableOpacity style={styles.JoinButton} onPress={() => setManageModalVisible(true)}>
+                                <TouchableOpacity style={styles.JoinButton} onPress={() => setManageFridgeModalVisible(true)}>
                                     <Text style={styles.JoinButtonText}>Manage Fridge</Text>
                                 </TouchableOpacity>
                             </View>
@@ -151,15 +155,21 @@ export default function SideBarModal(props) {
 
 
                             <View style={styles.modalSection}>
-                                <TouchableOpacity style={styles.JoinButton}>
+                                <TouchableOpacity style={styles.JoinButton} onPress={() => setManageReferencesModalVisible(true)}>
                                     <Text style={styles.JoinButtonText}>Manage References</Text>
                                 </TouchableOpacity>
                             </View>
 
 
                             <ManageFridgeModal
-                            manageModalVisible={manageModalVisible}
-                            setManageModalVisible={setManageModalVisible}
+                            manageModalVisible={manageFridgeModalVisible}
+                            setManageModalVisible={setManageFridgeModalVisible}
+                            fridgeID={fridgeID}
+                            />
+
+                            <ManageReferencesModal
+                            manageModalVisible={ManageReferencesModalVisible}
+                            setManageModalVisible={setManageReferencesModalVisible}
                             fridgeID={fridgeID}
                             />
 

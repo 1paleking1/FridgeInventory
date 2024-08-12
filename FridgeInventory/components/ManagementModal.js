@@ -10,26 +10,36 @@ import useFetchAdmin from '../hooks/useFetchAdmin';
 
 export default function ManageFridgeModal(props) {
 
-    const [data, setData] = useState([]);
+    const [displayData, setDisplayData] = useState([]);
 
-    const loadData = async (docRef) => {
-    
-        const docSnap = await getDoc(docRef);
+    const splitOnLastSpace = (str) => {
+        return str.split(" ").slice(0, -1).join(" ")
+    }
 
-        if (docSnap.exists()) {
-            setData(docSnap.data().users);
-        } else {
-            console.log("No such document!");
+    const sortData = (data) => {
 
-        }
+        // sort data based on the food_group which is splitOnLastSpace and then the last part
+        // of the string
+
+        data.sort((product_name, food_group) => {
+        
+            
+
+            
+        
+        });
+
+
 
     }
 
     useEffect(() => {
+        console.log(props.data);
+        setDisplayData(sortData(props.data));
+        console.log("display data:")
+        console.log(displayData);
 
-        loadData(props.dataDocRef);
-
-    }, [props.manageModalVisible]);
+    }, [])
 
     return (
         <View>
@@ -41,7 +51,7 @@ export default function ManageFridgeModal(props) {
                     </TouchableOpacity>
 
                     <FlatList
-                        data={data}
+                        data={displayData}
                         style={styles.UsersScroll}
                         renderItem={({ item }) => (
                             <View style={styles.TableRow}>

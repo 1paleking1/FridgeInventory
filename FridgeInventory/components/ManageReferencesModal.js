@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet, Modal, TouchableOpacity, FlatList, ScrollView } from 'react-native';
 import { useState, useEffect } from 'react';
 import { db, auth } from '../firebaseConfig';
-import { collection, getDoc, doc, updateDoc, query, where, getDocs } from 'firebase/firestore';
+import { collection, getDoc, doc, updateDoc, query, where, getDocs, deleteDoc } from 'firebase/firestore';
 
 // hooks
 import useFetchAdmin from '../hooks/useFetchAdmin';
@@ -12,88 +12,72 @@ import ManagementModal from './ManagementModal';
 
 export default function ManageFridgeModal(props) {
 
-    const [fridgeUsers, setFridgeUsers] = useState([]);
+    const [references, setReferences] = useState([]);
+
     const adminEmail = useFetchAdmin(props.fridgeID);
-
-    const loadFridgeUsers = async () => {
-
-        docRef = doc(db, "fridges", props.fridgeID);
-        const docSnap = await getDoc(docRef);
-
-        if (docSnap.exists()) {
-            setFridgeUsers(docSnap.data().users);
-        } else {
-            console.log("No such document!");
-
-        }
-    }
 
     const currentUserIsAdmin = () => {
         return adminEmail == auth.currentUser.email;
     }
 
-    const deleteMemberInDatabase = async (emailToDelete, uidToDelete) => {
+    const handleMemberDelete = async (item) => {
 
-        // remove from fridge users array
-        docRef = doc(db, "fridges", props.fridgeID);
-        await updateDoc(docRef, {
-            users: fridgeUsers.filter(user => user != emailToDelete)
-        });
+        if (!currentUserIsAdmin()) {
+            alert("Only the admin can change the fridge references")
+            return;
+        }
 
-        // revert fridge_id in user document to their uid ad reactive their fridge
-        docRef = doc(db, "users", uidToDelete);
-        await updateDoc(docRef, {
-            fridge_id: uidToDelete
-        });
-
-        // reactivate fridge
-        docRef = doc(db, "fridges", uidToDelete);
-        await updateDoc(docRef, {
-            is_active: true
-        });
-
-    }
-
-    const getUIDFromEmail = async (email) => {
-    
-        // email is a field in the user document
-
-        const colRef = collection(db, "users");
-
-        const q = query(colRef, where("email", "==", email));
+        const colRef = collection(db, "fridges", props.fridgeID, "reference");
+        
+        const product_name = splitOnLastSpace(item);
+        const q = query(colRef, where("product_name", "==", product_name));
         const querySnapshot = await getDocs(q);
         const doc = querySnapshot.docs[0];
 
-        return doc.id;
+        // delete from database
+        await deleteDoc(doc.ref);
 
+        // delete from local state
+        setReferences(references.filter(ref => ref != item));
 
     }
 
-    const handleMemberDelete = async (email) => {
-
-        if (currentUserIsAdmin() ^ email == auth.currentUser.email) {
-            
-            uid = await getUIDFromEmail(email);
-
-            deleteMemberInDatabase(email, uid);
-
-            // remove from local state
-            setFridgeUsers(fridgeUsers.filter(user => user != email));
-            
-        } else if (currentUserIsAdmin() && email == auth.currentUser.email) {
-            alert("You can't delete yourself as you are the admin");
-
-        } else {
-            alert(`Only the admin (${adminEmail}) can delete other users`);
-        }
+    const splitOnLastSpace = (str) => {
+        return str.split(" ").slice(0, -1).join(" ")
     }
+
+    const loadData = async () => {
+        
+        const colRef = collection(db, "fridges", props.fridgeID, "reference");
+
+        // if the collection exists, get the documents
+        const q = query(colRef);
+        const querySnapshot = await getDocs(q);
+
+        let display_data = [];
+
+        querySnapshot.forEach((doc) => {
+            console.log(doc.data());
+            display_data.push(`${doc.data().product_name} (${doc.data().food_group})`);
+        });
+
+        setReferences(display_data);
+
+    }
+
+    useEffect(() => {
+
+        loadData();
+
+    }, [props.manageModalVisible]);
+
 
     return (
 
         
         <View>
             <ManagementModal
-                dataDocRef={doc(db, "fridges", props.fridgeID)}
+                data={references}
                 manageModalVisible={props.manageModalVisible}
                 setManageModalVisible={props.setManageModalVisible}
                 handleMemberDelete={handleMemberDelete}

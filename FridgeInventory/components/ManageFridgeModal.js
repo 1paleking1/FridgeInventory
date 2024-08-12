@@ -75,12 +75,32 @@ export default function ManageFridgeModal(props) {
         }
     }
 
+    const loadData = async () => {
+        
+        const docRef = doc(db, "fridges", props.fridgeID);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            setFridgeUsers(docSnap.data().users);
+        } else {
+            console.log("No such document!");
+
+        }
+
+    }
+
+    useEffect(() => {
+
+        loadData();
+
+    }, [props.manageModalVisible]);
+
+
     return (
 
-        
         <View>
             <ManagementModal
-                dataDocRef={doc(db, "fridges", props.fridgeID)}
+                data={fridgeUsers}
                 manageModalVisible={props.manageModalVisible}
                 setManageModalVisible={props.setManageModalVisible}
                 handleMemberDelete={handleMemberDelete}
