@@ -1,19 +1,24 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, aleer } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import FlashMessage, { showMessage } from "react-native-flash-message";
 
 // firebase imports
 import { db, auth } from "../firebaseConfig";
 import { sendEmailVerification, createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, setDoc, deleteDoc, doc, getDoc } from "firebase/firestore"; 
+import { collection, setDoc, deleteDoc, doc, getDoc } from "firebase/firestore";
+
+// utility functions
+import { dangerMessage, successMessage, infoMessage, getErrorFlashMessage } from '../functions/utility_functions';
 
 
 export default function SignUpPage({ navigation, route }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const flashRef = useRef()
 
     const addUserToDatabase = async(uid, email) => {
-
+        
         try {
 
             docRef = doc(db, "users", uid.toString());
@@ -41,6 +46,7 @@ export default function SignUpPage({ navigation, route }) {
 
 
     const SignUp = () => {
+
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 // Signed in
@@ -50,20 +56,16 @@ export default function SignUpPage({ navigation, route }) {
 
                 sendEmailVerification(user)
 
-                alert("Please verify your email before logging in");
-
-                // navigation.navigate("LoginPage");
-
-
+                infoMessage("Please verify your email before logging in", flashRef);
 
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
 
-                if (errorCode === 'auth/weak-password') {
-                    alert('The password is too weak.');
-                }
+                console.log(errorCode);
+
+                getErrorFlashMessage(errorCode, flashRef);
                 
             });
     };
@@ -72,6 +74,7 @@ export default function SignUpPage({ navigation, route }) {
     return (
         <View style={styles.container}>
 
+            <FlashMessage position="top" ref={flashRef} />
 
             <View style={styles.formBox}>
             

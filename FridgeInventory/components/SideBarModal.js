@@ -13,31 +13,14 @@ import useFetchFridgeID from '../hooks/useFetchFridgeID';
 // components
 import ManageFridgeModal from './ManageFridgeModal';  
 
+// utility functions
+import { dangerMessage, successMessage } from '../functions/utility_functions';
+
 export default function SideBarModal(props) {
 
     const fridgeID = useFetchFridgeID(auth.currentUser)
     const [newFridgeID, setNewFridgeID] = useState("");
     const [manageModalVisible, setManageModalVisible] = useState(false);
-
-    const dangerMessage = (message) => {
-
-        showMessage({
-            message: message,
-            type: "danger",
-            icon: "auto",
-            duration: 2000
-        });
-    }
-
-    const successMessage = (message) => {
-
-        showMessage({
-            message: message,
-            type: "success",
-            icon: "auto",
-            duration: 2000
-        });
-    }
 
     const handleJoin = async() => {
 

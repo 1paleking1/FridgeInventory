@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import FlashMessage, { showMessage } from "react-native-flash-message";
 
 // firebase imports
 import { db, auth } from "../firebaseConfig";
@@ -9,13 +10,16 @@ import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion } fro
 // hooks
 import { usePushNotifications } from '../hooks/usePushNotifications';
 
+// utility functions
+import { dangerMessage, successMessage, infoMessage, getErrorFlashMessage } from '../functions/utility_functions';
+
 
 export default function ScanPage({ navigation, route }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { expoPushToken, notification } = usePushNotifications();
-    const [jwt, setJwt] = useState(null);
+    const flashRef = useRef()
 
     const addDeviceToUser = async(uid, push_token) => {
     
@@ -49,7 +53,7 @@ export default function ScanPage({ navigation, route }) {
             const user = userCredential.user;
 
             if (!user.emailVerified) {
-                alert("Please verify your email before logging in");
+                alert(`A verification email has been sent to ${email}. Please verify your email before logging in.`);
                 auth.signOut();
                 return;
             }
@@ -68,23 +72,15 @@ export default function ScanPage({ navigation, route }) {
     
             console.log(errorCode);
     
-            if (errorCode === 'auth/invalid-credential') {
-                alert('The email or password is incorrect.');
-            } else if (errorCode === 'auth/too-many-requests') {
-                alert('Too many requests. Please try again later.');
-            }
-        }
-    }
+            getErrorFlashMessage(errorCode, flashRef);
 
-    const showToast = () => {
-        console.log("showing toast")
-        Toast.success('Promised is resolved')
+        }
     }
 
     return (
         <View style={styles.container}>
 
-            {/* <FlashMessage position="top" /> */}
+            <FlashMessage position="top" ref={flashRef} />
             
             <View style={styles.formBox}>
             
