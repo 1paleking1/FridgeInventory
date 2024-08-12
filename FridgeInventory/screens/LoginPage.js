@@ -62,6 +62,9 @@ export default function ScanPage({ navigation, route }) {
             //     addDeviceToUser(user.uid, expoPushToken.data),
             // ]);
 
+            // refresh user
+            // user.reload();
+
             await addDeviceToUser(user.uid, expoPushToken.data);
 
 

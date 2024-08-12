@@ -11,7 +11,7 @@ export default function ScanPage({ navigation, route }) {
 
         console.log("Product ID received: " + product_id);
 
-        navigation.navigate("ManualPage", {product_id: product_id});
+        navigation.navigate("ManualPage", {product_id: product_id, fridge_id: route.params.fridge_id});
     }
 
     return (

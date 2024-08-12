@@ -15,6 +15,19 @@ export default function ManageFridgeModal(props) {
     const [fridgeUsers, setFridgeUsers] = useState([]);
     const adminEmail = useFetchAdmin(props.fridgeID);
 
+    const loadFridgeUsers = async () => {
+
+        docRef = doc(db, "fridges", props.fridgeID);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            setFridgeUsers(docSnap.data().users);
+        } else {
+            console.log("No such document!");
+
+        }
+    }
+
     const currentUserIsAdmin = () => {
         return adminEmail == auth.currentUser.email;
     }

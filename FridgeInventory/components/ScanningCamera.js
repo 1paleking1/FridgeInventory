@@ -150,7 +150,7 @@ export default function ScanningCamera(props) {
 
     const getReferenceProduct = async(product_id) => {
 
-        let docRef = doc(db, "reference", product_id.toString());
+        let docRef = doc(db, "fridges", props.fridge_id, "reference", product_id);
         let docSnap = await getDoc(docRef);
         
         if (docSnap.exists()) {

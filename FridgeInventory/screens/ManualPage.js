@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Button, TouchableOpacity, TextInput, Touchable 
 import React, { useEffect, useState } from "react";
 import { SelectList } from 'react-native-dropdown-select-list'
 
-import { db } from '../firebaseConfig.js';
+import { auth, db } from '../firebaseConfig.js';
 import { collection, setDoc, deleteDoc, doc } from "firebase/firestore"; 
 
 
@@ -15,7 +15,8 @@ export default function ManualPage(props) {
 
         console.log(product_id)
         
-        const docRef = doc(db, "reference", product_id);
+        // const docRef = doc(db, "reference", product_id);
+        const docRef = doc(db, "fridges", props.route.params.fridge_id, "reference", product_id);
 
         setDoc(docRef, {
             product_name: product_name,

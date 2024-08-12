@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, aleer } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import FlashMessage, { showMessage } from "react-native-flash-message";
 
@@ -15,7 +15,7 @@ export default function SignUpPage({ navigation, route }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    
+    const [emailSent, setEmailSent] = useState(false);
     const flashRef = useRef()
 
     const addUserToDatabase = async(uid, email) => {
@@ -26,6 +26,7 @@ export default function SignUpPage({ navigation, route }) {
 
             await setDoc(docRef, {
                 email: email,
+                verified: false,
                 fridge_id: uid.toString(),
                 devices: [route.params.push_token], 
             });
@@ -45,6 +46,16 @@ export default function SignUpPage({ navigation, route }) {
 
     };
 
+    const sendEmailAndInform = async() => {
+           
+        await sendEmailVerification(auth.currentUser);
+
+        setEmailSent(true);
+
+        infoMessage("Please verify your email before logging in", flashRef);
+    
+    }
+
 
     const SignUp = () => {
 
@@ -55,9 +66,7 @@ export default function SignUpPage({ navigation, route }) {
 
                 addUserToDatabase(user.uid, email);
 
-                sendEmailVerification(user)
-
-                infoMessage("Please verify your email before logging in", flashRef);
+                sendEmailAndInform();
 
             })
             .catch((error) => {
@@ -65,12 +74,25 @@ export default function SignUpPage({ navigation, route }) {
                 const errorMessage = error.message;
 
                 console.log(errorCode);
-
-                getErrorFlashMessage(errorCode, flashRef);
                 
             });
     };
 
+
+    const resendVerificationEmail = async() => {
+        
+        try {
+
+            await sendEmailVerification(auth.currentUser);
+            infoMessage("Email Resent. Please verify your email before logging in", flashRef);
+
+        } catch (e) {
+            if (e.code === 'auth/too-many-requests') {
+                dangerMessage("Too many requests. Resend attempts should be around 40s apart.", flashRef);
+            }
+        }
+    
+    }
 
     return (
         <View style={styles.container}>
@@ -97,9 +119,14 @@ export default function SignUpPage({ navigation, route }) {
                     <Text style={styles.buttonText}>Sign Up</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity>
-                    <Text style={styles.resendText}>Resend Verification Email</Text>
-                </TouchableOpacity>
+                {emailSent ?
+
+                    <TouchableOpacity onPress={resendVerificationEmail}>
+                        <Text style={styles.resendText}>Resend Verification Email</Text>
+                    </TouchableOpacity>
+                
+                : <Text>{"\n"}</Text>}
+
 
             </View>
 

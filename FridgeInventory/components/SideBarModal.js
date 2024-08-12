@@ -148,6 +148,15 @@ export default function SideBarModal(props) {
                                 </TouchableOpacity>
                             </View>
 
+
+
+                            <View style={styles.modalSection}>
+                                <TouchableOpacity style={styles.JoinButton}>
+                                    <Text style={styles.JoinButtonText}>Manage References</Text>
+                                </TouchableOpacity>
+                            </View>
+
+
                             <ManageFridgeModal
                             manageModalVisible={manageModalVisible}
                             setManageModalVisible={setManageModalVisible}
@@ -172,7 +181,8 @@ const styles = StyleSheet.create({
         width: '80%',
         backgroundColor: '#ffffff',
         paddingHorizontal: 2,
-        justifyContent: 'flex-start',
+        // justifyContent: 'flex-start',
+        justifyContent: "space-evenly",
         alignItems: 'center',
         // borderTopRightRadius: 20,
         // borderBottomRightRadius: 20,
