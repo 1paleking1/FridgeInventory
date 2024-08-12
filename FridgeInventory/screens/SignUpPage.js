@@ -15,6 +15,7 @@ export default function SignUpPage({ navigation, route }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    
     const flashRef = useRef()
 
     const addUserToDatabase = async(uid, email) => {
@@ -96,6 +97,10 @@ export default function SignUpPage({ navigation, route }) {
                     <Text style={styles.buttonText}>Sign Up</Text>
                 </TouchableOpacity>
 
+                <TouchableOpacity>
+                    <Text style={styles.resendText}>Resend Verification Email</Text>
+                </TouchableOpacity>
+
             </View>
 
         </View>
@@ -120,8 +125,7 @@ const styles = StyleSheet.create({
     },
 
     pickerInput: {
-        fontSize: 20,
-        
+        fontSize: 20,  
     },
 
     pickerOptions: {
@@ -170,6 +174,15 @@ const styles = StyleSheet.create({
         color: "#ffffff",
         marginVertical: 5,
     },
+
+    resendText: {
+        color: "blue",
+        textDecorationLine: "underline",
+        textDecorationColor: "blue",
+        textAlign: "center",
+        fontSize: 15,
+        marginTop: 20,
+    }
 
 });
 

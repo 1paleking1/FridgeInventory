@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput, TouchableWithoutFeedback, Touchable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Make sure to install and import Ionicons
 import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
@@ -21,12 +21,13 @@ export default function SideBarModal(props) {
     const fridgeID = useFetchFridgeID(auth.currentUser)
     const [newFridgeID, setNewFridgeID] = useState("");
     const [manageModalVisible, setManageModalVisible] = useState(false);
+    const flashRef = useRef();
 
     const handleJoin = async() => {
 
         if (newFridgeID == "") {
             // alert("Please enter a Fridge ID");
-            dangerMessage("Please enter a Fridge ID");
+            dangerMessage("Please enter a Fridge ID", flashRef);
 
             return;
         }
@@ -35,7 +36,7 @@ export default function SideBarModal(props) {
         if (newFridgeID == fridgeID) {
             // alert("You are already in this fridge");
 
-            dangerMessage("You are already in this fridge");
+            dangerMessage("You are already in this fridge", flashRef);
             return;
         }
 
@@ -68,14 +69,14 @@ export default function SideBarModal(props) {
             
             // alert("Successfully joined Fridge " + newFridgeID);
 
-            successMessage("Successfully joined Fridge " + newFridgeID);
+            successMessage("Successfully joined Fridge " + newFridgeID, flashRef);
 
 
 
         } else {
             console.log("Invalid Fridge ID");
             
-            dangerMessage("Invalid Fridge ID");
+            dangerMessage("Invalid Fridge ID", flashRef);
         }
         
     }
