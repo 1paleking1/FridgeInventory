@@ -57,8 +57,8 @@ export default function ManageFridgeModal(props) {
         let display_data = [];
 
         querySnapshot.forEach((doc) => {
-            console.log(doc.data());
-            display_data.push(`${doc.data().product_name} (${doc.data().food_group})`);
+            // display_data.push(`${doc.data().product_name} (${doc.data().food_group})`);
+            display_data.push(doc.data())
         });
 
         setReferences(display_data);
@@ -78,6 +78,7 @@ export default function ManageFridgeModal(props) {
         <View>
             <ManagementModal
                 data={references}
+                dataType={"References"}
                 manageModalVisible={props.manageModalVisible}
                 setManageModalVisible={props.setManageModalVisible}
                 handleMemberDelete={handleMemberDelete}

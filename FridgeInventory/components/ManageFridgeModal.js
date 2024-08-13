@@ -101,9 +101,12 @@ export default function ManageFridgeModal(props) {
         <View>
             <ManagementModal
                 data={fridgeUsers}
+                dataType={"Emails"}
                 manageModalVisible={props.manageModalVisible}
                 setManageModalVisible={props.setManageModalVisible}
                 handleMemberDelete={handleMemberDelete}
+                currentUserIsAdmin={currentUserIsAdmin}
+                adminEmail={adminEmail}
             />
         </View>
     );

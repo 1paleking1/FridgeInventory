@@ -16,30 +16,96 @@ export default function ManageFridgeModal(props) {
         return str.split(" ").slice(0, -1).join(" ")
     }
 
+    const formatReferences = (data) => {
+            
+        const sortedProducts = data
+            .sort((a, b) => {
+                if (a.food_group < b.food_group) return -1;
+                if (a.food_group > b.food_group) return 1;
+                return 0;
+            })
+            .map(item => `${item.product_name} (${item.food_group})`);
+        
+        return sortedProducts;
+            
+    }
+
     const sortData = (data) => {
 
-        // sort data based on the food_group which is splitOnLastSpace and then the last part
-        // of the string
+        if (props.dataType == "Emails") {
+            return data
+        } else if (props.dataType == "References") {
+            return formatReferences(data)
+        }
 
-        data.sort((product_name, food_group) => {
+    }
+
+
+    const getTableRowJSX = (item) => {
+
+        if (props.dataType == "Emails") {
+            return (
+                <View style={styles.TableRow}>
+                    <Text style={styles.text} >{item}</Text>
+                    <Ionicons name="trash" size={24} color="black" onPress={() => props.handleMemberDelete(item)} />
+                </View>
+            )
+        } else if (props.dataType == "References") {
+
+            let split_list = item.split(" ")
+
+            let product_name = split_list.slice(0, -1).join(" ")
+            let food_group = split_list[split_list.length - 1]
+
+            return (
+                <View style={styles.TableRow}>
+
+                    <Text style={styles.text} >{product_name}
+                        <Text style={getFoodGroupTextStyle(food_group)}> {food_group}</Text>
+                    </Text>
+
+                    <Ionicons name="trash" size={24} color="black" onPress={() => props.handleReferenceDelete(item)} />
+
+                </View>
+            )
+        }
+
+    }
+
+    const getFoodGroupTextStyle = (food_group) => {
         
-            
+        let color = "black";
 
-            
-        
-        });
+        switch (food_group) {
+            case "(Bread)":
+                color = "#f2f2f2";
+                break;
+            case "(Dairy)":
+                color = "#ff6666";
+                break;
+            case "(Vegetables)":
+                color = "#66ff66";
+                break;
+            case "(Fruit)":
+                color = "#ffcc00";
+                break;
+            case "(Sauce)":
+                color = "#b3b3b3";
+                break;
+            case "(Misc)":
+                color = "#ff99ff";
+                break;
+        }
 
-
+        return {
+            color: color,
+        }
 
     }
 
     useEffect(() => {
-        console.log(props.data);
         setDisplayData(sortData(props.data));
-        console.log("display data:")
-        console.log(displayData);
-
-    }, [])
+    }, [props.data])
 
     return (
         <View>
@@ -54,10 +120,9 @@ export default function ManageFridgeModal(props) {
                         data={displayData}
                         style={styles.UsersScroll}
                         renderItem={({ item }) => (
-                            <View style={styles.TableRow}>
-                                <Text style={styles.text} >{item}</Text>
-                                <Ionicons name="trash" size={24} color="black" onPress={() => props.handleMemberDelete(item)} />
-                            </View>
+                                
+                            getTableRowJSX(item)
+                            
                         )}
                     />
 
