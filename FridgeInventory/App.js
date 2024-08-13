@@ -1,7 +1,8 @@
+// react imports
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useFonts } from 'expo-font';
+import { TouchableOpacity } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 
 // screen imports
 import LoginPage from './screens/LoginPage';
@@ -18,8 +19,6 @@ import ShoppingListPage from './screens/ShoppingListPage';
 import SideBarModal from './components/SideBarModal';
 import NotificationsModal from './components/NotificationsModal';
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { NavigationContainer } from '@react-navigation/native';
 
 // firebase imports
 import { db, auth } from './firebaseConfig';
@@ -29,6 +28,8 @@ import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, arrayRemove } fr
 // hooks
 import { usePushNotifications } from './hooks/usePushNotifications';
 
+// misc
+import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 
@@ -57,15 +58,6 @@ export default function Page() {
   const [user, setUser] = useState(null);
   const [MenuModalOpen, setMenuModalOpen] = useState(false);
   const [NotificationsModalOpen, setNotificationsModalOpen] = useState(false);
-  const [forceRender, setForceRender] = useState(false);
-  
-  // const [fontsLoaded] = useFonts({
-  //   "Nunito Regular": require('./assets/fonts/Nunito Regular.ttf'),
-  // });
-
-  // if (!fontsLoaded) {
-  //   return undefined;
-  // }
 
   const { expoPushToken, notification } = usePushNotifications();
 

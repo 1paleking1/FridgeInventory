@@ -11,14 +11,9 @@ import ShoppingAddModal from "../components/ShoppingAddModal";
 
 export default function ShoppingListPage({ navigation, route }) {
 
-    // const data = ["Apples", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread"];
-
-    // const [data, setData] = useState(["Apples", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread", "Oranges", "Bananas", "Milk", "Eggs", "Bread"]);
-
     const [data, setData] = useState([]);
     const [deleteStack, setDeleteStack] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
-
 
     const deleteItem = (item) => {
     

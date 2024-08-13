@@ -135,16 +135,10 @@ export default function ScanningCamera(props) {
             await deleteDoc(notificationRef);
         }
 
-
-        // add item to shopping list array
         const docRef = doc(db, "fridges", props.fridge_id.toString());
         await updateDoc(docRef, {
             shoppingList: arrayUnion(product_name)
         });
-
-        // delete notification from database
-        // const notificationRef = doc(db, "fridges", props.fridge_id.toString(), "notifications", notification_id);
-
 
     }
 
