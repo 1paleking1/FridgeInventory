@@ -24,7 +24,7 @@ export default function ManageFridgeModal(props) {
 
         if (!currentUserIsAdmin()) {
             alert("Only the admin can change the fridge references")
-            return;
+            return false;
         }
 
         const colRef = collection(db, "fridges", props.fridgeID, "reference");
@@ -37,8 +37,10 @@ export default function ManageFridgeModal(props) {
         // delete from database
         await deleteDoc(doc.ref);
 
+        return true;
+
         // delete from local state
-        setReferences(references.filter(ref => ref != item));
+        // setReferences(references.filter(ref => ref != item));
 
     }
 

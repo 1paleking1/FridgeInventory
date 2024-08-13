@@ -66,12 +66,16 @@ export default function ManageFridgeModal(props) {
 
             // remove from local state
             setFridgeUsers(fridgeUsers.filter(user => user != email));
+
+            return true
             
         } else if (currentUserIsAdmin() && email == auth.currentUser.email) {
             alert("You can't delete yourself as you are the admin");
+            return false;
 
         } else {
             alert(`Only the admin (${adminEmail}) can delete other users`);
+            return false
         }
     }
 

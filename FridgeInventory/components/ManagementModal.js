@@ -40,6 +40,16 @@ export default function ManageFridgeModal(props) {
 
     }
 
+    const handleMemberDelete = async (item) => {
+
+        const status = props.handleMemberDelete(item);
+
+        if (status) {
+            // update local state
+            setDisplayData(displayData.filter(ref => ref != item));
+        }
+
+    }
 
     const getTableRowJSX = (item) => {
 
@@ -64,7 +74,7 @@ export default function ManageFridgeModal(props) {
                         <Text style={getFoodGroupTextStyle(food_group)}> {food_group}</Text>
                     </Text>
 
-                    <Ionicons name="trash" size={24} color="black" onPress={() => props.handleReferenceDelete(item)} />
+                    <Ionicons name="trash" size={24} color="black" onPress={() => handleMemberDelete(item)} />
 
                 </View>
             )
@@ -78,22 +88,22 @@ export default function ManageFridgeModal(props) {
 
         switch (food_group) {
             case "(Bread)":
-                color = "#f2f2f2";
+                color = "brown";
                 break;
             case "(Dairy)":
-                color = "#ff6666";
+                color = "blue";
                 break;
             case "(Vegetables)":
-                color = "#66ff66";
+                color = "green";
                 break;
-            case "(Fruit)":
-                color = "#ffcc00";
+            case "(Fruits)":
+                color = "yellow";
                 break;
             case "(Sauce)":
-                color = "#b3b3b3";
+                color = "red";
                 break;
             case "(Misc)":
-                color = "#ff99ff";
+                color = "black";
                 break;
         }
 
