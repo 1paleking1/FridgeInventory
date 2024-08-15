@@ -186,12 +186,19 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         width: 150,
         height: 50,
+        shadowColor: "blue",
+        shadowOffset: {
+            width: 0,
+            height: 4, // Increased for a larger shadow
+        },
+        shadowOpacity: 0.9, // Increased opacity for a darker shadow
+        shadowRadius: 6, // Increased radius for more blur
+        elevation: 15, // Increased elevation for a more pronounced effect
     },
 
     buttonText: {
         color: "#ffffff",
         fontSize: 20,
-
     },
 
 });

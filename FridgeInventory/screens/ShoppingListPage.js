@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
     icon: {
         marginHorizontal: 30,
         marginVertical: 20,
+        
     },
 
 });

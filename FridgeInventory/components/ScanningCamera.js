@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from "react";
-import { CameraView } from 'expo-camera';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import axios from 'axios';
 import { db, auth } from '../firebaseConfig.js';
 import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
@@ -15,7 +15,8 @@ export default function ScanningCamera(props) {
 
     const [facing, setFacing] = useState("back");
     const [scanning, setScanning] = useState(true);
-    
+    const [permission, requestPermission] = useCameraPermissions();
+
     const admin = useFetchAdmin(props.fridge_id);
     const [jwt, setJwt] = useState(null);
 
@@ -29,6 +30,8 @@ export default function ScanningCamera(props) {
         getJwt();
 
     }, []);
+
+
 
 
 
@@ -220,11 +223,30 @@ export default function ScanningCamera(props) {
           
     }
 
+    
+    const getTemplate = () => {
+
+        
+        // if (!permission || !permission.granted) {
+        if (true) {
+            return (
+                <View style={styles.container}>
+                    <Text>Camera permission is required to scan barcodes</Text>
+                    <Button title="Request Permission" onPress={() => requestPermission()}></Button>
+                </View>
+            )
+        } else {
+            return (
+                <CameraView style={styles.Camera} facing={facing} onBarcodeScanned={(raw_data) => scanBarcode(raw_data)} >
+                </CameraView>
+            )
+
+        }
+    
+    }
+
     return (
-
-            <CameraView style={styles.Camera} facing={facing} onBarcodeScanned={(raw_data) => scanBarcode(raw_data)} >
-            </CameraView>
-
+        getTemplate()
     )
 
 }
@@ -242,7 +264,24 @@ const styles = StyleSheet.create({
         width: "100%",
         height: 100,
         flex: 1,
+    },
 
+    button: {
+        backgroundColor: "#66b0ed",
+        justifyContent: "center",
+        alignItems: "center",
+        borderStyle: "solid",
+        borderWidth: 3,
+        borderRadius: 5,
+        marginTop: 40,
+        marginBottom: 20,
+        width: 150,
+        height: 50,
+    },
+
+    buttonText: {
+        color: "#ffffff",
+        fontSize: 20,
     },
 
 });

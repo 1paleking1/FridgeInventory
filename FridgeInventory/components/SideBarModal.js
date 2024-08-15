@@ -212,6 +212,14 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 20,
         marginTop: 10,
+        shadowColor: "black",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.9,
+        shadowRadius: 6,
+        elevation: 5,
     },
 
     JoinButtonText: {
@@ -231,7 +239,7 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 10,
-        padding: 10
+        padding: 10,
     },
 
     modalSection: {

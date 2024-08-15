@@ -18,10 +18,6 @@ export default function NotificationsModal(props) {
 
     const getNotifications = async () => {
     
-        console.log("getting notifications");
-
-        console.log("check: ", fridge_id);
-
         // get all docs in the notifications collection
         const fridgeRef = collection(db, "fridges", fridge_id, "notifications");
         const querySnapshot = await getDocs(fridgeRef);
@@ -61,6 +57,7 @@ export default function NotificationsModal(props) {
     };
     
     useEffect(() => {
+        console.log("this shouldn't be running yet")
         getNotifications();
 
     }, [props.modalOpen]);

@@ -71,6 +71,14 @@ const styles = StyleSheet.create({
         borderStyle: "solid",
         borderWidth: 3,
         borderRadius: 20,
+        shadowColor: "black",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.9,
+        shadowRadius: 6,
+        elevation: 15,
     },
 
     VegText: {

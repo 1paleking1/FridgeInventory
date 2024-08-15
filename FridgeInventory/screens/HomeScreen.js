@@ -6,21 +6,20 @@ import { Ionicons } from "@expo/vector-icons";
 
 import useFetchFridgeID from "../hooks/useFetchFridgeID";
 
-import SideBarModal from "../components/SideBarModal";
+// import NotificationsModal from "../components/NotificationsModal";
 
 export default function HomePage({ navigation }) {
     
     // const { expoPushToken, notification } = usePushNotifications();
     const fridge_id = useFetchFridgeID(auth.currentUser);
+    const [NotificationsModalOpen, setNotificationsModalOpen] = useState(false);
 
     // const data = JSON.stringify(notification, undefined, 2);
     // ExponentPushToken[1HtfjOLJ5Sn0tD-w6SKX6d]
     return (
 
             <View style={styles.container}>
-                
-                {/* <Text>Token: {expoPushToken?.data ?? "No token"}</Text> */}
-                                            
+                                                            
                 <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ScanPage', {fridge_id: fridge_id})}>
                     <Text style={styles.ButtonText}>Scan</Text>
                 </TouchableOpacity>
@@ -36,6 +35,13 @@ export default function HomePage({ navigation }) {
                 <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ShoppingListPage', {fridge_id: fridge_id})}>
                     <Text style={styles.ButtonText}>Shopping List</Text>
                 </TouchableOpacity>
+
+                {/* <NotificationsModal
+                modalOpen={NotificationsModalOpen}
+                setModalOpen={setNotificationsModalOpen}
+                />
+                 */}
+                 
             </View>
 
     );
@@ -63,6 +69,14 @@ const styles = StyleSheet.create({
         borderStyle: "solid",
         borderWidth: 3,
         borderRadius: 20,
+        shadowColor: "black",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.9,
+        shadowRadius: 6,
+        elevation: 15,
     },
 
     TimedButton: {
