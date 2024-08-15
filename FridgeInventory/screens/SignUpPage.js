@@ -74,6 +74,8 @@ export default function SignUpPage({ navigation, route }) {
                 const errorMessage = error.message;
 
                 console.log(errorCode);
+
+                getErrorFlashMessage(errorCode, flashRef);
                 
             });
     };

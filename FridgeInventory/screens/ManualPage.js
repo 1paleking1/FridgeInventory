@@ -12,10 +12,7 @@ export default function ManualPage(props) {
     const [product_id, setProductID] = useState(props.route.params.product_id);
 
     const addToDatabase = () => {
-
-        console.log(product_id)
         
-        // const docRef = doc(db, "reference", product_id);
         const docRef = doc(db, "fridges", props.route.params.fridge_id, "reference", product_id);
 
         setDoc(docRef, {

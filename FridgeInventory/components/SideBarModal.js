@@ -106,7 +106,7 @@ export default function SideBarModal(props) {
 
             <Modal visible={props.modalOpen} transparent={true} animationType="fade">
 
-                <FlashMessage position="top" />
+                <FlashMessage position="top" ref={flashRef} />
 
                 <View style={styles.ModalBackgroundOpacity}>
                     <View style={styles.ModalWindow}>

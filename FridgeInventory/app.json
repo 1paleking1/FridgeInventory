@@ -4,10 +4,6 @@
     "slug": "FridgeInventory",
     "version": "1.0.0",
     "orientation": "portrait",
-
-    "androidMode": "collapse",
-    "androidCollapsedTitle": "Old Fridge Items",
-
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
@@ -20,7 +16,9 @@
       "bundleIdentifier": "com.skkaranth.fridgeinventory"
     },
     "android": {
-      "googleServicesFile": "./android/app/google-services.json",
+      "permissions": [
+        "CAMERA"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -35,6 +33,9 @@
         "projectId": "faf56f89-8b9b-45e2-851a-006411d1783b"
       }
     },
-    "owner": "skkaranth1"
+    "owner": "skkaranth1",
+    "plugins": [
+      "expo-build-properties"
+    ]
   }
 }
