@@ -1,5 +1,5 @@
 // react imports
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -37,16 +37,16 @@ const InsideStack = createNativeStackNavigator();
 
 
 const InsideLayout = () => {
+
   return (
     <InsideStack.Navigator> 
-      <Stack.Screen name="HomePage" component={HomePage} options={headerOptions} />
+      <Stack.Screen name="HomePage" component={HomePage} options={headerOptions}/>
       <Stack.Screen name="ScanPage" component={ScanPage} />
       <Stack.Screen name="DeletePage" component={DeletePage} />
       <Stack.Screen name="ManualPage" component={ManualPage} />
       <Stack.Screen name="ViewPage" component={ViewPage} />
       <Stack.Screen name="FoodTypePage" component={FoodTypePage} />
       <Stack.Screen name="ShoppingListPage" component={ShoppingListPage} />
-
       <Stack.Screen name="ManageFridgePage" component={FoodTypePage} />
     </InsideStack.Navigator>
   );
@@ -82,11 +82,12 @@ export default function Page() {
       devices: arrayRemove(token)
     });
 
-
   }
 
   blankOptions = {
-    headerShown: false
+    headerShown: false,
+    headerTitleAlign: 'center',
+    
   }
   
   headerOptions = {
@@ -129,8 +130,8 @@ export default function Page() {
               <Stack.Screen name="InsideLayout" component={InsideLayout} options={blankOptions}/>
             ) : (
               <>
-                <Stack.Screen name="LoginPage" component={LoginPage}/>
-                <Stack.Screen name="SignUpPage" component={SignUpPage}/>
+                <Stack.Screen name="LoginPage" component={LoginPage} options={{headerTitleAlign: 'center'}} />
+                <Stack.Screen name="SignUpPage" component={SignUpPage} options={{headerTitleAlign: 'center'}} />
               </>
             )}
 

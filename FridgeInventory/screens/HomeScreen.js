@@ -3,19 +3,49 @@ import React, { useState, useEffect, Suspense } from "react";
 import { usePushNotifications } from "../hooks/usePushNotifications";
 import { auth } from "../firebaseConfig";
 import { Ionicons } from "@expo/vector-icons";
+import { onAuthStateChanged } from 'firebase/auth';
+
 
 import useFetchFridgeID from "../hooks/useFetchFridgeID";
 
-// import NotificationsModal from "../components/NotificationsModal";
+import NotificationsModal from "../components/NotificationsModal";
+import SideBarModal from "../components/SideBarModal";
 
-export default function HomePage({ navigation }) {
+export default function HomePage({ navigation, route }) {
     
-    // const { expoPushToken, notification } = usePushNotifications();
     const fridge_id = useFetchFridgeID(auth.currentUser);
-    const [NotificationsModalOpen, setNotificationsModalOpen] = useState(false);
 
-    // const data = JSON.stringify(notification, undefined, 2);
-    // ExponentPushToken[1HtfjOLJ5Sn0tD-w6SKX6d]
+    // const [user, setUser] = useState(null);
+    // const [NotificationsModalOpen, setNotificationsModalOpen] = useState(false);
+    // const [MenuModalOpen, setMenuModalOpen] = useState(false);
+    
+
+
+    // set the home page screen header options
+    // useEffect(() => {
+
+    //     console.log(route.params)
+
+    //     navigation.setOptions({
+    //         headerLeft: () => (
+    //             <TouchableOpacity onPress={() => setMenuModalOpen(true)}>
+    //               <Ionicons name="menu" size={40} color="black" />  
+    //             </TouchableOpacity>
+    //           ),
+          
+    //           headerRight: () => (
+    //             <TouchableOpacity onPress={() => setNotificationsModalOpen(true)}>
+    //               <Ionicons name="notifications" size={40} color="black" />
+    //             </TouchableOpacity>
+    //           ),
+
+    //           headerTitleAlign: 'center',
+
+    //     });
+    // }, [navigation]);
+
+
+
     return (
 
             <View style={styles.container}>
@@ -40,7 +70,16 @@ export default function HomePage({ navigation }) {
                 modalOpen={NotificationsModalOpen}
                 setModalOpen={setNotificationsModalOpen}
                 />
-                 */}
+
+                <SideBarModal
+                modalOpen={MenuModalOpen}
+                setModalOpen={setMenuModalOpen}
+                email={auth.currentUser ? auth.currentUser.email : null}
+                onClose={() => setMenuModalOpen(false)}
+                signOut={route.params.signUserOut}
+                toManageFridgePage={() => console.log("Manage Fridge Page")}
+                /> */}
+                
                  
             </View>
 
@@ -72,11 +111,11 @@ const styles = StyleSheet.create({
         shadowColor: "black",
         shadowOffset: {
             width: 0,
-            height: 4,
+            height: 2,
         },
         shadowOpacity: 0.9,
         shadowRadius: 6,
-        elevation: 15,
+        elevation: 5,
     },
 
     TimedButton: {

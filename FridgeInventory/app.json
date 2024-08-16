@@ -16,9 +16,6 @@
       "bundleIdentifier": "com.skkaranth.fridgeinventory"
     },
     "android": {
-      "permissions": [
-        "CAMERA"
-      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

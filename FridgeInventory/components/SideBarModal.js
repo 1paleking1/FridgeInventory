@@ -98,6 +98,13 @@ export default function SideBarModal(props) {
     }
 
 
+
+
+
+
+
+    
+
     const fridgeIDJSX = fridgeID ? <Text>{fridgeID}</Text> : <Text>Not in a Fridge</Text>;
 
     return (

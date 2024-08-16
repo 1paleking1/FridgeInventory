@@ -226,15 +226,23 @@ export default function ScanningCamera(props) {
     
     const getTemplate = () => {
 
-        
-        // if (!permission || !permission.granted) {
-        if (true) {
+        if (!permission) {
             return (
                 <View style={styles.container}>
-                    <Text>Camera permission is required to scan barcodes</Text>
-                    <Button title="Request Permission" onPress={() => requestPermission()}></Button>
+                    <Text style={styles.text}>Loading...</Text>
                 </View>
             )
+        
+        } else if (!permission.granted) {
+            return (
+                <View style={styles.container}>
+                    <TouchableOpacity style={styles.button} onPress={() => requestPermission()}>
+                        <Text style={styles.buttonText}>Request Permission</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+
+    
         } else {
             return (
                 <CameraView style={styles.Camera} facing={facing} onBarcodeScanned={(raw_data) => scanBarcode(raw_data)} >
@@ -257,7 +265,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#eda366",
         alignItems: "center",
-        justifyContent: "top",
+        justifyContent: "center",
     },
 
     Camera: {
@@ -273,15 +281,25 @@ const styles = StyleSheet.create({
         borderStyle: "solid",
         borderWidth: 3,
         borderRadius: 5,
-        marginTop: 40,
-        marginBottom: 20,
-        width: 150,
-        height: 50,
+        padding: 10,
+
+        shadowColor: "black",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.9,
+        shadowRadius: 6,
+        elevation: 15,
     },
 
     buttonText: {
         color: "#ffffff",
-        fontSize: 20,
+        fontSize: 30,
     },
+
+    text: {
+        fontSize: 30,
+    }
 
 });

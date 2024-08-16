@@ -12,10 +12,6 @@ export default function ManageFridgeModal(props) {
 
     const [displayData, setDisplayData] = useState([]);
 
-    const splitOnLastSpace = (str) => {
-        return str.split(" ").slice(0, -1).join(" ")
-    }
-
     const formatReferences = (data) => {
             
         const sortedProducts = data
@@ -42,7 +38,9 @@ export default function ManageFridgeModal(props) {
 
     const handleMemberDelete = async (item) => {
 
-        const status = props.handleMemberDelete(item);
+        const status = await props.handleMemberDelete(item);
+
+        console.log("delete status: ", status)
 
         if (status) {
             // update local state
