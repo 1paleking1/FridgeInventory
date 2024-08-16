@@ -7,7 +7,7 @@ export default function ViewPage({ navigation, route }) {
     return (
         <View style={styles.container}>
             
-            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Vegetable", fridge_id: route.params.fridge_id})}>
+            <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Vegetables", fridge_id: route.params.fridge_id})}>
                 <Text style={styles.VegText}>Vegetables</Text>
             </TouchableOpacity>
 
