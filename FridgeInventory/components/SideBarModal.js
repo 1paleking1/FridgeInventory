@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
         alignItems: 'left',
         paddingLeft: 15,
         marginBottom: 30,
-        paddingTop: 10,
+        paddingTop: 5,
     },
 
     Icon: {
