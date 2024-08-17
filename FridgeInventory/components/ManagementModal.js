@@ -94,7 +94,7 @@ export default function ManageFridgeModal(props) {
             case "(Vegetables)":
                 color = "green";
                 break;
-            case "(Fruits)":
+            case "(Fruit)":
                 color = "yellow";
                 break;
             case "(Sauce)":
@@ -187,11 +187,11 @@ const styles = StyleSheet.create({
         shadowColor: "blue",
         shadowOffset: {
             width: 0,
-            height: 4, // Increased for a larger shadow
+            height: 4,
         },
-        shadowOpacity: 0.9, // Increased opacity for a darker shadow
-        shadowRadius: 6, // Increased radius for more blur
-        elevation: 15, // Increased elevation for a more pronounced effect
+        shadowOpacity: 0.9,
+        shadowRadius: 6,
+        elevation: 15,
     },
 
     buttonText: {

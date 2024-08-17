@@ -32,7 +32,7 @@ export default function ManualPage(props) {
 
 
     const food_groups = [
-        { key: 'Fruits', value: 'Fruits' },
+        { key: 'Fruit', value: 'Fruit' },
         { key: 'Vegetables', value: 'Vegetables' },
         { key: 'Dairy', value: 'Dairy' },
         { key: 'Bread', value: 'Bread' },

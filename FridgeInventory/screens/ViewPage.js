@@ -24,7 +24,7 @@ export default function ViewPage({ navigation, route }) {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Sauce", fridge_id: route.params.fridge_id})}>
-                <Text style={styles.SaucesText}>Sauces</Text>
+                <Text style={styles.SaucesText}>Sauce</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.ViewPageButtons} onPress={() => navigation.navigate('FoodTypePage', {food_type: "Misc", fridge_id: route.params.fridge_id})}>
@@ -71,14 +71,14 @@ const styles = StyleSheet.create({
         borderStyle: "solid",
         borderWidth: 3,
         borderRadius: 20,
-        shadowColor: "  ",
+        shadowColor: "blue",
         shadowOffset: {
             width: 0,
-            height: 2,
+            height: 4,
         },
         shadowOpacity: 0.9,
         shadowRadius: 6,
-        elevation: 5,
+        elevation: 10,
     },
 
     VegText: {

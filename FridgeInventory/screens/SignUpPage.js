@@ -1,17 +1,20 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
-import React, { useEffect, useState, useRef } from "react";
-import FlashMessage, { showMessage } from "react-native-flash-message";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useState, useRef } from "react";
+import FlashMessage from "react-native-flash-message";
 
 // firebase imports
 import { db, auth } from "../firebaseConfig";
 import { sendEmailVerification, createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, setDoc, deleteDoc, doc, getDoc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
+
+// components
+import EmailPwdInputs from "../components/EmailPwdInputs";
 
 // utility functions
-import { dangerMessage, successMessage, infoMessage, getErrorFlashMessage } from '../functions/utility_functions';
+import { dangerMessage, infoMessage, getErrorFlashMessage } from '../functions/utility_functions';
 
 
-export default function SignUpPage({ navigation, route }) {
+export default function SignUpPage({ route }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -103,19 +106,7 @@ export default function SignUpPage({ navigation, route }) {
 
             <View style={styles.formBox}>
             
-                <Text style={styles.labelText}>Email</Text>
-                <TextInput
-                    style={styles.nameInput}
-                    placeholder="Email"
-                    onChangeText={(text) => setEmail(text)}
-                />
-                <Text style={styles.labelText}>Password</Text>
-                <TextInput
-                    style={styles.nameInput}
-                    placeholder="Password"
-                    secureTextEntry={true}
-                    onChangeText={(text) => setPassword(text)}
-                />
+                <EmailPwdInputs setEmail={setEmail} setPassword={setPassword} />
 
                 <TouchableOpacity style={styles.loginButton} onPress={SignUp}>
                     <Text style={styles.buttonText}>Sign Up</Text>

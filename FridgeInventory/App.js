@@ -65,8 +65,9 @@ export default function Page() {
     auth.signOut().then(() => {
       setUser(null);
       setMenuModalOpen(false)
+
+      removeToken(expoPushToken);
     
-      removeToken(expoPushToken.data);
     });
 
 
@@ -74,6 +75,10 @@ export default function Page() {
 
   const removeToken = async (token) => {
   
+    if (!token) {
+      return;
+    }
+
     const docRef = doc(db, "users", user.uid.toString());
 
     console.log("check this token: " + token)
@@ -112,6 +117,7 @@ export default function Page() {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
+      console.log("auth state changed")
       if (user) {
         setUser(user);
       } else {
@@ -126,6 +132,7 @@ export default function Page() {
     
       <NavigationContainer>
           <Stack.Navigator>
+            {/* {(auth.currentUser && auth.currentUser.emailVerified) ? ( */}
             {(user && user.emailVerified) ? (
               <Stack.Screen name="InsideLayout" component={InsideLayout} options={blankOptions}/>
             ) : (

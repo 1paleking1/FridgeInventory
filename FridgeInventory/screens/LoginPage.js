@@ -10,11 +10,14 @@ import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion } fro
 // hooks
 import { usePushNotifications } from '../hooks/usePushNotifications';
 
+// components
+import EmailPwdInputs from "../components/EmailPwdInputs";
+
 // utility functions
 import { dangerMessage, successMessage, infoMessage, getErrorFlashMessage } from '../functions/utility_functions';
 
 
-export default function ScanPage({ navigation, route }) {
+export default function ScanPage({ navigation }) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -22,6 +25,10 @@ export default function ScanPage({ navigation, route }) {
     const flashRef = useRef()
 
     const addDeviceToUser = async(uid, push_token) => {
+
+        if (!push_token) {
+            return;
+        }
     
         try {
 
@@ -52,20 +59,14 @@ export default function ScanPage({ navigation, route }) {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            if (!user.emailVerified) {
-                alert(`A verification email has been sent to ${email}. Please verify your email before logging in.`);
-                auth.signOut();
-                return;
-            }
-        
-            // Promise.all([
-            //     addDeviceToUser(user.uid, expoPushToken.data),
-            // ]);
+            // if (!user.emailVerified) {
+            //     alert(`A verification email has been sent to ${email}. Please verify your email before logging in.`);
+            //     auth.signOut();
+            //     return;
+            // }
 
-            // refresh user
-            // user.reload();
+            await addDeviceToUser(user.uid, expoPushToken);
 
-            await addDeviceToUser(user.uid, expoPushToken.data);
 
 
 
@@ -87,19 +88,9 @@ export default function ScanPage({ navigation, route }) {
             
             <View style={styles.formBox}>
             
-                <Text style={styles.labelText}>Email</Text>
-                <TextInput
-                    style={styles.nameInput}
-                    placeholder="Email"
-                    onChangeText={(text) => setEmail(text)}
-                />
-                <Text style={styles.labelText}>Password</Text>
-                <TextInput
-                    style={styles.nameInput}
-                    placeholder="Password"
-                    secureTextEntry={true}
-                    onChangeText={(text) => setPassword(text)}
-                />
+
+                <EmailPwdInputs setEmail={setEmail} setPassword={setPassword} />
+
 
                 <TouchableOpacity style={styles.loginButton} onPress={Login}>
                     <Text style={styles.buttonText}>Login</Text>
@@ -107,7 +98,7 @@ export default function ScanPage({ navigation, route }) {
 
             </View>
         
-            <TouchableOpacity style={styles.signUpButton} onPress={() => navigation.navigate('SignUpPage', { push_token: expoPushToken.data })}>
+            <TouchableOpacity style={styles.signUpButton} onPress={() => navigation.navigate('SignUpPage', { push_token: expoPushToken })}>
                 <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
 

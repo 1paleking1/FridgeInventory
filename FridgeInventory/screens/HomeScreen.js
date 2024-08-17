@@ -108,14 +108,14 @@ const styles = StyleSheet.create({
         borderStyle: "solid",
         borderWidth: 3,
         borderRadius: 20,
-        shadowColor: "black",
+        shadowColor: "blue",
         shadowOffset: {
             width: 0,
-            height: 2,
+            height: 4,
         },
         shadowOpacity: 0.9,
         shadowRadius: 6,
-        elevation: 5,
+        elevation: 10,
     },
 
     TimedButton: {

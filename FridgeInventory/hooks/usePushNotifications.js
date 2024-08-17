@@ -60,7 +60,9 @@ export const usePushNotifications = () => {
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => {
-      setExpoPushToken(token)
+      if (token) {
+        setExpoPushToken(token.data)
+      }
     })
 
     notificationListener.current = Notifications.addNotificationReceivedListener(
