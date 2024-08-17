@@ -9,11 +9,12 @@ export default function DeletePage({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-                        
+
             <ScanningCamera
             backToHome={() => navigation.navigate("HomePage")}
             deleting={true}
             fridge_id={route.params.fridge_id}
+            navigation={navigation}
             />
 
         </View>

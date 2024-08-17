@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "FridgeInventory",
-    "slug": "FridgeInventory",
+    "name": "FridgeApp",
+    "slug": "FridgeApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/fridge.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/fridge_white_text.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

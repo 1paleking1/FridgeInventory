@@ -32,27 +32,13 @@ export default function ScanningCamera(props) {
     }, []);
 
 
+    const toManualPage = (product_id) => {
 
+        console.log("Product ID received: " + product_id);
 
-
-    const getFoodGroup = (keywords) => {
-
-        let food_group = "Misc";
-
-        if (checkArrMemebers(keywords, ["vegetable", "pak"])) {
-            food_group = "Vegetable";
-        } else if (checkArrMemebers(keywords, ["fruit"])) {
-            food_group = "Fruit";
-        } else if (checkArrMemebers(keywords, ["dairy", "milk", "egg"])) {
-            food_group = "Dairy";
-        } else if (checkArrMemebers(keywords, ["sauce"])) {
-            food_group = "Sauce";
-        } else if (checkArrMemebers(keywords, ["bread"])) {
-            food_group = "Bread";
-        }
-
-        return food_group;
+        props.navigation.navigate("ManualPage", {product_id: product_id, fridge_id: props.fridge_id});
     }
+
 
     const handleProduct = async(product_id, product_name, food_group) => {
 
@@ -202,7 +188,7 @@ export default function ScanningCamera(props) {
             
             alert("Product not found");
 
-            await props.toManualPage(product_id);
+            toManualPage(product_id);
             
             // try {
 

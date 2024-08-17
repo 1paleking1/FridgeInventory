@@ -59,11 +59,11 @@ export default function ScanPage({ navigation }) {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // if (!user.emailVerified) {
-            //     alert(`A verification email has been sent to ${email}. Please verify your email before logging in.`);
-            //     auth.signOut();
-            //     return;
-            // }
+            if (!user.emailVerified) {
+                alert(`A verification email has been sent to ${email}. Please verify your email before logging in.`);
+                auth.signOut();
+                return;
+            }
 
             await addDeviceToUser(user.uid, expoPushToken);
 
