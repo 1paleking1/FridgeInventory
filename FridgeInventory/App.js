@@ -1,5 +1,5 @@
 // react imports
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -23,7 +23,7 @@ import NotificationsModal from './components/NotificationsModal';
 // firebase imports
 import { db, auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
-import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, arrayRemove } from "firebase/firestore";
+import { doc, updateDoc, arrayRemove } from "firebase/firestore";
 
 // hooks
 import { usePushNotifications } from './hooks/usePushNotifications';
@@ -32,9 +32,7 @@ import { usePushNotifications } from './hooks/usePushNotifications';
 import { Ionicons } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
-
 const InsideStack = createNativeStackNavigator();
-
 
 const InsideLayout = () => {
 
@@ -81,8 +79,6 @@ export default function Page() {
 
     const docRef = doc(db, "users", user.uid.toString());
 
-    console.log("check this token: " + token)
-
     await updateDoc(docRef, {
       devices: arrayRemove(token)
     });
@@ -117,7 +113,6 @@ export default function Page() {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      console.log("auth state changed")
       if (user) {
         setUser(user);
       } else {
@@ -132,7 +127,6 @@ export default function Page() {
     
       <NavigationContainer>
           <Stack.Navigator>
-            {/* {(auth.currentUser && auth.currentUser.emailVerified) ? ( */}
             {(user && user.emailVerified) ? (
               <Stack.Screen name="InsideLayout" component={InsideLayout} options={blankOptions}/>
             ) : (
@@ -150,7 +144,6 @@ export default function Page() {
           email={user ? user.email : null}
           onClose={() => setMenuModalOpen(false)}
           signOut={signUserOut}
-          toManageFridgePage={() => console.log("Manage Fridge Page")}
           />
 
           <NotificationsModal

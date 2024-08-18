@@ -1,50 +1,12 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useState, useEffect, Suspense } from "react";
-import { usePushNotifications } from "../hooks/usePushNotifications";
+import React from "react";
 import { auth } from "../firebaseConfig";
-import { Ionicons } from "@expo/vector-icons";
-import { onAuthStateChanged } from 'firebase/auth';
-
 
 import useFetchFridgeID from "../hooks/useFetchFridgeID";
-
-import NotificationsModal from "../components/NotificationsModal";
-import SideBarModal from "../components/SideBarModal";
 
 export default function HomePage({ navigation, route }) {
     
     const fridge_id = useFetchFridgeID(auth.currentUser);
-
-    // const [user, setUser] = useState(null);
-    // const [NotificationsModalOpen, setNotificationsModalOpen] = useState(false);
-    // const [MenuModalOpen, setMenuModalOpen] = useState(false);
-    
-
-
-    // set the home page screen header options
-    // useEffect(() => {
-
-    //     console.log(route.params)
-
-    //     navigation.setOptions({
-    //         headerLeft: () => (
-    //             <TouchableOpacity onPress={() => setMenuModalOpen(true)}>
-    //               <Ionicons name="menu" size={40} color="black" />  
-    //             </TouchableOpacity>
-    //           ),
-          
-    //           headerRight: () => (
-    //             <TouchableOpacity onPress={() => setNotificationsModalOpen(true)}>
-    //               <Ionicons name="notifications" size={40} color="black" />
-    //             </TouchableOpacity>
-    //           ),
-
-    //           headerTitleAlign: 'center',
-
-    //     });
-    // }, [navigation]);
-
-
 
     return (
 
@@ -65,21 +27,6 @@ export default function HomePage({ navigation, route }) {
                 <TouchableOpacity style={styles.HomePageButtons} onPress={() => navigation.navigate('ShoppingListPage', {fridge_id: fridge_id})}>
                     <Text style={styles.ButtonText}>Shopping List</Text>
                 </TouchableOpacity>
-
-                {/* <NotificationsModal
-                modalOpen={NotificationsModalOpen}
-                setModalOpen={setNotificationsModalOpen}
-                />
-
-                <SideBarModal
-                modalOpen={MenuModalOpen}
-                setModalOpen={setMenuModalOpen}
-                email={auth.currentUser ? auth.currentUser.email : null}
-                onClose={() => setMenuModalOpen(false)}
-                signOut={route.params.signUserOut}
-                toManageFridgePage={() => console.log("Manage Fridge Page")}
-                /> */}
-                
                  
             </View>
 

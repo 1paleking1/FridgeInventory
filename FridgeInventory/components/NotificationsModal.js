@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, Modal, TouchableOpacity, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { collection, getDocs, getDoc, query, where, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore"
+import { collection, getDocs } from "firebase/firestore"
 import { db, auth } from '../firebaseConfig.js';
 
 // hooks
 import useFetchFridgeID from '../hooks/useFetchFridgeID.js';
-
-// utility functions
-import { getTodayDate } from '../functions/utility_functions.js';
 
 export default function NotificationsModal(props) {
 
@@ -28,8 +25,6 @@ export default function NotificationsModal(props) {
             notifications.push([doc.data().product_name, doc.data().date_added]);
         });
 
-        console.log("notifications: ", notifications);
-
         setNotifications(notifications);
 
     }
@@ -43,7 +38,6 @@ export default function NotificationsModal(props) {
         const diffTime = Math.abs(today_date - notification_date);
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-        // return "You added " + notification_array[0] + " " + diffDays + " days ago";
         const text1 = `${notification_array[0]}`
         const text2 = `${diffDays} days ago`;
         
@@ -57,7 +51,6 @@ export default function NotificationsModal(props) {
     };
     
     useEffect(() => {
-        console.log("this shouldn't be running yet")
         getNotifications();
 
     }, [props.modalOpen]);

@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from "react-native";
-import React, { useEffect, useState, useRef } from "react";
-import FlashMessage, { showMessage } from "react-native-flash-message";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useState, useRef } from "react";
+import FlashMessage from "react-native-flash-message";
 
 // firebase imports
 import { db, auth } from "../firebaseConfig";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import {  doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 
 // hooks
 import { usePushNotifications } from '../hooks/usePushNotifications';
@@ -14,7 +14,7 @@ import { usePushNotifications } from '../hooks/usePushNotifications';
 import EmailPwdInputs from "../components/EmailPwdInputs";
 
 // utility functions
-import { dangerMessage, successMessage, infoMessage, getErrorFlashMessage } from '../functions/utility_functions';
+import { getErrorFlashMessage } from '../functions/utility_functions';
 
 
 export default function ScanPage({ navigation }) {
@@ -73,9 +73,7 @@ export default function ScanPage({ navigation }) {
         } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
-    
-            console.log(errorCode);
-    
+        
             getErrorFlashMessage(errorCode, flashRef);
 
         }

@@ -3,7 +3,6 @@ import { Text, View, StyleSheet, Button, TouchableOpacity, ScrollView } from 're
 import React, { useEffect, useState } from "react";
 
 export default function ViewPage({ navigation, route }) {
-    // note that fridge id comes from props
     return (
         <View style={styles.container}>
             

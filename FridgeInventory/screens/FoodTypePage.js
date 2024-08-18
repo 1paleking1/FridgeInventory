@@ -1,12 +1,10 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import React from "react";
 
 // component imports
 import FoodTable from '../components/FoodTable';
 
-
-
-export default function FoodTypePage({ route, navigation }) {
+export default function FoodTypePage({ route }) {
 
     return (
         <View style={styles.container}>

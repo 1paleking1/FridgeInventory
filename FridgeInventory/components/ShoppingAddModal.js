@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Modal, TextInput, TouchableWithoutFeedback, ViewBase } from "react-native";
-import React, { useEffect, useState } from "react";
+import { StyleSheet, View, TouchableOpacity, Modal, TextInput, TouchableWithoutFeedback } from "react-native";
+import React, { useState } from "react";
 import { Ionicons } from '@expo/vector-icons';
 
 export default function ShoppingAddModal(props) {

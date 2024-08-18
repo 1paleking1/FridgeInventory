@@ -1,6 +1,5 @@
 import React from 'react';
-import { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput, TouchableWithoutFeedback, Touchable } from 'react-native';
+import { StyleSheet, Text, View, TextInput} from 'react-native';
 
 export default function DataList(props) {
 

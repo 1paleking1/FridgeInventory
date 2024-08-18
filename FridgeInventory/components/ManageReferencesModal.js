@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { Text, View, StyleSheet, Modal, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 import { useState, useEffect } from 'react';
 import { db, auth } from '../firebaseConfig';
-import { collection, getDoc, doc, updateDoc, query, where, getDocs, deleteDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs, deleteDoc } from 'firebase/firestore';
 
 // hooks
 import useFetchAdmin from '../hooks/useFetchAdmin';
@@ -38,10 +38,6 @@ export default function ManageFridgeModal(props) {
         await deleteDoc(doc.ref);
 
         return true;
-
-        // delete from local state
-        // setReferences(references.filter(ref => ref != item));
-
     }
 
     const splitOnLastSpace = (str) => {
@@ -59,7 +55,6 @@ export default function ManageFridgeModal(props) {
         let display_data = [];
 
         querySnapshot.forEach((doc) => {
-            // display_data.push(`${doc.data().product_name} (${doc.data().food_group})`);
             display_data.push(doc.data())
         });
 

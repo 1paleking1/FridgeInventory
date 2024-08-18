@@ -1,5 +1,3 @@
-import { showMessage } from "react-native-flash-message";
-
 const dangerMessage = (message, ref) => {
 
     ref.current.showMessage({

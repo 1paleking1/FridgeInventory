@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatListComponent } from "react-native";
-import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import React from "react";
 
 // component imports
 import ScanningCamera from '../components/ScanningCamera.js';

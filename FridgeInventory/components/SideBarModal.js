@@ -1,8 +1,8 @@
 import React from 'react';
-import { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput, TouchableWithoutFeedback, Touchable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Make sure to install and import Ionicons
-import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { useState, useRef } from 'react';
+import { StyleSheet, Text, View, Modal, TouchableOpacity, TextInput } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from '../firebaseConfig';
 import * as Clipboard from 'expo-clipboard';
 import FlashMessage, { showMessage } from "react-native-flash-message";
@@ -30,7 +30,6 @@ export default function SideBarModal(props) {
     const handleJoin = async() => {
 
         if (newFridgeID == "") {
-            // alert("Please enter a Fridge ID");
             dangerMessage("Please enter a Fridge ID", flashRef);
 
             return;
@@ -38,8 +37,6 @@ export default function SideBarModal(props) {
 
         // make sure it's not the same fridge
         if (newFridgeID == fridgeID) {
-            // alert("You are already in this fridge");
-
             dangerMessage("You are already in this fridge", flashRef);
             return;
         }
@@ -71,15 +68,11 @@ export default function SideBarModal(props) {
                 users: [...docSnap.data().users, auth.currentUser.email]
             });
             
-            // alert("Successfully joined Fridge " + newFridgeID);
-
             successMessage("Successfully joined Fridge " + newFridgeID, flashRef);
 
 
 
-        } else {
-            console.log("Invalid Fridge ID");
-            
+        } else {            
             dangerMessage("Invalid Fridge ID", flashRef);
         }
         
@@ -88,7 +81,6 @@ export default function SideBarModal(props) {
 
     const copyToClipboard = async() => {
         await Clipboard.setStringAsync(fridgeID);
-        // await alert("Fridge ID Copied to Clipboard");
         showMessage({
             message: "Fridge ID Copied to Clipboard",
             type: "success",
@@ -96,14 +88,6 @@ export default function SideBarModal(props) {
             duration: 1000
         });
     }
-
-
-
-
-
-
-
-    
 
     const fridgeIDJSX = fridgeID ? <Text>{fridgeID}</Text> : <Text>Not in a Fridge</Text>;
 
@@ -203,11 +187,8 @@ const styles = StyleSheet.create({
         width: '80%',
         backgroundColor: '#ffffff',
         paddingHorizontal: 2,
-        // justifyContent: 'flex-start',
         justifyContent: "space-evenly",
         alignItems: 'center',
-        // borderTopRightRadius: 20,
-        // borderBottomRightRadius: 20,
     },
 
     ModalBackgroundOpacity: {
@@ -276,7 +257,6 @@ const styles = StyleSheet.create({
     UserInfoText: {
         fontSize: 18,
         textAlign: 'center',
-        // marginHorizontal: 10,
     },
 
     NewIDlabelText: {

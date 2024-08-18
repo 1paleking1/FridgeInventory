@@ -29,7 +29,6 @@ export default function SignUpPage({ route }) {
 
             await setDoc(docRef, {
                 email: email,
-                verified: false,
                 fridge_id: uid.toString(),
                 devices: [route.params.push_token], 
             });
@@ -75,8 +74,6 @@ export default function SignUpPage({ route }) {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-
-                console.log(errorCode);
 
                 getErrorFlashMessage(errorCode, flashRef);
                 

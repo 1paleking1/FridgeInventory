@@ -1,31 +1,23 @@
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Table, TableWrapper, Row, Rows, Col, Cols, Cell } from 'react-native-table-component';
+import { Table, Row, Rows } from 'react-native-table-component';
 
 // firebase imports
-import { db, auth } from '../firebaseConfig.js';
+import { db } from '../firebaseConfig.js';
 import { collection, getDocs } from "firebase/firestore"; 
-
-// hooks
-// import useFetchFridgeID from '../hooks/useFetchFridgeID';
 
 
 export default function FoodTable(props) {
 
     let table_head = ['Product Name', 'Date Scanned'];
-    const [table_data_state, setTableData] = useState([]);
-    // const fridge_id = useFetchFridgeID(auth.currentUser);
-    
+    const [table_data_state, setTableData] = useState([]);   
     
     const loadData = (food_group) => {
-
-        console.log("Loading data for: " + props.fridge_id);
 
         let table_data = [];
         const querySnapshot = getDocs(collection(db, "fridges", props.fridge_id, "inventory", food_group, "items"));
         querySnapshot.then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                console.log(doc.id, " => ", doc.data());
                 table_data.push([doc.data().name, doc.data().date_scanned]);
             });
 

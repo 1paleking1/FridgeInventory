@@ -14,8 +14,6 @@ const useFetchFridgeMembers = (fridge_id) => {
         const unsubscribe = onSnapshot(docRef, (doc) => {
             if (doc.exists()) {
                 setFridgeMemberEmails(doc.data().users);
-            } else {
-                console.log("No such document (in useFetchFridgeMembers)!");
             }
         });
 
@@ -31,8 +29,6 @@ const useFetchFridgeMembers = (fridge_id) => {
             const docSnap = onSnapshot(docRef, (doc) => {
                 if (doc.exists()) {
                     uids.push(doc.id);
-                } else {
-                    console.log("No such document!");
                 }
             });
         }

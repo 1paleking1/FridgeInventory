@@ -1,10 +1,10 @@
 // boilerplate
-import { Text, View, StyleSheet, Button, TouchableOpacity, TextInput, Touchable } from 'react-native';
-import React, { useEffect, useState } from "react";
+import { Text, View, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import React, { useState } from "react";
 import { SelectList } from 'react-native-dropdown-select-list'
 
-import { auth, db } from '../firebaseConfig.js';
-import { collection, setDoc, deleteDoc, doc } from "firebase/firestore"; 
+import { db } from '../firebaseConfig.js';
+import { setDoc, doc } from "firebase/firestore"; 
 
 
 export default function ManualPage(props) {

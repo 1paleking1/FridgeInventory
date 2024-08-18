@@ -1,12 +1,8 @@
-import React, { Component } from 'react';
-import { Text, View, StyleSheet, Modal, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import React from 'react';
+import { Text, View, StyleSheet, Modal, TouchableOpacity, FlatList } from 'react-native';
 import { useState, useEffect } from 'react';
-import { db, auth } from '../firebaseConfig';
-import { collection, getDoc, doc, updateDoc, query, where, getDocs } from 'firebase/firestore';
 import { Ionicons } from '@expo/vector-icons';
 
-// hooks
-import useFetchAdmin from '../hooks/useFetchAdmin';
 
 export default function ManageFridgeModal(props) {
 
@@ -39,8 +35,6 @@ export default function ManageFridgeModal(props) {
     const handleMemberDelete = async (item) => {
 
         const status = await props.handleMemberDelete(item);
-
-        console.log("delete status: ", status)
 
         if (status) {
             // update local state

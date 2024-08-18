@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Text, View, StyleSheet, Modal, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 import { useState, useEffect } from 'react';
 import { db, auth } from '../firebaseConfig';
 import { collection, getDoc, doc, updateDoc, query, where, getDocs } from 'firebase/firestore';
@@ -43,8 +43,6 @@ export default function ManageFridgeModal(props) {
 
     const getUIDFromEmail = async (email) => {
     
-        // email is a field in the user document
-
         const colRef = collection(db, "users");
 
         const q = query(colRef, where("email", "==", email));
@@ -86,9 +84,6 @@ export default function ManageFridgeModal(props) {
 
         if (docSnap.exists()) {
             setFridgeUsers(docSnap.data().users);
-        } else {
-            console.log("No such document!");
-
         }
 
     }

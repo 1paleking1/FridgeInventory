@@ -1,9 +1,9 @@
-import { Text, View, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from "react";
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import axios from 'axios';
 import { db, auth } from '../firebaseConfig.js';
-import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
+import { setDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
 
 // hook imports
 import useFetchAdmin from '../hooks/useFetchAdmin.js';
@@ -33,8 +33,6 @@ export default function ScanningCamera(props) {
 
 
     const toManualPage = (product_id) => {
-
-        console.log("Product ID received: " + product_id);
 
         props.navigation.navigate("ManualPage", {product_id: product_id, fridge_id: props.fridge_id});
     }
@@ -69,9 +67,6 @@ export default function ScanningCamera(props) {
             console.error("Error adding document: ", e);
         }
 
-
-        console.log("making axios call")
-        console.log("jwt is ", jwt)
         // call backend function to schedule notification
         await axios.post("https://fridgeinventoryapi.onrender.com/scheduleNotification", 
             {
@@ -104,10 +99,8 @@ export default function ScanningCamera(props) {
         const docSnap = await getDoc(notificationRef);
 
         if (!docSnap.exists()) {
-            console.log("cancelling notification")
+
             // call backend function to cancel notification
-
-
             await axios.post("https://fridgeinventoryapi.onrender.com/cancelNotification", 
                 {
                     job_name: `${props.fridge_id}_${product_id}`
@@ -170,8 +163,6 @@ export default function ScanningCamera(props) {
             
             exists = await productInDatabase(product_id, cached_reference.food_group);
 
-            console.log("exists set to ", exists);
-
             if (exists && !props.deleting) {
                 alert("Product already exists in the fridge");
                 props.backToHome();
@@ -189,21 +180,6 @@ export default function ScanningCamera(props) {
             alert("Product not found");
 
             toManualPage(product_id);
-            
-            // try {
-
-                // res = await axios.get(`https://world.openfoodfacts.net/api/v2/product/${product_id}`)
-                
-                // console.log(res.data.product.product_name);
-                
-                // let food_group = getFoodGroup(res.data.product._keywords);
-                
-                // handleProduct(product_id, res.data.product.product_name, food_group);                
-
-            // } catch (error) {
-            //     alert("Product not found"); 
-            //     props.toManualPage(product_id);
-            // }
     
         }
           

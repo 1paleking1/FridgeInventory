@@ -1,15 +1,15 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Modal, TextInput, TouchableWithoutFeedback } from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from '@expo/vector-icons';
-import { collection, setDoc, deleteDoc, doc, getDoc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
-import { db, auth } from '../firebaseConfig';
+import { doc, getDoc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { db } from '../firebaseConfig';
 
 // component imports
 import ShoppingAddModal from "../components/ShoppingAddModal";
 
 
 
-export default function ShoppingListPage({ navigation, route }) {
+export default function ShoppingListPage({ route }) {
 
     const [data, setData] = useState([]);
     const [deleteStack, setDeleteStack] = useState([]);

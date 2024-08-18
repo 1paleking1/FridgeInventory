@@ -10,8 +10,6 @@ const useFetchAdmin = (fridge_id) => {
         const unsubscribe = onSnapshot(docRef, (doc) => {
             if (doc.exists()) {
                 setAdmin(doc.data().email);
-            } else {
-                console.log("No such document!");
             }
         });
         return () => unsubscribe();
