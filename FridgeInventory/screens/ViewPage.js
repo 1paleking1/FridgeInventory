@@ -64,8 +64,6 @@ const styles = StyleSheet.create({
         margin: 10,
         justifyContent: "center",
         alignItems: "center",
-        // spacing between buttons based on the screen size
-        // marginVertical: "10%",
         alignSelf: "stretch",
         borderStyle: "solid",
         borderWidth: 3,

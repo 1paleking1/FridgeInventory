@@ -167,6 +167,14 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderRadius: 20,
         marginTop: 40,
+        shadowColor: "blue",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.9,
+        shadowRadius: 6,
+        elevation: 10,
     },
 
     signUpButton: {
@@ -178,6 +186,7 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderRadius: 20,
         marginTop: 60,
+        
     },
 
     labelText: {
