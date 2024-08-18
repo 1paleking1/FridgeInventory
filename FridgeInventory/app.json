@@ -1,13 +1,13 @@
 {
   "expo": {
     "name": "FridgeApp",
-    "slug": "FridgeApp",
+    "slug": "FridgeInventory",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/fridge.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/fridge_white_text.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,10 +17,6 @@
     },
     "android": {
       "googleServicesFile": "./google-services.json",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
       "package": "com.skkaranth.fridgeinventory"
     },
     "web": {

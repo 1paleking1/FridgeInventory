@@ -24,7 +24,7 @@ export default function SideBarModal(props) {
 
     const [manageFridgeModalVisible, setManageFridgeModalVisible] = useState(false);
     const [ManageReferencesModalVisible, setManageReferencesModalVisible] = useState(false);
-
+    
     const flashRef = useRef();
 
     const handleJoin = async() => {
@@ -122,6 +122,8 @@ export default function SideBarModal(props) {
                                 <Ionicons name="menu" size={40} color="black" style={styles.Icon} onPress={() => props.setModalOpen(false)} />
                             </View>
 
+
+
                             <View style={styles.modalSection}>
                                 <TouchableOpacity style={styles.SignOutButton} onPress={() => props.signOut()}>
                                     <Text style={styles.SignOutText}>Sign Out</Text>
@@ -167,6 +169,9 @@ export default function SideBarModal(props) {
                                 </TouchableOpacity>
                             </View>
 
+                            <View style={styles.modalSection}>
+                                <Text>Version: 1.0.0</Text>
+                            </View>
 
                             <ManageFridgeModal
                             manageModalVisible={manageFridgeModalVisible}
