@@ -59,15 +59,13 @@ export default function Page() {
 
   const { expoPushToken, notification } = usePushNotifications();
 
-  const signUserOut = () => {
+  const signUserOut = async() => {
+    await removeToken(expoPushToken);
     auth.signOut().then(() => {
       setUser(null);
       setMenuModalOpen(false)
-
-      removeToken(expoPushToken);
     
     });
-
 
   }
 
@@ -77,6 +75,9 @@ export default function Page() {
       return;
     }
 
+    console.log("removing token: ", expoPushToken); 
+
+    console.log("user uid: ", user.uid);
     const docRef = doc(db, "users", user.uid.toString());
 
     await updateDoc(docRef, {
