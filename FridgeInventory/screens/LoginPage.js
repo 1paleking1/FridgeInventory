@@ -67,6 +67,10 @@ export default function ScanPage({ navigation }) {
 
             await addDeviceToUser(user.uid, expoPushToken);
 
+            flashRef.current.showMessage({
+                message: "Please reload the app to finish logging in (one time only)",
+                type: "success",
+            });
 
 
 
