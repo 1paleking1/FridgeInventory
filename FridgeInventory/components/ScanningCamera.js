@@ -9,7 +9,7 @@ import { setDoc, deleteDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/
 import useFetchAdmin from '../hooks/useFetchAdmin.js';
 
 // utility functions
-import { getTodayDate } from '../functions/utility_functions.js';
+import { getTodayDate, addProducttoDB } from '../functions/utility_functions.js';
 
 export default function ScanningCamera(props) {
 
@@ -34,7 +34,7 @@ export default function ScanningCamera(props) {
 
     const toManualPage = (product_id) => {
 
-        props.navigation.navigate("ManualPage", {product_id: product_id, fridge_id: props.fridge_id});
+        props.navigation.navigate("ManualPage", {product_id: product_id, fridge_id: props.fridge_id, admin: admin, jwt: jwt});
     }
 
 
@@ -43,7 +43,7 @@ export default function ScanningCamera(props) {
         if (props.deleting) {
             await deleteProductfromDB(product_id, product_name, food_group);
         } else {
-            await addProducttoDB(product_id, product_name, food_group);
+            await addProducttoDB(product_id, props.fridge_id,product_name, food_group, admin, jwt);
         }
 
     }
@@ -52,40 +52,40 @@ export default function ScanningCamera(props) {
         return arr1.some(item => arr2.includes(item));
     }
 
-    const addProducttoDB = async(product_id, product_name, food_group) => {
+    // const addProducttoDB = async(product_id, product_name, food_group) => {
 
-        try {
+    //     try {
 
-            docRef = doc(db, "fridges", props.fridge_id.toString(), "inventory", food_group, "items", product_id.toString());
+    //         docRef = doc(db, "fridges", props.fridge_id.toString(), "inventory", food_group, "items", product_id.toString());
 
-            await setDoc(docRef, {
-                name: product_name,
-                date_scanned: getTodayDate()
-            });
+    //         await setDoc(docRef, {
+    //             name: product_name,
+    //             date_scanned: getTodayDate()
+    //         });
 
-        } catch (e) {
-            console.error("Error adding document: ", e);
-        }
+    //     } catch (e) {
+    //         console.error("Error adding document: ", e);
+    //     }
 
-        // call backend function to schedule notification
-        await axios.post("https://fridgeinventoryapi.onrender.com/scheduleNotification", 
-            {
-                fridge_id: props.fridge_id,
-                admin: admin,
-                product_name: product_name,
-                product_type: food_group,
-                product_id: product_id
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${jwt}`
-                }
-            }
-        );
+    //     // call backend function to schedule notification
+    //     await axios.post("https://fridgeinventoryapi.onrender.com/scheduleNotification", 
+    //         {
+    //             fridge_id: props.fridge_id,
+    //             admin: admin,
+    //             product_name: product_name,
+    //             product_type: food_group,
+    //             product_id: product_id
+    //         },
+    //         {
+    //             headers: {
+    //                 Authorization: `Bearer ${jwt}`
+    //             }
+    //         }
+    //     );
 
 
 
-    }
+    // }
 
     const deleteProductfromDB = async(product_id, product_name, food_group) => {
     

@@ -5,22 +5,26 @@ import { SelectList } from 'react-native-dropdown-select-list'
 
 import { db } from '../firebaseConfig.js';
 import { setDoc, doc } from "firebase/firestore"; 
+import { addProducttoDB } from '../functions/utility_functions.js';
 
 
 export default function ManualPage(props) {
 
-    const [product_id, setProductID] = useState(props.route.params.product_id);
-
     const addToDatabase = () => {
         
-        const docRef = doc(db, "fridges", props.route.params.fridge_id, "reference", product_id);
+        const docRef = doc(db, "fridges", props.route.params.fridge_id, "reference", props.route.params.product_id);
 
         setDoc(docRef, {
             product_name: product_name,
             food_group: selected_food_group,
         });
 
-        alert("Product added to database!");
+        alert("Product added to database and fridge!");
+
+        // now also add to the fridge's inventory
+        addProducttoDB(props.route.params.product_id, props.route.params.fridge_id, product_name, selected_food_group, props.route.params.admin, props.route.params.jwt);
+
+
     }
 
     const handleSubmit = () => {

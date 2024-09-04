@@ -1,3 +1,7 @@
+import { doc, setDoc } from "firebase/firestore";
+import { db } from '../firebaseConfig.js';
+import axios from 'axios';
+
 const dangerMessage = (message, ref) => {
 
     ref.current.showMessage({
@@ -58,6 +62,39 @@ const getTodayDate = () => {
 }
 
 
+const addProducttoDB = async(product_id, fridge_id, product_name, food_group, admin, jwt) => {
+
+    try {
+
+        docRef = doc(db, "fridges", fridge_id, "inventory", food_group, "items", product_id.toString());
+
+        await setDoc(docRef, {
+            name: product_name,
+            date_scanned: getTodayDate()
+        });
+
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+
+    // call backend function to schedule notification
+    await axios.post("https://fridgeinventoryapi.onrender.com/scheduleNotification", 
+        {
+            fridge_id: fridge_id,
+            admin: admin,
+            product_name: product_name,
+            product_type: food_group,
+            product_id: product_id
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            }
+        }
+    );
+
+}
+
 
 
 module.exports = {
@@ -65,5 +102,6 @@ module.exports = {
     dangerMessage,
     successMessage,
     infoMessage,
-    getErrorFlashMessage
+    getErrorFlashMessage,
+    addProducttoDB
 }
