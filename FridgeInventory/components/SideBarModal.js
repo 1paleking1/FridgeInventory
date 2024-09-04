@@ -154,7 +154,7 @@ export default function SideBarModal(props) {
                             </View>
 
                             <View style={styles.modalSection}>
-                                <Text>Version: 1.0.0</Text>
+                                <Text>Version: 1.0.2</Text>
                             </View>
 
                             <ManageFridgeModal
