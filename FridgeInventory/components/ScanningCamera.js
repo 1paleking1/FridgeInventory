@@ -166,9 +166,11 @@ export default function ScanningCamera(props) {
             if (exists && !props.deleting) {
                 alert("Product already exists in the fridge");
                 props.backToHome();
+                return
             } else if (!exists && props.deleting) {
                 alert("Product does not exist in the fridge");
                 props.backToHome();
+                return
             }
 
             handleProduct(product_id, cached_reference.product_name, cached_reference.food_group);
